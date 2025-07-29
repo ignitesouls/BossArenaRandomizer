@@ -1,0 +1,323 @@
+﻿<Window x:Class="BossArenaRandomizer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BossArenaRandomizer"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        Title="Boss Arena Randomizer" Height="450" Width="800">
+    <Window.Resources>
+        <!-- Styles -->
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
+        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <Style x:Key="RoundedButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDefaulted" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                            </Trigger>
+                            <!--<Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="border" Value="#FF7408FB"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="#FF7408FB"/>
+                            </Trigger>-->
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
+                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RoundedComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton
+                        Name="ToggleButton"
+                        Grid.Column="2"
+                        Focusable="false"
+                        IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                        ClickMode="Press"
+                        Background="#FF7408FB"
+                        BorderThickness="0"
+                        BorderBrush="Transparent"
+                        >
+                                <Grid>
+                                    <Path
+                                x:Name="Arrow"
+                                Fill="White"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                </Grid>
+                            </ToggleButton>
+                            <ContentPresenter
+                        Name="ContentSite"
+                        IsHitTestVisible="False"
+                        Content="{TemplateBinding SelectionBoxItem}"
+                        ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                        Margin="10,0,30,0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"/>
+                            <Popup
+                        Name="Popup"
+                        Placement="Bottom"
+                        IsOpen="{TemplateBinding IsDropDownOpen}"
+                        AllowsTransparency="True"
+                        Focusable="False"
+                        PopupAnimation="Slide">
+                                <Grid
+                            Name="DropDown"
+                            SnapsToDevicePixels="True"
+                            MinWidth="{TemplateBinding ActualWidth}"
+                            MaxHeight="200"
+                            Background="White"
+                            >
+                                    <Border 
+                                CornerRadius="6"
+                                BorderThickness="1"
+                                BorderBrush="#FF7408FB"
+                                Background="White">
+                                        <ScrollViewer Margin="4" SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        </ScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ToggleButton" Property="Foreground" Value="Gray"/>
+                                <Setter TargetName="Arrow" Property="Fill" Value="Gray"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ToggleButton" Property="Background" Value="#FF986FF9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="#FF7408FB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+    </Window.Resources>
+
+
+    <Grid Background="#FF7100FF">
+        <TabControl x:Name="MainTabControl" Background="Black" SelectionChanged="MainTabControl_SelectionChanged">
+            <TabItem Header="Randomizer">
+                <Grid HorizontalAlignment="Right" Width="794">
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFFDFDFD"/>
+                            <GradientStop Color="#FFFF8400" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+
+
+                    <ComboBox x:Name="OptionsPresetComboBox" Margin="397,38,0,316" HorizontalAlignment="Left" Width="181" Background="Black" />
+                    <Button Content="Load Options Preset" Click="SelectOptionsPreset_Click" Margin="586,26,27,303" Style="{DynamicResource RoundedButtonStyle}" Background="#FF8800FF" Foreground="White" FontWeight="Bold" />
+
+                    <Button Content="Set Output Path" Click="SetOutputPath_Click" Margin="20,80,575,248" Style="{DynamicResource RoundedButtonStyle}" Background="#FF8800FF" FontWeight="Bold" Foreground="White" />
+                    <TextBlock x:Name="OutputPathDisplay" Margin="20,148,44,211" FontWeight="Bold"/>
+
+                    <TextBlock x:Name="SeedTextBlock" FontWeight="Bold" FontSize="10" Margin="30,294,512,69" Foreground="Black" Text="Seed Used: Who Knows?"/>
+                    <Button Content="RANDOMIZE" 
+                            Style="{DynamicResource RoundedButtonStyle}" 
+                            Click="Randomize_Click"
+                            HorizontalAlignment="Left" 
+                            Height="66"  
+                            Margin="30,311,0,0" 
+                            VerticalAlignment="Top"
+                            Width="232" FontWeight="Bold" Background="#FF8800FF" Foreground="#FFFDFDFD"/>
+
+                    <TextBlock Text="{Binding ArenaFilter.SelectedCount, StringFormat='Selected Arenas: {0}'}" Margin="581,343,10,0" VerticalAlignment="Top" Height="16" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding BossesFilter.SelectedCount, StringFormat='Selected Bosses: {0}'}" FontWeight="Bold" Margin="581,364,27,0" VerticalAlignment="Top" Height="16"/>
+                    <Image HorizontalAlignment="Left" Height="70" Margin="30,5,0,0" VerticalAlignment="Top" Width="72" Source="/Ignite Logo.png"/>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem Header="Arena Selection">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFFDFDFD"/>
+                            <GradientStop Color="#FFFF8400" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" MinHeight="56.098"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Margin="10,10,174,17">
+                        <Button Content="Reset All" Click="ResetAllArenas_Click" Height="41" Style="{DynamicResource RoundedButtonStyle}" Width="90" Background="#FFFF5D00" Foreground="#FF0C0C0C" />
+                        <Button Content="Select Base Game Arenas" Click="SelectBaseGameArenas_Click" Margin="10,0,0,0" Height="40" Style="{DynamicResource RoundedButtonStyle}" Width="199" Background="#FFFF5D00" Foreground="Black" />
+                        <Button Content="Select DLC Arenas" Click="SelectDLCArenas_Click" Margin="10,0,0,0" Height="40" Width="137" Style="{DynamicResource RoundedButtonStyle}" Background="#FFFF5D00" Foreground="Black" />
+
+                    </StackPanel>
+                    <TextBlock Text="{Binding ArenaFilter.SelectedCount, StringFormat='Selected Arenas: {0}'}" FontWeight="Bold" Margin="469,10,169,19"/>
+                    <Button Content="Save Custom Arenas" Click="SaveCustomArenaSelection_Click" Margin="578,263,0,10" HorizontalAlignment="Left" Grid.Row="1" Width="181" Style="{DynamicResource RoundedButtonStyle}" Background="#FF9114EC" Foreground="White" FontWeight="Bold" />
+
+                    <CheckBox x:Name="BetterArenasCheckbox" FontWeight="Bold" Content="Better Arenas" Checked="BetterArenasCheckbox_Checked" Margin="625,3,43,25" />
+                    <CheckBox x:Name="ArenaSizeRestriction" FontWeight="Bold" Content="Size Restrictions" Checked="ArenaSizeRestrictionCheckbox_Checked" Margin="625,18,35,11" />
+                    <CheckBox x:Name="ArenaDifficultyRestriction" FontWeight="Bold" Content="Difficulty Curve" Checked="ArenaDifficultyRestrictionCheckbox_Checked" Margin="625,34,9,7" />
+
+                    <ComboBox x:Name="ArenaPresetComboBox" Margin="578,10,0,282" Grid.Row="1" HorizontalAlignment="Left" Width="181" Background="Black" />
+                    <Button Content="Select Arena Preset" Click="SelectArenaPreset_Click" Margin="578,71,35,203" Grid.Row="1" Style="{DynamicResource RoundedButtonStyle}" Background="#FF8800FF" Foreground="White" FontWeight="Bold" />
+
+
+                    <ScrollViewer Grid.Row="1" Margin="10,10,234,10">
+                        <ItemsControl ItemsSource="{Binding ArenaFilter.ArenaSelections}" Width="524">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+
+            <TabItem Header="Boss Selection">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFFDFDFD" Offset="0"/>
+                            <GradientStop Color="#FFFF8400" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <Button Content="Reset All" Click="ResetAllBosses_Click" Height="41" Width="92" Style="{DynamicResource RoundedButtonStyle}" Background="#FFFF5D00" Foreground="Black" />
+                        <Button Content="Select Base Game Bosses" Click="SelectBaseGameBosses_Click" Margin="10,0,0,0" Style="{DynamicResource RoundedButtonStyle}" Background="#FFFF5D00" Foreground="Black" Width="159" />
+                        <Button Content="Select DLC Bosses" Click="SelectDLCBosses_Click" Margin="10,0,0,0" Style="{DynamicResource RoundedButtonStyle}" Background="#FFFF5D00" Foreground="Black" Width="120" />
+                        <Button Content="Select Ignite Bosses" Click="SelectIgniteBosses_Click" Margin="10,0,0,0" Style="{DynamicResource RoundedButtonStyle}" Background="#FFFF5D00" Foreground="Black" Width="132" />
+
+
+                    </StackPanel>
+                    <TextBlock Text="{Binding BossesFilter.SelectedCount, StringFormat='Selected Bosses: {0}'}" FontWeight="Bold" Margin="577,0,86,0" VerticalAlignment="Center" Height="41"/>
+                    <ComboBox x:Name="BossPresetComboBox" Margin="577,10,0,288" Grid.Row="1" HorizontalAlignment="Left" Width="186" Background="Black" Foreground="Black"  />
+                    <Button Content="Select Boss Preset" Click="SelectBossPreset_Click" Margin="577,90,31,192" Grid.Row="1" Style="{DynamicResource RoundedButtonStyle}" Background="#FF8800FF" Foreground="White" FontWeight="Bold" />
+
+
+                    <Button Content="Save Custom Bosses" Click="SaveCustomBossSelection_Click" Margin="577,279,0,10" HorizontalAlignment="Left" Grid.Row="1" Width="186" Style="{DynamicResource RoundedButtonStyle}" Background="#FF8800FF" Foreground="White" FontWeight="Bold" />
+
+                    <ScrollViewer Grid.Row="1" Margin="10,10,231,10">
+                        <ItemsControl ItemsSource="{Binding BossesFilter.BossSelections}" Width="505">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Info">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#FFFDFDFD"/>
+                            <GradientStop Color="#FFFF8400" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <TextBlock TextWrapping="Wrap" FontSize="14" Foreground="Black" FontWeight="Bold">
+                            Welcome to the Boss Arena Randomizer!
+                            <LineBreak />
+                            Credits:  Helios | Shura | Psiphicode
+                            <LineBreak/>
+                            This application is built to assign bosses to arenas using certain constraints
+                            <LineBreak />
+                            The Logic revolves around not allowing certain bosses to be in certain arenas. 
+                            <LineBreak />
+                            If you'd like to Edit the logic go to the arenas.json and bosses.json to fine tune it to your liking.
+                            <LineBreak/>
+                            - First Select and Options file placed in the Options Folder
+                            <LineBreak/>
+                            - Load the Options file
+                            <LineBreak />
+                            - Choose your Arena, Bosses, and thier Restrictions to your liking
+                            <LineBreak />
+                            - Click Randomize to send to the Given Output Path
+                        </TextBlock>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Spoiler">
+                <Grid>
+                    <ListBox Name="ResultList" d:ItemsSource="{d:SampleData ItemCount=5}">
+                        <ListBox.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFFDFDFD"/>
+                                <GradientStop Color="#FFFF8400" Offset="1"/>
+                            </LinearGradientBrush>
+                        </ListBox.Background>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
