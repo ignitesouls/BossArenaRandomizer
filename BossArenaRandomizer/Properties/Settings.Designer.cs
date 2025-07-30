@@ -34,5 +34,77 @@ namespace BossArenaRandomizer.Properties {
                 this["OutputFilePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SelectedOptionsPreset {
+            get {
+                return ((string)(this["SelectedOptionsPreset"]));
+            }
+            set {
+                this["SelectedOptionsPreset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseBetterArenas {
+            get {
+                return ((bool)(this["UseBetterArenas"]));
+            }
+            set {
+                this["UseBetterArenas"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseArenaSizeRestriction {
+            get {
+                return ((bool)(this["UseArenaSizeRestriction"]));
+            }
+            set {
+                this["UseArenaSizeRestriction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseArenaDifficultyRestrict {
+            get {
+                return ((bool)(this["UseArenaDifficultyRestrict"]));
+            }
+            set {
+                this["UseArenaDifficultyRestrict"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastUsedArenaPreset {
+            get {
+                return ((string)(this["LastUsedArenaPreset"]));
+            }
+            set {
+                this["LastUsedArenaPreset"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastUsedBossPreset {
+            get {
+                return ((string)(this["LastUsedBossPreset"]));
+            }
+            set {
+                this["LastUsedBossPreset"] = value;
+            }
+        }
     }
 }

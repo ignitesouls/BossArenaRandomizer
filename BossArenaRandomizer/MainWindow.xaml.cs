@@ -55,6 +55,31 @@ namespace BossArenaRandomizer
             {
                 OutputPathDisplay.Text = "No output path selected.";
             }
+
+            string lastArenaPreset = Properties.Settings.Default.LastUsedArenaPreset;
+            if (!string.IsNullOrEmpty(lastArenaPreset) && ArenaPresetComboBox.Items.Contains(lastArenaPreset))
+            {
+                ArenaPresetComboBox.SelectedItem = lastArenaPreset;
+            }
+
+            string lastBossPreset = Properties.Settings.Default.LastUsedBossPreset;
+            if (!string.IsNullOrEmpty(lastBossPreset) && BossPresetComboBox.Items.Contains(lastBossPreset))
+            {
+                BossPresetComboBox.SelectedItem = lastBossPreset;
+            }
+
+            // Load saved selected preset if available
+            selectedOptionsPreset = Properties.Settings.Default.SelectedOptionsPreset;
+
+            if (!string.IsNullOrEmpty(selectedOptionsPreset))
+            {
+                OptionsPresetComboBox.SelectedItem = selectedOptionsPreset;
+            }
+
+            // Restore checkbox states
+            BetterArenasCheckbox.IsChecked = Properties.Settings.Default.UseBetterArenas;
+            ArenaSizeRestriction.IsChecked = Properties.Settings.Default.UseArenaSizeRestriction;
+            ArenaDifficultyRestriction.IsChecked = Properties.Settings.Default.UseArenaDifficultyRestrict;
         }
 
         private string GetOutputPathFromSettings()
@@ -73,7 +98,7 @@ namespace BossArenaRandomizer
         {
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                FileName = "BossArenaRandomizerPreset.randomizeopt",
+                FileName = "BossArenaRandomizerOptionsFile.randomizeopt",
                 DefaultExt = ".randomizeopt",
                 Filter = "Randomizer Options File (.randomizeopt)|*.randomizeopt"
             };
@@ -254,6 +279,9 @@ namespace BossArenaRandomizer
         {
             string selectedPresetName = ArenaPresetComboBox.SelectedItem as string;
 
+            Properties.Settings.Default.LastUsedArenaPreset = selectedPresetName;
+            Properties.Settings.Default.Save();
+
             if (string.IsNullOrEmpty(selectedPresetName))
             {
                 MessageBox.Show("Please Select a Preset.");
@@ -282,6 +310,9 @@ namespace BossArenaRandomizer
         private void SelectBossPreset_Click(object sender, RoutedEventArgs e)
         {
             string selectedPresetName = BossPresetComboBox.SelectedItem as string;
+
+            Properties.Settings.Default.LastUsedBossPreset = selectedPresetName;
+            Properties.Settings.Default.Save();
 
             if (string.IsNullOrEmpty(selectedPresetName))
             {
@@ -344,6 +375,12 @@ namespace BossArenaRandomizer
 
         private void Randomize_Click(object sender, RoutedEventArgs e)
         {
+            //Condition to Prevent Crash
+            if (string.IsNullOrEmpty(selectedOptionsPreset)) 
+            {
+                MessageBox.Show("Please Load a Options Preset");
+                return;
+            }
             bool sizeRestriction = ArenaSizeRestriction.IsChecked == true;
             bool difficultyRestriction = ArenaDifficultyRestriction.IsChecked == true;
             var validator = Randomization.LoadBitmapsFromCsv(System.IO.Path.Combine(basePath, "ArenaBossData.csv"), sizeRestriction, difficultyRestriction);
@@ -454,6 +491,13 @@ namespace BossArenaRandomizer
                     return;
                 }
                 FinalizeTextFile.WriteFinalAssignments(finalAssignments, arenas, bosses, outputPath, optionsFilePath, seed, betterArenasEnabled);
+
+                //Save Settings for the User
+                Properties.Settings.Default.SelectedOptionsPreset = selectedOptionsPreset;
+                Properties.Settings.Default.UseBetterArenas = BetterArenasCheckbox.IsChecked == true;
+                Properties.Settings.Default.UseArenaSizeRestriction = ArenaSizeRestriction.IsChecked == true;
+                Properties.Settings.Default.UseArenaDifficultyRestrict = ArenaDifficultyRestriction.IsChecked == true;
+                Properties.Settings.Default.Save();
             }
             SeedTextBlock.Text = $"Seed Used: {seed}";
         }

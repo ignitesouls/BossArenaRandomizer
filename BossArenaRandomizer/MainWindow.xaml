@@ -217,7 +217,7 @@
                     <CheckBox x:Name="ArenaDifficultyRestriction" FontWeight="Bold" Content="Difficulty Curve" Checked="ArenaDifficultyRestrictionCheckbox_Checked" Margin="625,34,9,7" />
 
                     <ComboBox x:Name="ArenaPresetComboBox" Margin="578,10,0,282" Grid.Row="1" HorizontalAlignment="Left" Width="181" Background="Black" />
-                    <Button Content="Select Arena Preset" Click="SelectArenaPreset_Click" Margin="578,71,35,203" Grid.Row="1" Style="{DynamicResource RoundedButtonStyle}" Background="#FF8800FF" Foreground="White" FontWeight="Bold" />
+                    <Button Content="Load Arena Preset" Click="SelectArenaPreset_Click" Margin="578,71,35,203" Grid.Row="1" Style="{DynamicResource RoundedButtonStyle}" Background="#FF8800FF" Foreground="White" FontWeight="Bold" />
 
 
                     <ScrollViewer Grid.Row="1" Margin="10,10,234,10">
@@ -256,7 +256,7 @@
                     </StackPanel>
                     <TextBlock Text="{Binding BossesFilter.SelectedCount, StringFormat='Selected Bosses: {0}'}" FontWeight="Bold" Margin="577,0,86,0" VerticalAlignment="Center" Height="41"/>
                     <ComboBox x:Name="BossPresetComboBox" Margin="577,10,0,288" Grid.Row="1" HorizontalAlignment="Left" Width="186" Background="Black" Foreground="Black"  />
-                    <Button Content="Select Boss Preset" Click="SelectBossPreset_Click" Margin="577,90,31,192" Grid.Row="1" Style="{DynamicResource RoundedButtonStyle}" Background="#FF8800FF" Foreground="White" FontWeight="Bold" />
+                    <Button Content="Load Boss Preset" Click="SelectBossPreset_Click" Margin="577,90,31,192" Grid.Row="1" Style="{DynamicResource RoundedButtonStyle}" Background="#FF8800FF" Foreground="White" FontWeight="Bold" />
 
 
                     <Button Content="Save Custom Bosses" Click="SaveCustomBossSelection_Click" Margin="577,279,0,10" HorizontalAlignment="Left" Grid.Row="1" Width="186" Style="{DynamicResource RoundedButtonStyle}" Background="#FF8800FF" Foreground="White" FontWeight="Bold" />
