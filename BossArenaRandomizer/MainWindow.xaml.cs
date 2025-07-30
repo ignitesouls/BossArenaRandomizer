@@ -381,6 +381,7 @@ namespace BossArenaRandomizer
                 MessageBox.Show("Please Load a Options Preset");
                 return;
             }
+
             bool sizeRestriction = ArenaSizeRestriction.IsChecked == true;
             bool difficultyRestriction = ArenaDifficultyRestriction.IsChecked == true;
             var validator = Randomization.LoadBitmapsFromCsv(System.IO.Path.Combine(basePath, "ArenaBossData.csv"), sizeRestriction, difficultyRestriction);

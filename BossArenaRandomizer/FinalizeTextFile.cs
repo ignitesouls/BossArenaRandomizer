@@ -27,7 +27,7 @@ namespace BossArenaRandomizer
 
             var optionsLines = File.ReadAllLines(selectedOptionsFilePath).ToList();
 
-            // Update seed line
+            // Update seed line and Create Enemies Block Correctly if Preset in not selected
             bool seedFound = false;
             for (int i = 0; i < optionsLines.Count; i++)
             {
@@ -38,6 +38,66 @@ namespace BossArenaRandomizer
                         @"seed:\s*\d+",
                         $"seed:{seed}"
                     );
+
+                    if (!optionsLines[i].Contains("--preset"))
+                    {
+                        optionsLines[i] += " --preset BAR";
+                    }
+
+                    // Change the next line to "EnemyPreset: >+" if applicable
+                    if (i + 1 < optionsLines.Count && optionsLines[i + 1].TrimStart().StartsWith("EnemyPreset:"))
+                    {
+                        optionsLines[i + 1] = "EnemyPreset: >+";
+
+                        var classBlock = new List<string>
+                        {
+                            "  Classes:",
+                            "    Basic: {}",
+                            "    Boss: {}",
+                            "    MinorBoss:",
+                            "      InheritParent: true",
+                            "    Miniboss:",
+                            "      InheritParent: true",
+                            "    NightMiniboss:",
+                            "      InheritParent: true",
+                            "    DragonMiniboss:",
+                            "      InheritParent: true",
+                            "    Evergaol:",
+                            "      InheritParent: true",
+                            "    Wildlife:",
+                            "      InheritParent: true",
+                            "    HostileNPC: {}",
+                            "    Scarab: {}",
+                            "  Options: bosshp regularhp v4"
+                        };
+
+                        optionsLines.InsertRange(i + 2, classBlock);
+
+                        //Build Enemies Block
+                        var newEnemiesBlock = new List<string> { "  Enemies:" };
+                        
+                        if(includeBetterArenas)
+                        {
+                            string fixedBossId = "2801984";
+                            foreach (var extraId in HCFilterIds.BetterArenasIds)
+                            {
+                                newEnemiesBlock.Add($"    {extraId}: {fixedBossId}");
+                            }
+                        }
+
+                        foreach (var kvp in finalAssignments)
+                        {
+                            string arenaId = arenas[kvp.Key].id;
+                            string bossId = bosses[kvp.Value].id;
+
+                            newEnemiesBlock.Add($"    {arenaId}: {bossId}");
+                        }
+
+                        // Find the last inserted line ("  Options: bosshp regularhp v4")
+                        int insertEnemiesAfter = i + 2 + classBlock.Count - 1;
+                        optionsLines.InsertRange(insertEnemiesAfter + 1, new[] { "", }.Concat(newEnemiesBlock));
+                    }
+
                     seedFound = true;
                     break;
                 }
