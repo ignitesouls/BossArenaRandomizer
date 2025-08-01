@@ -99,7 +99,7 @@ namespace BossArenaRandomizer
         {
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
-                FileName = "BossArenaRandomizerOptionsFile.randomizeopt",
+                FileName = "BAROptionsFile.randomizeopt",
                 DefaultExt = ".randomizeopt",
                 Filter = "Randomizer Options File (.randomizeopt)|*.randomizeopt"
             };

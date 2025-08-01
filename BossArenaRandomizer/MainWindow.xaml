@@ -8,7 +8,7 @@
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
-        Title="Boss Arena Randomizer v0.3-alpha" Height="450" Width="800">
+        Title="Boss Arena Randomizer v0.3-beta" Height="450" Width="800">
     <Window.Resources>
         <!-- Styles -->
         <Style x:Key="FocusVisual">
