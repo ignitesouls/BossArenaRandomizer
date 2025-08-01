@@ -16,6 +16,7 @@ using System.Text.Json;
 using System.Linq;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
+using System.IO.Enumeration;
 
 
 namespace BossArenaRandomizer
@@ -107,6 +108,15 @@ namespace BossArenaRandomizer
             {
                 SaveOutputPathToSettings(dialog.FileName);
             }
+        }
+
+        private void DiscordLink_Click(object sender, MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Process.Start(new ProcessStartInfo
+            { 
+                FileName = "http://discord.gg/ignitesouls",
+                UseShellExecute = true
+            });
         }
 
         private List<string> GetSelectedArenaIds()
