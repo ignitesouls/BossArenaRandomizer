@@ -2,11 +2,15 @@ This is a Beta version of the Boss Arena Randomizer in which users can now make 
 
 Starting:
 
-Select an Options file and Load it. 
-	- You can manually place your own new options files in the `Options` folder. 
-        - To do this you must first Create and Export an Options file From the Fifth Matt's Randomizer with the settings you want 
-	- For example an Exported Options file should look like this: `example.randomizeopt`)
-        - Now take the `example.randomizeopt` and place it in the `Options` Folder of the Boss Arena Randomizer
+Select an Options file and Load it.
+
+- You can manually place your own new options files in the `Options` folder. 
+
+- To do this you must first Create and Export an Options file From the Fifth Matt's Randomizer with the settings you want 	
+
+- For example an Exported Options file should look like this: `example.randomizeopt`)
+
+- Now take the `example.randomizeopt` and place it in the `Options` Folder of the Boss Arena Randomizer
 
 Select the Arenas or Bosses that you want manually or by presets. 
 	You have the ability to make your own preset and load it.
@@ -16,9 +20,11 @@ Click Randomize and then import the Options file to the Item and Enemy Randomize
 
 By Default bosses shouldn't appear in arenas they can escape from or fly out of.
 
-`Better Arenas` Places Squirrels in problematic Arenas
-`Size Restrictions` Makes stricter restrictions in what bosses can go in arenas base on size
-`Difficulty Curve` Prevents some difficult bosses from appearing in early arenas
+- `Better Arenas` Places Squirrels in problematic Arenas
+
+- `Size Restrictions` Makes stricter restrictions in what bosses can go in arenas base on size
+
+- `Difficulty Curve` Prevents some difficult bosses from appearing in early arenas
 
 You can also customize the Bosses and Arenas to your Liking under the `Data` Folder
 
