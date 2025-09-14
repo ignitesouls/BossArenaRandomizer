@@ -1,10 +1,9 @@
 Boss Arena Randomizer (Beta)
 
 The Boss Arena Randomizer (BAR) lets you create custom boss and arena combinations with improved logic for randomization.
-It’s designed to work alongside TheFifthMatt’s Item and Enemy Randomizer
-, using the same boss and enemy IDs to ensure compatibility.
+It’s designed to work alongside TheFifthMatt’s Item and Enemy Randomizer, using the same boss and enemy IDs to ensure compatibility.
 
-Features
+### Features
 
 🎲 Custom Options Presets – Create or load your own configuration files for maximum flexibility.
 
