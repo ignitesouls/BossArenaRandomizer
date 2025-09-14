@@ -11,10 +11,17 @@ namespace BossArenaRandomizer
         public FilterArenas ArenaFilter { get; set; }
         public FilterBosses BossesFilter { get; set; }
 
-        public Modules()
-        { 
+
+        /*Changed public Modules () {
             ArenaFilter = new FilterArenas();
             BossesFilter = new FilterBosses();
+        }*/
+
+        public Modules(Dictionary<string, ArenaInfo> arenasJson, Dictionary<string, BossInfo> bossesJson)
+        { 
+
+            ArenaFilter = new FilterArenas(arenasJson);
+            BossesFilter = new FilterBosses(bossesJson);
         }
     }
 }

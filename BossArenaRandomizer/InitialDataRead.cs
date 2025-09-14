@@ -39,7 +39,6 @@ namespace BossArenaRandomizer
         public int isDragon { get; set; }
         public int isNPC { get; set; }
         public int canEscape { get; set; }
-
         public int isHard { get; set; }
         public int spawner { get; set; }
         public int region { get; set; }

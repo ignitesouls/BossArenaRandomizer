@@ -54,11 +54,12 @@ namespace BossArenaRandomizer
         {
             return size switch
             {
-                4 => "0000",
-                3 => "1000",
-                2 => "1100",
-                1 => "1110",
-                _ => "1111" //default
+                5 => "00000",
+                4 => "10000",
+                3 => "11000",
+                2 => "11100",
+                1 => "11110",
+                _ => "11111" //default
             };
         }
 
@@ -66,11 +67,12 @@ namespace BossArenaRandomizer
         {
             return size switch
             {
-                4 => "1000",
-                3 => "0100",
-                2 => "0010",
-                1 => "0001",
-                _ => "0000" //default
+                5 => "10000",
+                4 => "01000",
+                3 => "00100",
+                2 => "00010",
+                1 => "00001",
+                _ => "00000" //default
             };
         }
 
@@ -83,7 +85,6 @@ namespace BossArenaRandomizer
                 _=> "0" //default
             };
         }
-
 
         private static string GetBossDifficultyBitmap(int difficulty)
         {

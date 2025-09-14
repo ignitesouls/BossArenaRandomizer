@@ -36,9 +36,14 @@ namespace BossArenaRandomizer
 
             arenas = InitialDataRead.LoadArenas(System.IO.Path.Combine(basePath, "Data", "arenas.json"));
             bosses = InitialDataRead.LoadBosses(System.IO.Path.Combine(basePath, "Data", "bosses.json"));
-            CsvTranslation.WriteArenaBossCsv(arenas, bosses, System.IO.Path.Combine(basePath, "ArenaBossData.csv"));
+            
+            
 
-            var modules = new Modules();
+            CsvTranslation.WriteArenaBossCsv(arenas, bosses, System.IO.Path.Combine(basePath, "ArenaBossData.csv"));
+            
+
+            //Changed var modules = new Modules()
+            var modules = new Modules(arenas, bosses);
             this.DataContext = modules;
             filterArenas = modules.ArenaFilter;
             filterBosses = modules.BossesFilter;
@@ -78,7 +83,7 @@ namespace BossArenaRandomizer
             }
 
             // Restore checkbox states
-            BetterArenasCheckbox.IsChecked = Properties.Settings.Default.UseBetterArenas;
+            ClearArenasCheckbox.IsChecked = Properties.Settings.Default.UseClearArenas;
             ArenaSizeRestriction.IsChecked = Properties.Settings.Default.UseArenaSizeRestriction;
             ArenaDifficultyRestriction.IsChecked = Properties.Settings.Default.UseArenaDifficultyRestrict;
         }
@@ -192,7 +197,7 @@ namespace BossArenaRandomizer
             }
         }
 
-        private void BetterArenasCheckbox_Checked(object sender, RoutedEventArgs e)
+        private void ClearArenasCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             
         }
@@ -481,7 +486,43 @@ namespace BossArenaRandomizer
             var randomizer = new UniversalReplacementRandomizer.SeedManager();
             int seed = randomizer.GetBaseSeed();
 
-            // Display results
+            //Set Region Grouping
+            var groupedByRegion = finalAssignments
+                .GroupBy(kvp => arenas[kvp.Key].region)
+                .OrderBy(g => g.Key);
+
+
+            foreach (var regionGroup in groupedByRegion)
+            {
+                //add Region Header
+                string regionName = HCData.RegionNames.ContainsKey(regionGroup.Key)
+                    ? HCData.RegionNames[regionGroup.Key]
+                    : $"Region {regionGroup.Key}";
+
+
+                var regionHeader = new TextBlock
+                {
+                    Text = $"{regionName}:",
+                    Foreground = Brushes.Orange,
+                    FontSize = 18,
+                    FontWeight = FontWeights.Bold
+                };
+
+                //ResultList.Items.Add(" ");
+                ResultList.Items.Add(regionHeader);
+                foreach (var kvp in regionGroup)
+                {
+                    string arenaName = kvp.Key;
+                    string bossName = kvp.Value;
+
+                    string arenaId = arenas[arenaName].id;
+                    string bossId = bosses[bossName].id;
+
+                    ResultList.Items.Add($"{arenaName} (ID: {arenaId}) -> {bossName} (ID: {bossId})");
+                }
+            }
+
+            /* Display results
             foreach (var kvp in finalAssignments)
             {
                 string arenaName = kvp.Key;
@@ -492,24 +533,29 @@ namespace BossArenaRandomizer
 
 
                 ResultList.Items.Add($"{arenaName} (ID: {arenaId}) -> {bossName} (ID: {bossId}) (Valid)");
-                bool betterArenasEnabled = BetterArenasCheckbox.IsChecked == true;
+            }*/
 
-                string outputPath = GetOutputPathFromSettings();
-                string optionsFilePath = System.IO.Path.Combine(basePath, "Options", selectedOptionsPreset + ".randomizeopt");
-                if (string.IsNullOrWhiteSpace(outputPath))
-                {
-                    MessageBox.Show("Please select an output path first using the 'Set Output Path' button.");
-                    return;
-                }
-                FinalizeTextFile.WriteFinalAssignments(finalAssignments, arenas, bosses, outputPath, optionsFilePath, seed, betterArenasEnabled);
+            
+            bool clearArenasEnabled = ClearArenasCheckbox.IsChecked == true;
 
-                //Save Settings for the User
-                Properties.Settings.Default.SelectedOptionsPreset = selectedOptionsPreset;
-                Properties.Settings.Default.UseBetterArenas = BetterArenasCheckbox.IsChecked == true;
-                Properties.Settings.Default.UseArenaSizeRestriction = ArenaSizeRestriction.IsChecked == true;
-                Properties.Settings.Default.UseArenaDifficultyRestrict = ArenaDifficultyRestriction.IsChecked == true;
-                Properties.Settings.Default.Save();
+            string outputPath = GetOutputPathFromSettings();
+            string optionsFilePath = System.IO.Path.Combine(basePath, "Options", selectedOptionsPreset + ".randomizeopt");
+            if (string.IsNullOrWhiteSpace(outputPath))
+            {
+                MessageBox.Show("Please select an output path first using the 'Set Output Path' button.");
+                return;
             }
+
+
+            FinalizeTextFile.WriteFinalAssignments(finalAssignments, arenas, bosses, outputPath, optionsFilePath, seed, clearArenasEnabled);
+
+            //Save Settings for the User
+            Properties.Settings.Default.SelectedOptionsPreset = selectedOptionsPreset;
+            Properties.Settings.Default.UseClearArenas = ClearArenasCheckbox.IsChecked == true;
+            Properties.Settings.Default.UseArenaSizeRestriction = ArenaSizeRestriction.IsChecked == true;
+            Properties.Settings.Default.UseArenaDifficultyRestrict = ArenaDifficultyRestriction.IsChecked == true;
+            Properties.Settings.Default.Save();
+            
             SeedTextBlock.Text = $"Seed Used: {seed}";
         }
     }

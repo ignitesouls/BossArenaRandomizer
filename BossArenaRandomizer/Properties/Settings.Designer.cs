@@ -50,12 +50,12 @@ namespace BossArenaRandomizer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UseBetterArenas {
+        public bool UseClearArenas {
             get {
-                return ((bool)(this["UseBetterArenas"]));
+                return ((bool)(this["UseClearArenas"]));
             }
             set {
-                this["UseBetterArenas"] = value;
+                this["UseClearArenas"] = value;
             }
         }
         

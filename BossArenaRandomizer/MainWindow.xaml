@@ -8,7 +8,7 @@
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
-        Title="Boss Arena Randomizer v0.3-beta" Height="450" Width="800">
+        Title="Boss Arena Randomizer v0.5-beta" Height="450" Width="800">
     <Window.Resources>
         <!-- Styles -->
         <Style x:Key="FocusVisual">
@@ -423,12 +423,12 @@
 
                     <!-- Right Checkboxes -->
                     <StackPanel Orientation="Vertical" Margin="0,20,20,0" HorizontalAlignment="Right">
-                        <CheckBox x:Name="BetterArenasCheckbox"
-                      Content="Better Arenas"
+                        <CheckBox x:Name="ClearArenasCheckbox"
+                      Content="Clear Arenas"
                       FontSize="14"
                       Foreground="White"
                       FontWeight="SemiBold"
-                      Checked="BetterArenasCheckbox_Checked"
+                      Checked="ClearArenasCheckbox_Checked"
                       Style="{StaticResource ModernCheckBoxStyle}"
                       Margin="0,0,0,10"/>
                         <CheckBox x:Name="ArenaSizeRestriction"
@@ -440,7 +440,7 @@
                       Style="{StaticResource ModernCheckBoxStyle}"
                       Margin="0,0,0,10"/>
                         <CheckBox x:Name="ArenaDifficultyRestriction"
-                      Content="Difficulty Curve"
+                      Content="Boss Arena Difficulty Curve"
                       FontSize="14"
                       Foreground="White"
                       FontWeight="SemiBold"
@@ -458,14 +458,30 @@
 
                     <!-- Arena Selection List -->
                     <ScrollViewer Grid.Row="1" Margin="20,10,240,10">
-                        <ItemsControl ItemsSource="{Binding ArenaFilter.ArenaSelections}" Width="520">
+                        <ItemsControl ItemsSource="{Binding ArenaFilter.RegionGroups}" Width="520">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox Content="{Binding Name}"
-                          IsChecked="{Binding IsSelected}"
-                          FontSize="14"
-                          Foreground="White"
-                          Style="{StaticResource ModernCheckBoxStyle}"/>
+                                    <StackPanel Margin="0,5,0,10">
+                                        <!-- Region Header -->
+                                        <TextBlock Text="{Binding RegionName}"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="Orange"
+                               Margin="0,5,0,2"/>
+
+                                        <!-- Arenas under that region -->
+                                        <ItemsControl ItemsSource="{Binding Arenas}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox Content="{Binding Name}"
+                                          IsChecked="{Binding IsSelected}"
+                                          FontSize="14"
+                                          Foreground="White"
+                                          Style="{StaticResource ModernCheckBoxStyle}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -545,14 +561,30 @@
 
                     <!-- Boss Selection List -->
                     <ScrollViewer Grid.Row="1" Margin="20,10,240,10">
-                        <ItemsControl ItemsSource="{Binding BossesFilter.BossSelections}" Width="520">
+                        <ItemsControl ItemsSource="{Binding BossesFilter.RegionGroups}" Width="520">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox Content="{Binding Name}"
-                                  IsChecked="{Binding IsSelected}"
-                                  FontSize="14"
-                                  Foreground="White"
-                                  Style="{StaticResource ModernCheckBoxStyle}"/>
+                                    <StackPanel Margin="0,5,0,10">
+                                        <!-- Region Header -->
+                                        <TextBlock Text="{Binding RegionName}"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="Orange"
+                               Margin="0,5,0,2"/>
+
+                                        <!-- Bosses under that region -->
+                                        <ItemsControl ItemsSource="{Binding Bosses}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox Content="{Binding Name}"
+                                          IsChecked="{Binding IsSelected}"
+                                          FontSize="14"
+                                          Foreground="White"
+                                          Style="{StaticResource ModernCheckBoxStyle}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -594,7 +626,10 @@
                 Welcome to the Boss Arena Randomizer!
                 <LineBreak />
                 <LineBreak />
-                Credits:  Helios | Shura | Psiphicode (From Ignite Discord Server)
+                Credits:  Helios | Shura | Psiphicode
+                <LineBreak/>
+                <LineBreak/>  
+                Icon Credit: Chocolate Icon created by photo3idea_studio - Flaticon
                 <LineBreak/>
                 <LineBreak/>
                 This application is built to assign bosses to arenas using certain constraints.

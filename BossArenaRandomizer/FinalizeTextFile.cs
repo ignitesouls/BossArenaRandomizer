@@ -17,7 +17,7 @@ namespace BossArenaRandomizer
             Dictionary<string, BossInfo> bosses, 
             string filePath, string selectedOptionsFilePath, 
             int seed, 
-            bool includeBetterArenas = false)
+            bool includeClearArenas = false)
         {
 
             if (!File.Exists(selectedOptionsFilePath))
@@ -76,12 +76,12 @@ namespace BossArenaRandomizer
                         //Build Enemies Block
                         var newEnemiesBlock = new List<string> { "  Enemies:" };
                         
-                        if(includeBetterArenas)
+                        if(includeClearArenas)
                         {
-                            string fixedBossId = "2801984";
-                            foreach (var extraId in HCFilterIds.BetterArenasIds)
+                            string clearArenaAnimal = "2832488"; //Spinghare
+                            foreach (var extraId in HCFilterIds.ClearArenasIds)
                             {
-                                newEnemiesBlock.Add($"    {extraId}: {fixedBossId}");
+                                newEnemiesBlock.Add($"    {extraId}: {clearArenaAnimal}");
                             }
                         }
 
@@ -112,12 +112,12 @@ namespace BossArenaRandomizer
             var enemiesBlock = new StringBuilder();
             enemiesBlock.AppendLine("  Enemies:");
 
-            if (includeBetterArenas)
+            if (includeClearArenas)
             {
-                string fixedBossId = "2801984";
-                foreach (var extraId in HCFilterIds.BetterArenasIds)
+                string clearArenaAnimal = "2832488"; //Springhare
+                foreach (var extraId in HCFilterIds.ClearArenasIds)
                 {
-                    enemiesBlock.AppendLine($"    {extraId}: {fixedBossId}");
+                    enemiesBlock.AppendLine($"    {extraId}: {clearArenaAnimal}");
                 }
             }
 

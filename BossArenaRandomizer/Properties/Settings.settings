@@ -8,7 +8,7 @@
     <Setting Name="SelectedOptionsPreset" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="UseBetterArenas" Type="System.Boolean" Scope="User">
+    <Setting Name="UseClearArenas" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="UseArenaSizeRestriction" Type="System.Boolean" Scope="User">
