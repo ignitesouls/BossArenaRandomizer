@@ -406,7 +406,7 @@ namespace BossArenaRandomizer
 
             Dictionary<string, string> finalAssignments = null;
 
-            const int maxAttempts = 1000;
+            const int maxAttempts = 1500;
             int attempt = 0;
 
             var selectedArenaIds = GetSelectedArenaIds();
@@ -478,7 +478,7 @@ namespace BossArenaRandomizer
 
             if (finalAssignments == null)
             {
-                MessageBox.Show("Failed to randomize: Could not generate a valid assignment after many attempts.");
+                MessageBox.Show("Failed to Randomizer due to constraints. Try Again");
                 return;
             }
 
