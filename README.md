@@ -1,31 +1,33 @@
-This is a Beta version of the Boss Arena Randomizer in which users can now make their own options files with better logic for Randomizing Bosses and their Arenas. 
+Boss Arena Randomizer (Beta)
 
-Starting:
+The Boss Arena Randomizer (BAR) lets you create custom boss and arena combinations with improved logic for randomization.
+It’s designed to work alongside TheFifthMatt’s Item and Enemy Randomizer, using the same boss and enemy IDs to ensure compatibility.
 
-Select an Options file and Load it.
+### Features
 
-- You can manually place your own new options files in the `Options` folder. 
+🎲 Custom Options Presets – Create or load your own configuration files for maximum flexibility.
 
-- To do this you must first Create and Export an Options file From the Fifth Matt's Randomizer with the settings you want 	
+🏟 Arena Selection – Choose specific arenas, use presets, or save your own custom arena sets.
 
-- For example an Exported Options file should look like this: `example.randomizeopt`)
+⚖️ Boss Selection – Pick bosses manually, or rely on curated presets.
 
-- Now take the `example.randomizeopt` and place it in the `Options` Folder of the Boss Arena Randomizer
+⚙️ Advanced Options
 
-Select the Arenas or Bosses that you want manually or by presets. 
-	You have the ability to make your own preset and load it.
-	Note: They must be located under the specified Presets folder.
+- Clear Arenas: Replace common arena enemies with Springhares to reduce RNG.
 
-Click Randomize and then import the Options file to the Item and Enemy Randomizer. 
+- Size Restrictions: Prevents oversized bosses from spawning in small arenas.
 
-By Default bosses shouldn't appear in arenas they can escape from or fly out of.
+- Difficulty Curve: Ensures tougher fights appear only in later tiers.
 
-- `Better Arenas` Places Squirrels in problematic Arenas
 
-- `Size Restrictions` Makes stricter restrictions in what bosses can go in arenas base on size
+### Getting Started
 
-- `Difficulty Curve` Prevents some difficult bosses from appearing in early arenas
+1. Load or create an Options Preset (place custom presets in the Options/ folder).
 
-You can also customize the Bosses and Arenas to your Liking under the `Data` Folder
+2. Set your Output Path for the generated options file.
 
-Bonus: You are able to Change the Leda Fight to be Bosses instead of NPCs
+3. Configure your Arena and Boss selections.
+
+4. Go to the Randomizer tab and click Randomize to generate an options file.
+
+5. Use the generated file with TheFifthMatt’s Item and Enemy Randomizer.
