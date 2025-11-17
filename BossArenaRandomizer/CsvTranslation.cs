@@ -17,7 +17,7 @@ namespace BossArenaRandomizer
         {
             var sb = new StringBuilder();
 
-            //Line Cool Stuff
+            //Line Cool Stuff Current Bitmap Single = 10
             sb.AppendLine("ArenaBossName,ArenaBossID,ArenaBitmap,BossBitmap,ArenaSizeBitmap,BossSizeBitmap,ArenaDifficultyBitmap,BossDifficultBitmap");
 
             foreach (var arenaEntry in arenas)

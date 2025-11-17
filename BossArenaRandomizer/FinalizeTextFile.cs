@@ -15,18 +15,17 @@ namespace BossArenaRandomizer
             Dictionary<string, string> finalAssignments,
             Dictionary<string, ArenaInfo> arenas,
             Dictionary<string, BossInfo> bosses,
-            string filePath, string selectedOptionsFilePath,
+            string filePath,
+            string selectedOptionsFilePath,
             int seed,
             bool includeClearArenas = false)
         {
             if (!File.Exists(selectedOptionsFilePath))
-            {
                 throw new FileNotFoundException("Options file not found", selectedOptionsFilePath);
-            }
 
             var optionsLines = File.ReadAllLines(selectedOptionsFilePath).ToList();
 
-            // Update seed line and handle EnemyPreset block
+            // Update the seed line and check for preset 
             bool seedFound = false;
             for (int i = 0; i < optionsLines.Count; i++)
             {
@@ -38,52 +37,20 @@ namespace BossArenaRandomizer
                         $"seed:{seed}"
                     );
 
+                    // Add --preset BAR if missing
                     if (!optionsLines[i].Contains("--preset"))
-                    {
                         optionsLines[i] += " --preset BAR";
-                    }
-
-                    // Only insert Classes block if EnemyPreset: >+ is NOT present
-                    if (i + 1 < optionsLines.Count && !optionsLines.Any(l => l.TrimStart().StartsWith("EnemyPreset: >+")))
-                    {
-                        optionsLines.Insert(i + 1, "EnemyPreset: >+");
-
-                        var classBlock = new List<string>
-                        {
-                            "  Classes:",
-                            "    Basic: {}",
-                            "    Boss: {}",
-                            "    MinorBoss:",
-                            "      InheritParent: true",
-                            "    Miniboss:",
-                            "      InheritParent: true",
-                            "    NightMiniboss:",
-                            "      InheritParent: true",
-                            "    DragonMiniboss:",
-                            "      InheritParent: true",
-                            "    Evergaol:",
-                            "      InheritParent: true",
-                            "    Wildlife:",
-                            "      InheritParent: true",
-                            "    HostileNPC: {}",
-                            "    Scarab: {}",
-                            "  Options: bosshp regularhp v4"
-                        };
-
-                        optionsLines.InsertRange(i + 2, classBlock);
-                    }
 
                     seedFound = true;
                     break;
                 }
             }
 
+            // If no seed found, append it with preset
             if (!seedFound)
-            {
-                optionsLines.Add($"seed: {seed}");
-            }
+                optionsLines.Add($"seed:{seed} --preset BAR");
 
-            // Build new Enemies block
+            // Build Enemies block 
             var enemiesBlock = new StringBuilder();
             enemiesBlock.AppendLine("  Enemies:");
 
@@ -91,9 +58,7 @@ namespace BossArenaRandomizer
             {
                 string clearArenaAnimal = "2832488"; // Springhare
                 foreach (var extraId in HCFilterIds.ClearArenasIds)
-                {
                     enemiesBlock.AppendLine($"    {extraId}: {clearArenaAnimal}");
-                }
             }
 
             foreach (var kvp in finalAssignments)
@@ -103,47 +68,103 @@ namespace BossArenaRandomizer
                 enemiesBlock.AppendLine($"    {arenaId}: {bossId}");
             }
 
-            // Rebuild final output
-            var finalOutput = new StringBuilder();
-            bool insideEnemiesBlock = false;
-            bool enemiesInserted = false;
+            //  Locate key blocks 
+            int enemyPresetIndex = optionsLines.FindIndex(l => l.TrimStart().StartsWith("EnemyPreset: >+"));
+            int emptyEnemyPresetIndex = optionsLines.FindIndex(l => Regex.IsMatch(l.Trim(), @"^EnemyPreset:\s*$"));
+            int enemiesIndex = optionsLines.FindIndex(l => l.TrimStart().StartsWith("Enemies:"));
 
-            foreach (var line in optionsLines)
+            //  Replace existing Enemies block if found 
+            if (enemiesIndex != -1)
             {
-                if (line.TrimStart().StartsWith("Enemies:"))
-                {
-                    // Replace with new block
-                    finalOutput.AppendLine(enemiesBlock.ToString().TrimEnd());
-                    insideEnemiesBlock = true;
-                    enemiesInserted = true;
-                    continue;
-                }
+                int start = enemiesIndex;
+                int end = start + 1;
 
-                if (insideEnemiesBlock)
-                {
-                    // If this line is still indented => old enemies content, skip it
-                    if (line.StartsWith("  ") || line.StartsWith("    "))
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        // End of old enemies block
-                        insideEnemiesBlock = false;
-                    }
-                }
+                // Remove all indented lines following "Enemies:"
+                while (end < optionsLines.Count && (optionsLines[end].StartsWith("  ") || optionsLines[end].StartsWith("    ")))
+                    end++;
 
-                finalOutput.AppendLine(line);
+                // Remove the old block
+                optionsLines.RemoveRange(start, end - start);
+
+                // Insert new block in the same place
+                optionsLines.InsertRange(start, enemiesBlock.ToString().TrimEnd().Split('\n'));
+            }
+            else if (enemyPresetIndex != -1)
+            {
+                // EnemyPreset: >+ exists but no Enemies block — insert after it 
+                optionsLines.InsertRange(enemyPresetIndex + 1, enemiesBlock.ToString().TrimEnd().Split('\n'));
+            }
+            else if (emptyEnemyPresetIndex != -1)
+            {
+                // EnemyPreset: (empty) exists — replace with >+ and insert full section 
+                optionsLines[emptyEnemyPresetIndex] = "EnemyPreset: >+";
+
+                var insertion = new List<string>();
+                insertion.AddRange(enemiesBlock.ToString().TrimEnd().Split('\n'));
+                insertion.AddRange(new[]
+                {
+                    "  Classes:",
+                    "    Basic: {}",
+                    "    Boss: {}",
+                    "    MinorBoss:",
+                    "      InheritParent: true",
+                    "    Miniboss:",
+                    "      InheritParent: true",
+                    "    NightMiniboss:",
+                    "      InheritParent: true",
+                    "    DragonMiniboss:",
+                    "      InheritParent: true",
+                    "    Evergaol:",
+                    "      InheritParent: true",
+                    "    Wildlife:",
+                    "      InheritParent: true",
+                    "    HostileNPC: {}",
+                    "    Scarab: {}",
+                    "  Options: bosshp regularhp v4",
+                    ""
+                });
+
+                optionsLines.InsertRange(emptyEnemyPresetIndex + 1, insertion);
+            }
+            else
+            {
+                // No EnemyPreset at all — insert full preset after seed line 
+                int seedIndex = optionsLines.FindIndex(l => l.Contains("seed:"));
+                if (seedIndex == -1) seedIndex = optionsLines.Count - 1;
+
+                var insertion = new List<string>
+                {
+                    "EnemyPreset: >+"
+                };
+                insertion.AddRange(enemiesBlock.ToString().TrimEnd().Split('\n'));
+                insertion.AddRange(new[]
+                {
+                    "  Classes:",
+                    "    Basic: {}",
+                    "    Boss: {}",
+                    "    MinorBoss:",
+                    "      InheritParent: true",
+                    "    Miniboss:",
+                    "      InheritParent: true",
+                    "    NightMiniboss:",
+                    "      InheritParent: true",
+                    "    DragonMiniboss:",
+                    "      InheritParent: true",
+                    "    Evergaol:",
+                    "      InheritParent: true",
+                    "    Wildlife:",
+                    "      InheritParent: true",
+                    "    HostileNPC: {}",
+                    "    Scarab: {}",
+                    "  Options: bosshp regularhp v4",
+                    ""
+                });
+
+                optionsLines.InsertRange(seedIndex + 1, insertion);
             }
 
-            // If no enemies block existed, append it at the end
-            if (!enemiesInserted)
-            {
-                finalOutput.AppendLine();
-                finalOutput.AppendLine(enemiesBlock.ToString().TrimEnd());
-            }
-
-            File.WriteAllText(filePath, finalOutput.ToString());
+            // Write final file 
+            File.WriteAllText(filePath, string.Join(Environment.NewLine, optionsLines));
         }
     }
     /*public static class FinalizeTextFile

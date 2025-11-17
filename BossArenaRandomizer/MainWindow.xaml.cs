@@ -521,20 +521,6 @@ namespace BossArenaRandomizer
                     ResultList.Items.Add($"{arenaName} (ID: {arenaId}) -> {bossName} (ID: {bossId})");
                 }
             }
-
-            /* Display results
-            foreach (var kvp in finalAssignments)
-            {
-                string arenaName = kvp.Key;
-                string bossName = kvp.Value;
-
-                string arenaId = arenas[arenaName].id;
-                string bossId = bosses[bossName].id;
-
-
-                ResultList.Items.Add($"{arenaName} (ID: {arenaId}) -> {bossName} (ID: {bossId}) (Valid)");
-            }*/
-
             
             bool clearArenasEnabled = ClearArenasCheckbox.IsChecked == true;
 
