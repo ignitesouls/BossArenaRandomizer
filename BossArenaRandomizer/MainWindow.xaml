@@ -8,7 +8,7 @@
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
-        Title="Boss Arena Randomizer v0.6-beta" Height="450" Width="800">
+        Title="Boss Arena Randomizer v0.7-beta" Height="500" Width="1000">
     <Window.Resources>
         <!-- Styles -->
         <Style x:Key="FocusVisual">
@@ -292,7 +292,7 @@
     <Grid Background="#FF7100FF">
         <TabControl x:Name="MainTabControl" Background="Black" SelectionChanged="MainTabControl_SelectionChanged">
             <TabItem Header="Randomizer">
-                <Border Background="#1E1E1E" Padding="20" HorizontalAlignment="Right" Width="794">
+                <Border Background="#1E1E1E" Padding="20" HorizontalAlignment="Right" Width="994">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -309,7 +309,7 @@
 
                         <!-- Header Section -->
                         <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Top">
-                            <Image Height="70" Width="72" Source="/Ignite Logo.png" Margin="0,0,20,0"/>
+                            <Image Height="80" Width="72" Source="/Ignite Logo.png" Margin="0,0,20,0"/>
                             <TextBlock Text="Randomizer Settings"
                            FontSize="24"
                            Foreground="White"
@@ -321,35 +321,36 @@
                         <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,20,0,0" HorizontalAlignment="Left">
                             <ComboBox x:Name="OptionsPresetComboBox"
                           Style="{StaticResource ModernComboBoxStyle}"
-                          Width="181"
-                          Height="28"/>
+                          Width="250"
+                          Height="38" Margin="0,0,0,0"/>
                             <Button Content="Load Options Preset"
                         Click="SelectOptionsPreset_Click"
                         Style="{StaticResource ModernButtonStyle}"
                         Width="180"
-                        Margin="20,0,0,0"/>
+                        Margin="10,0,0,0"/>
                         </StackPanel>
 
                         <!-- Output Path Section -->
-                        <StackPanel Grid.Row="2" Margin="0,20,0,0" HorizontalAlignment="Left">
+                        <StackPanel Grid.Row="2" Margin="0,20,0,0" >
                             <Button Content="Set Output Path"
                         Click="SetOutputPath_Click"
                         Style="{StaticResource ModernButtonStyle}"
-                        Width="230"/>
+                        Width="230" Height="38" HorizontalAlignment="Left"/>
                             <TextBlock x:Name="OutputPathDisplay"
                            Margin="0,10,0,0"
-                           FontWeight="Bold"
+                           
+                           FontSize="14"
                            Foreground="White"
                            Text="No path selected."/>
                         </StackPanel>
 
                         <!-- Randomize Section -->
-                        <StackPanel Grid.Row="3" Margin="0,30,0,0" HorizontalAlignment="Left">
+                        <StackPanel Grid.Row="3" Margin="10,70,0,0">
                             <TextBlock x:Name="SeedTextBlock"
                            FontWeight="Bold"
                            FontSize="12"
                            Foreground="#CCCCCC"
-                           Text="Seed Used: Who Knows?"/>
+                           Text="Seed Used: Who Knows?" Margin="5,0,0,0"/>
                             <Button Content="RANDOMIZE"
                         Style="{StaticResource ModernButtonStyle}"
                         Click="Randomize_Click"
@@ -359,7 +360,7 @@
                         FontSize="16"
                         Margin="0,10,0,0"
                         Background="#FF8800FF"
-                        Foreground="White"/>
+                        Foreground="White" HorizontalAlignment="Left"/>
                         </StackPanel>
 
                         <!-- Discord Link Section -->
@@ -378,11 +379,12 @@
                         <TextBlock Text="{Binding ArenaFilter.SelectedCount, StringFormat=Selected Arenas: \{0\}}"
                            FontWeight="Bold"
                            Foreground="White"
-                           Margin="588,17,10,89" Grid.Row="3"
+                           Margin="788,120,10,89" Grid.Row="3"
                            />
                         <TextBlock Text="{Binding BossesFilter.SelectedCount, StringFormat=Selected Bosses: \{0\}}"
                                 FontWeight="Bold"
-                                Foreground="White" Margin="588,38,10,69" Grid.Row="3"/>
+                                Foreground="White" 
+                                Margin="788,140,10,89" Grid.Row="3"/>
                     </Grid>
                 </Border>
             </TabItem>
@@ -410,15 +412,20 @@
                     Height="40" Width="100"
                     Style="{StaticResource ModernButtonStyle}"
                     Margin="0,0,10,0"/>
+                        <Button Content="Clear All"
+                    Click="ClearAllArenas_Click"
+                    Height="40" Width="138"
+                    Style="{StaticResource ModernButtonStyle}" Margin="0,0,10,0"/>
                         <Button Content="Base Game Arenas"
                     Click="SelectBaseGameArenas_Click"
-                    Height="40" Width="180"
+                    Height="40" Width="148"
                     Style="{StaticResource ModernButtonStyle}"
                     Margin="0,0,10,0"/>
                         <Button Content="DLC Arenas"
                     Click="SelectDLCArenas_Click"
                     Height="40" Width="140"
                     Style="{StaticResource ModernButtonStyle}"/>
+                        
                     </StackPanel>
 
                     <!-- Right Checkboxes -->
@@ -458,7 +465,7 @@
 
                     <!-- Arena Selection List -->
                     <ScrollViewer Grid.Row="1" Margin="20,10,240,10">
-                        <ItemsControl ItemsSource="{Binding ArenaFilter.RegionGroups}" Width="520">
+                        <ItemsControl ItemsSource="{Binding ArenaFilter.RegionGroups}" Width="700">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="0,5,0,10">
@@ -535,6 +542,10 @@
                     Height="40" Width="100"
                     Style="{StaticResource ModernButtonStyle}"
                     Margin="0,0,10,0"/>
+                        <Button Content="Clear All"
+                    Click="ClearAllBosses_Click"
+                    Height="40" Width="150"
+                    Style="{StaticResource ModernButtonStyle}" Margin= "0,0,10,0"/>
                         <Button Content="Base Game Bosses"
                     Click="SelectBaseGameBosses_Click"
                     Height="40" Width="180"
@@ -545,10 +556,7 @@
                     Height="40" Width="140"
                     Style="{StaticResource ModernButtonStyle}"
                     Margin="0,0,10,0"/>
-                        <Button Content="Ignite Bosses"
-                    Click="SelectIgniteBosses_Click"
-                    Height="40" Width="150"
-                    Style="{StaticResource ModernButtonStyle}"/>
+                        
                     </StackPanel>
 
                     <!-- Selected Count -->
@@ -561,7 +569,7 @@
 
                     <!-- Boss Selection List -->
                     <ScrollViewer Grid.Row="1" Margin="20,10,240,10">
-                        <ItemsControl ItemsSource="{Binding BossesFilter.RegionGroups}" Width="520">
+                        <ItemsControl ItemsSource="{Binding BossesFilter.RegionGroups}" Width="700">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Margin="0,5,0,10">

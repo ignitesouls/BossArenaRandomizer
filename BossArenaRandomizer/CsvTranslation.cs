@@ -17,14 +17,15 @@ namespace BossArenaRandomizer
         {
             var sb = new StringBuilder();
 
-            //Line Cool Stuff Current Bitmap Single = 10
+            //Line Cool Stuff Current Bitmap Single = 16
             sb.AppendLine("ArenaBossName,ArenaBossID,ArenaBitmap,BossBitmap,ArenaSizeBitmap,BossSizeBitmap,ArenaDifficultyBitmap,BossDifficultBitmap");
 
             foreach (var arenaEntry in arenas)
             {
                 string name = arenaEntry.Key;
                 ArenaInfo arena = arenaEntry.Value;
-                string arenaBitmap = GetArenaBitmap(arena);
+                string arenaTypeEvergaol = GetArenaType(arena.arenaType); //Checks for arenaType 7 which is Evergaol See HCData.cs for categories
+                string arenaBitmap = GetArenaBitmap(arena, arenaTypeEvergaol);
                 string arenaSizeBitmap = GetArenaSizeBitmap(arena.arenaSize);
                 string arenaDifficultyBitmap = GetArenaDifficultyBitmap(arena.hardNotAllowed);
 
@@ -40,17 +41,17 @@ namespace BossArenaRandomizer
             File.WriteAllText(outputPath, sb.ToString());
         }
 
-        private static string GetArenaBitmap(ArenaInfo arena)
+        private static string GetArenaBitmap(ArenaInfo arena, string arenaTypeEvergaol)
         {
-            return $"{arena.twoPhaseNotAllowed}{arena.dragonNotAllowed}{arena.npcNotAllowed}{arena.isEscapable}";
+            return $"{arena.twoPhaseNotAllowed}{arena.dragonNotAllowed}{arena.npcNotAllowed}{arena.isEscapable}{arena.messmerNotAllowed}{arena.malikethNotAllowed}{arenaTypeEvergaol}{arena.godskinduoNotAllowed}";
         }
 
         private static string GetBossBitmap(BossInfo boss)
         {
-            return $"{boss.isTwoPhase}{boss.isDragon}{boss.isNPC}{boss.canEscape}";
+            return $"{boss.isTwoPhase}{boss.isDragon}{boss.isNPC}{boss.canEscape}{boss.isMessmer}{boss.isMaliketh}{boss.isEvergaolIncompatible}{boss.isGodskinDuo}";
         }
 
-        private static string GetArenaSizeBitmap (int size)
+        private static string GetArenaSizeBitmap(int size)
         {
             return size switch
             {
@@ -63,7 +64,7 @@ namespace BossArenaRandomizer
             };
         }
 
-        private static string GetBossSizeBitmap ( int size)
+        private static string GetBossSizeBitmap(int size)
         {
             return size switch
             {
@@ -76,13 +77,13 @@ namespace BossArenaRandomizer
             };
         }
 
-        private static string GetArenaDifficultyBitmap (int difficulty)
+        private static string GetArenaDifficultyBitmap(int difficulty)
         {
             return difficulty switch
             {
-                1=> "1",
-                0=> "0",
-                _=> "0" //default
+                1 => "1",
+                0 => "0",
+                _ => "0" //default
             };
         }
 
@@ -94,6 +95,15 @@ namespace BossArenaRandomizer
                 0 => "0",
                 _ => "0" //default
             };
-        }   
+        }
+
+        private static string GetArenaType(int arenaType)
+        {
+            return arenaType switch
+            {
+                7 => "1",
+                _ => "0" //default
+            };
+    }
     }
 }

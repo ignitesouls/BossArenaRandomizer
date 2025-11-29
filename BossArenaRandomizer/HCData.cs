@@ -37,5 +37,17 @@ namespace BossArenaRandomizer
             { 25, "Enir Ilim" },
             { 26, "Extras"}
         };
+
+        public static readonly Dictionary<int, string> ArenaBossType = new()
+        {
+            { 1, "Ruin/Mausoleum" },
+            { 2, "Achievement Bosses" },
+            { 3, "Open World" },
+            { 4, "Cave" },
+            { 5, "Catacomb" },
+            { 6, "Tunnel" },
+            { 7, "Evergaol" },
+            { 8, "Gaol" }
+        };
     }
 }

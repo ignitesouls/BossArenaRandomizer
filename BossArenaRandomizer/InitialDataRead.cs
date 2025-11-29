@@ -22,6 +22,9 @@ namespace BossArenaRandomizer
         public int dragonNotAllowed { get; set; }
         public int npcNotAllowed { get; set; }
         public int isEscapable { get; set; }
+        public int messmerNotAllowed { get; set; }
+        public int malikethNotAllowed { get; set; }
+        public int godskinduoNotAllowed {  get; set; }
         public int hardNotAllowed { get; set; }
         public int spawner { get; set; }
         public int region { get; set; }
@@ -39,6 +42,10 @@ namespace BossArenaRandomizer
         public int isDragon { get; set; }
         public int isNPC { get; set; }
         public int canEscape { get; set; }
+        public int isMessmer { get; set; }
+        public int isMaliketh { get; set; }
+        public int isEvergaolIncompatible { get; set; }
+        public int isGodskinDuo { get; set; }
         public int isHard { get; set; }
         public int spawner { get; set; }
         public int region { get; set; }

@@ -156,6 +156,22 @@ namespace BossArenaRandomizer
             }
         }
 
+        private void ClearAllArenas_Click(Object sender, RoutedEventArgs e)
+        {
+            foreach (var arena in filterArenas.ArenaSelections)
+            {
+                arena.IsSelected = !HCFilterIds.AllBossArenas.Contains(arena.Id);
+            }
+        }
+
+        private void ClearAllBosses_Click(Object sender, RoutedEventArgs e)
+        {
+            foreach (var bosses in filterBosses.BossSelections)
+            {
+                bosses.IsSelected = !HCFilterIds.AllBossArenas.Contains(bosses.Id);
+            }
+        }
+
         private void SelectBaseGameArenas_Click(object sender, RoutedEventArgs e)
         {
             foreach (var arena in filterArenas.ArenaSelections)
@@ -189,13 +205,13 @@ namespace BossArenaRandomizer
             }
         }
 
-        private void SelectIgniteBosses_Click(object sender, RoutedEventArgs e)
+        /*private void SelectIgniteBosses_Click(object sender, RoutedEventArgs e)
         {
             foreach (var boss in filterBosses.BossSelections)
             {
                 boss.IsSelected = HCFilterIds.IgniteBossesIds.Contains(boss.Id);
             }
-        }
+        }*/
 
         private void ClearArenasCheckbox_Checked(object sender, RoutedEventArgs e)
         {
@@ -411,8 +427,6 @@ namespace BossArenaRandomizer
 
             var selectedArenaIds = GetSelectedArenaIds();
 
-
-
             while (attempt++ < maxAttempts)
             {
                 var selectedBossIds = GetSelectedBossesIds();
@@ -423,21 +437,79 @@ namespace BossArenaRandomizer
                 var tempAssignments = new Dictionary<string, string>();
 
                 bool allValid = true;
+                
+                bool showedDupeWarning = false;
 
                 foreach (var arenaEntry in arenas.Where(a => selectedArenaIds.Contains(a.Value.id)))
                 {
                     string arenaName = arenaEntry.Key;
                     int arenaId = int.Parse(arenaEntry.Value.id);
+                    
 
                     string? selectedBossName = null;
 
                     // Get shuffled list of bosses
                     var shuffledBosses = selectedBossPool.OrderBy(_ => random.Next()).ToList();
 
+                    //Check if there are More Arenas than Bosses, if there are then 
+                    //make sure duplicates are allowed only after all the bosses are used
                     if (selectedArenaIds.Count > selectedBossIds.Count)
                     {
-                        MessageBox.Show("Not enough bosses selected for the number of arenas. Please select more bosses.");
-                        return;
+
+                        if (!showedDupeWarning)
+                        {
+                            MessageBox.Show(
+                                "Selecting more arenas than bosses will allow for duplicates. " +
+                                "Due to the BAR's constraints, the same boss can appear multiple times. " +
+                                "This is because not every boss can go into every arena."
+                            );
+                            showedDupeWarning = true;
+                        }
+
+                        var unusedBosses = shuffledBosses
+                            .Where(b => !usedBosses.Contains(b.Key))
+                            .ToList(); 
+
+                        
+                        foreach (var bossEntry in unusedBosses)
+                        {
+                            string bossName = bossEntry.Key;
+                            int bossId = int.Parse(bossEntry.Value.id);
+
+                            if (validator.Validate(arenaId, bossId))
+                            {
+                                selectedBossName = bossName;
+                                usedBosses.Add(bossName); // mark as used globally
+                                break;
+                            }
+                        }
+
+                        
+                        if (selectedBossName == null)
+                        {
+                            foreach (var bossEntry in shuffledBosses)
+                            {
+                                string bossName = bossEntry.Key;
+                                int bossId = int.Parse(bossEntry.Value.id);
+
+                                if (validator.Validate(arenaId, bossId))
+                                {
+                                    selectedBossName = bossName;
+                                    usedBosses.Add(bossName);
+                                    break;
+                                }
+                            }
+                        }
+
+                        
+                        if (selectedBossName == null)
+                        {
+                            allValid = false;
+                            break;
+                        }
+
+                        tempAssignments[arenaName] = selectedBossName;
+                        continue;  
                     }
 
 
@@ -457,7 +529,7 @@ namespace BossArenaRandomizer
                             break;
                         }
                     }
-
+                
                     if (selectedBossName == null)
                     {
                         allValid = false;
