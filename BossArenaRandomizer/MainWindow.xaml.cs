@@ -412,140 +412,86 @@ namespace BossArenaRandomizer
                 MessageBox.Show("Please Load a Options Preset");
                 return;
             }
+            // Have we warned the user about dupes yet?
+            bool showedDupeWarning = false;
 
+            // User Options
             bool sizeRestriction = ArenaSizeRestriction.IsChecked == true;
             bool difficultyRestriction = ArenaDifficultyRestriction.IsChecked == true;
+
+            // Bitmap Validator
             var validator = Randomization.LoadBitmapsFromCsv(System.IO.Path.Combine(basePath, "ArenaBossData.csv"), sizeRestriction, difficultyRestriction);
+            
+            // Targets: Arenas
+            // Replacements: Bosses
+            var selectedArenaIds = GetSelectedArenaIds();
+            var selectedBossIds = GetSelectedBossesIds();
 
-            ResultList.Items.Clear();
-            var random = new Random();
+            List<int> arenaIds = new();
+            foreach ( var arenaId in selectedArenaIds )
+            {
+                arenaIds.Add(Convert.ToInt32(arenaId, 10));
+            }
+            List<int> bossIds = new();
+            foreach (var bossId in selectedBossIds)
+            {
+                bossIds.Add(Convert.ToInt32(bossId, 10));
+            }
 
+            // Determine if dupes will happen
+            if (selectedArenaIds.Count() > selectedBossIds.Count())
+            {
+
+                if (!showedDupeWarning)
+                {
+                    MessageBox.Show(
+                        "Selecting more arenas than bosses will allow for duplicates. " +
+                        "Due to the BAR's constraints, the same boss can appear multiple times. " +
+                        "This is because not every boss can go into every arena."
+                    );
+                    showedDupeWarning = true;
+                }
+            }
+
+            // Initialize Randomizer
+            var randomizer = new ReplacementRandomizer();
+            // Create an optimized randomization group, giving it our bitmap validator function
+            var group = new RandomizationGroup(arenaIds, bossIds, validator);
+            // Add the group to the randomizer
+            randomizer.AddGroup("arenas", group);
+            
+            // Final assignments are a mapping arena => boss replacement
             Dictionary<string, string> finalAssignments = null;
 
-            const int maxAttempts = 1500;
+            // How many times will we attempt to randomize the replacements in total?
             int attempt = 0;
+            const int maxAttempts = 1500;
 
-            var selectedArenaIds = GetSelectedArenaIds();
-
+            // Begin randomization attempts
+            ResultList.Items.Clear();
             while (attempt++ < maxAttempts)
             {
-                var selectedBossIds = GetSelectedBossesIds();
-                var selectedBossPool = bosses.Where(b => selectedBossIds.Contains(b.Value.id)).ToDictionary(b => b.Key, b => b.Value);
-
-                var usedBosses = new HashSet<string>();
-
-                var tempAssignments = new Dictionary<string, string>();
-
-                bool allValid = true;
-                
-                bool showedDupeWarning = false;
-
-                foreach (var arenaEntry in arenas.Where(a => selectedArenaIds.Contains(a.Value.id)))
+                try
                 {
-                    string arenaName = arenaEntry.Key;
-                    int arenaId = int.Parse(arenaEntry.Value.id);
-                    
+                    // This routine MAY fail, if so, go to `catch` and continue to next attempt.
+                    var replacements = randomizer.RetryingRandomizeGroup("arenas", maxAttempts: 1000);
 
-                    string? selectedBossName = null;
-
-                    // Get shuffled list of bosses
-                    var shuffledBosses = selectedBossPool.OrderBy(_ => random.Next()).ToList();
-
-                    //Check if there are More Arenas than Bosses, if there are then 
-                    //make sure duplicates are allowed only after all the bosses are used
-                    if (selectedArenaIds.Count > selectedBossIds.Count)
-                    {
-
-                        if (!showedDupeWarning)
-                        {
-                            MessageBox.Show(
-                                "Selecting more arenas than bosses will allow for duplicates. " +
-                                "Due to the BAR's constraints, the same boss can appear multiple times. " +
-                                "This is because not every boss can go into every arena."
-                            );
-                            showedDupeWarning = true;
-                        }
-
-                        var unusedBosses = shuffledBosses
-                            .Where(b => !usedBosses.Contains(b.Key))
-                            .ToList(); 
-
-                        
-                        foreach (var bossEntry in unusedBosses)
-                        {
-                            string bossName = bossEntry.Key;
-                            int bossId = int.Parse(bossEntry.Value.id);
-
-                            if (validator.Validate(arenaId, bossId))
-                            {
-                                selectedBossName = bossName;
-                                usedBosses.Add(bossName); // mark as used globally
-                                break;
-                            }
-                        }
-
-                        
-                        if (selectedBossName == null)
-                        {
-                            foreach (var bossEntry in shuffledBosses)
-                            {
-                                string bossName = bossEntry.Key;
-                                int bossId = int.Parse(bossEntry.Value.id);
-
-                                if (validator.Validate(arenaId, bossId))
-                                {
-                                    selectedBossName = bossName;
-                                    usedBosses.Add(bossName);
-                                    break;
-                                }
-                            }
-                        }
-
-                        
-                        if (selectedBossName == null)
-                        {
-                            allValid = false;
-                            break;
-                        }
-
-                        tempAssignments[arenaName] = selectedBossName;
-                        continue;  
-                    }
-
-
-                    foreach (var bossEntry in shuffledBosses)
-                    {
-                        string bossName = bossEntry.Key;
-                        int bossId = int.Parse(bossEntry.Value.id);
-
-                        // No Dupes
-                        if (usedBosses.Contains(bossName))
-                            continue;
-
-                        if (validator.Validate(arenaId, bossId))
-                        {
-                            selectedBossName = bossName;
-                            usedBosses.Add(bossName);
-                            break;
-                        }
-                    }
-                
-                    if (selectedBossName == null)
-                    {
-                        allValid = false;
-                        break;
-                    }
-
-                    tempAssignments[arenaName] = selectedBossName;
-                }
-
-                if (allValid)
-                {
+                    // If we've reached this point of execution, then randomization was a success.
                     Debug.WriteLine($"Number of iterations before success: {attempt}");
-
-                    finalAssignments = tempAssignments;
+                    
+                    finalAssignments = new();
+                    for (int i = 0; i < replacements.Count(); i++)
+                    {
+                        finalAssignments[selectedArenaIds[i]] = replacements[arenaIds[i]].ToString();
+                    }
+                    // Finished; exit loop
                     break;
+                } catch
+                {
+                    // go to next attempt
+                    continue;
                 }
+
             }
 
             if (finalAssignments == null)
@@ -554,45 +500,45 @@ namespace BossArenaRandomizer
                 return;
             }
 
+
             //Get Base Seed and Display
-            var randomizer = new UniversalReplacementRandomizer.SeedManager();
             int seed = randomizer.GetBaseSeed();
 
-            //Set Region Grouping
-            var groupedByRegion = finalAssignments
-                .GroupBy(kvp => arenas[kvp.Key].region)
-                .OrderBy(g => g.Key);
+            ////Set Region Grouping
+            //var groupedByRegion = finalAssignments
+            //    .GroupBy(kvp => arenas[kvp.Key].region)
+            //    .OrderBy(g => g.Key);
 
 
-            foreach (var regionGroup in groupedByRegion)
-            {
-                //add Region Header
-                string regionName = HCData.RegionNames.ContainsKey(regionGroup.Key)
-                    ? HCData.RegionNames[regionGroup.Key]
-                    : $"Region {regionGroup.Key}";
+            //foreach (var regionGroup in groupedByRegion)
+            //{
+            //    //add Region Header
+            //    string regionName = HCData.RegionNames.ContainsKey(regionGroup.Key)
+            //        ? HCData.RegionNames[regionGroup.Key]
+            //        : $"Region {regionGroup.Key}";
 
 
-                var regionHeader = new TextBlock
-                {
-                    Text = $"{regionName}:",
-                    Foreground = Brushes.Orange,
-                    FontSize = 18,
-                    FontWeight = FontWeights.Bold
-                };
+            //    var regionHeader = new TextBlock
+            //    {
+            //        Text = $"{regionName}:",
+            //        Foreground = Brushes.Orange,
+            //        FontSize = 18,
+            //        FontWeight = FontWeights.Bold
+            //    };
 
-                //ResultList.Items.Add(" ");
-                ResultList.Items.Add(regionHeader);
-                foreach (var kvp in regionGroup)
-                {
-                    string arenaName = kvp.Key;
-                    string bossName = kvp.Value;
+            //    //ResultList.Items.Add(" ");
+            //    ResultList.Items.Add(regionHeader);
+            //    foreach (var kvp in regionGroup)
+            //    {
+            //        string arenaName = kvp.Key;
+            //        string bossName = kvp.Value;
 
-                    string arenaId = arenas[arenaName].id;
-                    string bossId = bosses[bossName].id;
+            //        string arenaId = arenas[arenaName].id;
+            //        string bossId = bosses[bossName].id;
 
-                    ResultList.Items.Add($"{arenaName} (ID: {arenaId}) -> {bossName} (ID: {bossId})");
-                }
-            }
+            //        ResultList.Items.Add($"{arenaName} (ID: {arenaId}) -> {bossName} (ID: {bossId})");
+            //    }
+            //}
             
             bool clearArenasEnabled = ClearArenasCheckbox.IsChecked == true;
 
