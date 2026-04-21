@@ -81,7 +81,7 @@ namespace BossArenaRandomizer
                             IsSelected = !HCFilterIds.UncheckArenaBossIds.Contains(id)
                         };
 
-                        // Subscribe to checkbox changes
+                        // Set to checkbox changes
                         boss.PropertyChanged += (s, e) =>
                         {
                             if (e.PropertyName == nameof(BossSelection.IsSelected))

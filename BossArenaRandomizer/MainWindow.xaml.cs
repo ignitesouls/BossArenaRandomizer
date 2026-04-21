@@ -17,6 +17,8 @@ using System.Linq;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using System.IO.Enumeration;
+using System.Xml.Serialization;
+using Microsoft.Win32;
 
 
 namespace BossArenaRandomizer
@@ -29,9 +31,22 @@ namespace BossArenaRandomizer
         private FilterBosses filterBosses;
         private readonly string basePath = AppDomain.CurrentDomain.BaseDirectory;
         private string? selectedOptionsPreset = null;
+        private string? importedSeedPath = null;
+        private readonly SeedCheckRunner seedCheckRunner =
+            new SeedCheckRunner(new ISeedCheck[]
+            {
+                new DoubleGreatRuneCheck(),
+                new OMotherCheck()
+                //New Checkers Here Add Here:
+            });
+
+        private List<CheckOption> checkOptions = new();
 
         public MainWindow()
         {
+            TextOptions.SetTextRenderingMode(this, TextRenderingMode.ClearType);
+            TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
+
             InitializeComponent();
 
             arenas = InitialDataRead.LoadArenas(System.IO.Path.Combine(basePath, "Data", "arenas.json"));
@@ -51,6 +66,8 @@ namespace BossArenaRandomizer
             LoadCustomArenaPresetList();
             LoadCustomBossPresetList();
             LoadOptionsPresetList();
+
+            LoadAnalyzeChecks();
 
             string savedPath = GetOutputPathFromSettings();
             if (!string.IsNullOrEmpty(savedPath))
@@ -86,6 +103,83 @@ namespace BossArenaRandomizer
             ClearArenasCheckbox.IsChecked = Properties.Settings.Default.UseClearArenas;
             ArenaSizeRestriction.IsChecked = Properties.Settings.Default.UseArenaSizeRestriction;
             ArenaDifficultyRestriction.IsChecked = Properties.Settings.Default.UseArenaDifficultyRestrict;
+        }
+
+        private void LoadAnalyzeChecks()
+        {
+            checkOptions = seedCheckRunner.AvailableChecks
+                .Select(c => new CheckOption
+                {
+                    Id = c.Id,
+                    Name = c.DisplayName,
+                    Description = c.Description,
+                    IsSelected = false
+                })
+                .ToList();
+
+            ChecksList.ItemsSource = checkOptions;
+        }
+
+        private void ImportSeedBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new OpenFileDialog
+            {
+                Title = "Select Seed File",
+                Filter = "All Files (*.*)|*.*",
+                Multiselect = false
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                importedSeedPath = dlg.FileName;
+
+                SeedPathTextBox.Text = importedSeedPath;
+                AnalyzeStatusText.Text = "";
+                AnalyzeResultsTextBox.Text = "";
+            }
+        }
+
+        private void RunChecksBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(importedSeedPath))
+            {
+                MessageBox.Show("Please import a seed file first.", "Analyze Seed",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var selectedIds = checkOptions
+                .Where(o => o.IsSelected)
+                .Select(o => o.Id)
+                .ToList();
+
+            if (selectedIds.Count == 0)
+            {
+                MessageBox.Show("Select at least one check.", "Analyze Seed",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                string seedText = File.ReadAllText(importedSeedPath);
+                var results = seedCheckRunner.RunSelected(seedText, selectedIds);
+
+                AnalyzeStatusText.Text = results.All(r => r.Passed) ? "Done (All Passed)" : "Done (Some Failed)";
+                AnalyzeResultsTextBox.Text = string.Join(
+                    "\n\n",
+                    results.Select(r =>
+                    {
+                        var name = checkOptions.First(o => o.Id == r.CheckId).Name;
+                        return $"[{name}]\n{r.Message}";
+                    })
+                );
+            }
+            catch (Exception ex)
+            {
+                AnalyzeStatusText.Text = "Error";
+                AnalyzeResultsTextBox.Text = ex.Message;
+            }
         }
 
         private string GetOutputPathFromSettings()
@@ -204,14 +298,6 @@ namespace BossArenaRandomizer
                 boss.IsSelected = HCFilterIds.DLCBossesIds.Contains(boss.Id);
             }
         }
-
-        /*private void SelectIgniteBosses_Click(object sender, RoutedEventArgs e)
-        {
-            foreach (var boss in filterBosses.BossSelections)
-            {
-                boss.IsSelected = HCFilterIds.IgniteBossesIds.Contains(boss.Id);
-            }
-        }*/
 
         private void ClearArenasCheckbox_Checked(object sender, RoutedEventArgs e)
         {
@@ -406,8 +492,8 @@ namespace BossArenaRandomizer
 
         private void Randomize_Click(object sender, RoutedEventArgs e)
         {
-            //Condition to Prevent Crash
-            if (string.IsNullOrEmpty(selectedOptionsPreset)) 
+            // Condition to Prevent Crash
+            if (string.IsNullOrEmpty(selectedOptionsPreset))
             {
                 MessageBox.Show("Please Load a Options Preset");
                 return;
@@ -415,162 +501,59 @@ namespace BossArenaRandomizer
 
             bool sizeRestriction = ArenaSizeRestriction.IsChecked == true;
             bool difficultyRestriction = ArenaDifficultyRestriction.IsChecked == true;
-            var validator = Randomization.LoadBitmapsFromCsv(System.IO.Path.Combine(basePath, "ArenaBossData.csv"), sizeRestriction, difficultyRestriction);
+
+            var validator = Randomization.LoadBitmapsFromCsv(
+                System.IO.Path.Combine(basePath, "ArenaBossData.csv"),
+                sizeRestriction,
+                difficultyRestriction
+            );
 
             ResultList.Items.Clear();
-            var random = new Random();
 
-            Dictionary<string, string> finalAssignments = null;
+            // Gather selections once
+            var selectedArenaIds = GetSelectedArenaIds();
+            var selectedBossIds = GetSelectedBossesIds();
 
             const int maxAttempts = 1500;
-            int attempt = 0;
+            var rng = new Random();
 
-            var selectedArenaIds = GetSelectedArenaIds();
+            // extracted randomization logic
+            bool ok = ArenaBossAssigner.TryAssign(
+                arenas: arenas,
+                bosses: bosses,
+                selectedArenaIds: selectedArenaIds,
+                selectedBossIds: selectedBossIds,
+                validator: validator,
+                maxAttempts: maxAttempts,
+                rng: rng,
+                result: out var assignResult,
+                warnDupeMode: msg => MessageBox.Show(msg),
+                debugLog: msg => Debug.WriteLine(msg)
+            );
 
-            while (attempt++ < maxAttempts)
-            {
-                var selectedBossIds = GetSelectedBossesIds();
-                var selectedBossPool = bosses.Where(b => selectedBossIds.Contains(b.Value.id)).ToDictionary(b => b.Key, b => b.Value);
-
-                var usedBosses = new HashSet<string>();
-
-                var tempAssignments = new Dictionary<string, string>();
-
-                bool allValid = true;
-                
-                bool showedDupeWarning = false;
-
-                foreach (var arenaEntry in arenas.Where(a => selectedArenaIds.Contains(a.Value.id)))
-                {
-                    string arenaName = arenaEntry.Key;
-                    int arenaId = int.Parse(arenaEntry.Value.id);
-                    
-
-                    string? selectedBossName = null;
-
-                    // Get shuffled list of bosses
-                    var shuffledBosses = selectedBossPool.OrderBy(_ => random.Next()).ToList();
-
-                    //Check if there are More Arenas than Bosses, if there are then 
-                    //make sure duplicates are allowed only after all the bosses are used
-                    if (selectedArenaIds.Count > selectedBossIds.Count)
-                    {
-
-                        if (!showedDupeWarning)
-                        {
-                            MessageBox.Show(
-                                "Selecting more arenas than bosses will allow for duplicates. " +
-                                "Due to the BAR's constraints, the same boss can appear multiple times. " +
-                                "This is because not every boss can go into every arena."
-                            );
-                            showedDupeWarning = true;
-                        }
-
-                        var unusedBosses = shuffledBosses
-                            .Where(b => !usedBosses.Contains(b.Key))
-                            .ToList(); 
-
-                        
-                        foreach (var bossEntry in unusedBosses)
-                        {
-                            string bossName = bossEntry.Key;
-                            int bossId = int.Parse(bossEntry.Value.id);
-
-                            if (validator.Validate(arenaId, bossId))
-                            {
-                                selectedBossName = bossName;
-                                usedBosses.Add(bossName); // mark as used globally
-                                break;
-                            }
-                        }
-
-                        
-                        if (selectedBossName == null)
-                        {
-                            foreach (var bossEntry in shuffledBosses)
-                            {
-                                string bossName = bossEntry.Key;
-                                int bossId = int.Parse(bossEntry.Value.id);
-
-                                if (validator.Validate(arenaId, bossId))
-                                {
-                                    selectedBossName = bossName;
-                                    usedBosses.Add(bossName);
-                                    break;
-                                }
-                            }
-                        }
-
-                        
-                        if (selectedBossName == null)
-                        {
-                            allValid = false;
-                            break;
-                        }
-
-                        tempAssignments[arenaName] = selectedBossName;
-                        continue;  
-                    }
-
-
-                    foreach (var bossEntry in shuffledBosses)
-                    {
-                        string bossName = bossEntry.Key;
-                        int bossId = int.Parse(bossEntry.Value.id);
-
-                        // No Dupes
-                        if (usedBosses.Contains(bossName))
-                            continue;
-
-                        if (validator.Validate(arenaId, bossId))
-                        {
-                            selectedBossName = bossName;
-                            usedBosses.Add(bossName);
-                            break;
-                        }
-                    }
-                
-                    if (selectedBossName == null)
-                    {
-                        allValid = false;
-                        break;
-                    }
-
-                    tempAssignments[arenaName] = selectedBossName;
-                }
-
-                if (allValid)
-                {
-                    Debug.WriteLine($"Number of iterations before success: {attempt}");
-
-                    finalAssignments = tempAssignments;
-                    break;
-                }
-            }
-
-            if (finalAssignments == null)
+            if (!ok || assignResult == null)
             {
                 MessageBox.Show("Failed to Randomizer due to constraints. Try Again");
                 return;
             }
 
-            //Get Base Seed and Display
+            Dictionary<string, string> finalAssignments = assignResult.Assignments;
+
+            // Get Base Seed and Display
             var randomizer = new UniversalReplacementRandomizer.SeedManager();
             int seed = randomizer.GetBaseSeed();
 
-            //Set Region Grouping
+            // Set Region Grouping
             var groupedByRegion = finalAssignments
                 .GroupBy(kvp => arenas[kvp.Key].region)
                 .OrderBy(g => g.Key);
 
-
             foreach (var regionGroup in groupedByRegion)
             {
-                //add Region Header
+                // add Region Header
                 string regionName = HCData.RegionNames.ContainsKey(regionGroup.Key)
                     ? HCData.RegionNames[regionGroup.Key]
                     : $"Region {regionGroup.Key}";
-
 
                 var regionHeader = new TextBlock
                 {
@@ -580,8 +563,8 @@ namespace BossArenaRandomizer
                     FontWeight = FontWeights.Bold
                 };
 
-                //ResultList.Items.Add(" ");
                 ResultList.Items.Add(regionHeader);
+
                 foreach (var kvp in regionGroup)
                 {
                     string arenaName = kvp.Key;
@@ -593,7 +576,7 @@ namespace BossArenaRandomizer
                     ResultList.Items.Add($"{arenaName} (ID: {arenaId}) -> {bossName} (ID: {bossId})");
                 }
             }
-            
+
             bool clearArenasEnabled = ClearArenasCheckbox.IsChecked == true;
 
             string outputPath = GetOutputPathFromSettings();
@@ -604,16 +587,23 @@ namespace BossArenaRandomizer
                 return;
             }
 
+            FinalizeTextFile.WriteFinalAssignments(
+                finalAssignments,
+                arenas,
+                bosses,
+                outputPath,
+                optionsFilePath,
+                seed,
+                clearArenasEnabled
+            );
 
-            FinalizeTextFile.WriteFinalAssignments(finalAssignments, arenas, bosses, outputPath, optionsFilePath, seed, clearArenasEnabled);
-
-            //Save Settings for the User
+            // Save Settings for the User
             Properties.Settings.Default.SelectedOptionsPreset = selectedOptionsPreset;
             Properties.Settings.Default.UseClearArenas = ClearArenasCheckbox.IsChecked == true;
             Properties.Settings.Default.UseArenaSizeRestriction = ArenaSizeRestriction.IsChecked == true;
             Properties.Settings.Default.UseArenaDifficultyRestrict = ArenaDifficultyRestriction.IsChecked == true;
             Properties.Settings.Default.Save();
-            
+
             SeedTextBlock.Text = $"Seed Used: {seed}";
         }
     }

@@ -26,6 +26,7 @@ namespace BossArenaRandomizer
         public int malikethNotAllowed { get; set; }
         public int godskinduoNotAllowed {  get; set; }
         public int hardNotAllowed { get; set; }
+        public int difficultyPassThrough {  get; set; }
         public int spawner { get; set; }
         public int region { get; set; }
         public int scaling { get; set; }
@@ -47,6 +48,7 @@ namespace BossArenaRandomizer
         public int isEvergaolIncompatible { get; set; }
         public int isGodskinDuo { get; set; }
         public int isHard { get; set; }
+        public int baseDifficulty { get; set; }
         public int spawner { get; set; }
         public int region { get; set; }
         public int scaling { get; set; }

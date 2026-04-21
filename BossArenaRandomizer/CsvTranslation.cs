@@ -18,7 +18,7 @@ namespace BossArenaRandomizer
             var sb = new StringBuilder();
 
             //Line Cool Stuff Current Bitmap Single = 16
-            sb.AppendLine("ArenaBossName,ArenaBossID,ArenaBitmap,BossBitmap,ArenaSizeBitmap,BossSizeBitmap,ArenaDifficultyBitmap,BossDifficultBitmap");
+            sb.AppendLine("ArenaBossName,ArenaBossID,ArenaBitmap,BossBitmap,ArenaSizeBitmap,BossSizeBitmap,ArenaDifficultyBitmap,BossDifficultBitmap,arenaDifficultyPassThroughBitmap,bossBaseDifficulty");
 
             foreach (var arenaEntry in arenas)
             {
@@ -28,13 +28,15 @@ namespace BossArenaRandomizer
                 string arenaBitmap = GetArenaBitmap(arena, arenaTypeEvergaol);
                 string arenaSizeBitmap = GetArenaSizeBitmap(arena.arenaSize);
                 string arenaDifficultyBitmap = GetArenaDifficultyBitmap(arena.hardNotAllowed);
+                string arenaDifficultyPassThroughBitmap = GetArenaDifficultyPassThroughBitmap(arena.difficultyPassThrough);
 
                 if (bosses.TryGetValue(name, out BossInfo? boss))
                 {
                     string bossBitmap = GetBossBitmap(boss);
                     string bossSizeBitmap = GetBossSizeBitmap(boss.bossSize);
                     string bossDifficultyBitmap = GetBossDifficultyBitmap(boss.isHard);
-                    sb.AppendLine($"{name},{arena.id},{arenaBitmap},{bossBitmap},{arenaSizeBitmap},{bossSizeBitmap},{arenaDifficultyBitmap},{bossDifficultyBitmap}");
+                    string bossBaseDifficulty = GetBossBaseDifficultyBitap(boss.baseDifficulty);
+                    sb.AppendLine($"{name},{arena.id},{arenaBitmap},{bossBitmap},{arenaSizeBitmap},{bossSizeBitmap},{arenaDifficultyBitmap},{bossDifficultyBitmap},{arenaDifficultyPassThroughBitmap},{bossBaseDifficulty}");
                 }
             }
 
@@ -104,6 +106,46 @@ namespace BossArenaRandomizer
                 7 => "1",
                 _ => "0" //default
             };
-    }
+        }
+
+        private static string GetArenaDifficultyPassThroughBitmap (int passDifficulty)
+        {
+            return passDifficulty switch
+            {
+                5 => "00000",
+                4 => "10000",
+                3 => "11000",
+                2 => "11100",
+                1 => "11110",
+                _ => "11111" //default
+            };
+        }
+
+        private static readonly Random _rng = new Random();
+
+        private static string GetBossBaseDifficultyBitap(int baseDifficulty)
+        {
+            // clamp to [1..5] (or default to 1 if you prefer)
+            int randomizeDifficulty = baseDifficulty;
+            if (randomizeDifficulty < 1) randomizeDifficulty = 1;
+            if (randomizeDifficulty > 5) randomizeDifficulty = 5;
+
+            // 20% chance to DOWNGRADE to any lower value (never up)
+            if (randomizeDifficulty > 1 && _rng.NextDouble() < 0.20)
+            {
+                // random lower tier: [1 .. d-1]
+                randomizeDifficulty = _rng.Next(1, randomizeDifficulty);
+            }
+
+            return randomizeDifficulty switch
+            {
+                5 => "10000",
+                4 => "01000",
+                3 => "00100",
+                2 => "00010",
+                1 => "00001",
+                _ => "00001"
+            };
+        }
     }
 }

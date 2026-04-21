@@ -8,7 +8,7 @@
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
-        Title="Boss Arena Randomizer v0.7-beta" Height="500" Width="1000">
+        Title="Boss Arena Randomizer v0.8-beta" Height="500" Width="1000">
     <Window.Resources>
         <!-- Styles -->
         <Style x:Key="FocusVisual">
@@ -622,6 +622,85 @@
                 </Grid>
             </TabItem>
 
+            <TabItem Header="Analyze Seed">
+                <Grid Background="#1e1e1e" Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Import -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+                        <Button x:Name="ImportSeedBtn"
+              Content="Import Seed..."
+              Width="140"
+              Margin="0,0,10,0"
+              Click="ImportSeedBtn_Click"/>
+
+                        <TextBox x:Name="SeedPathTextBox"
+               Width="520"
+               IsReadOnly="True"
+               Background="#2a2a2a"
+               Foreground="#e9e9ef"
+               BorderBrush="#444"
+               Padding="8,6"
+               Text="No seed selected"/>
+                    </StackPanel>
+
+                    <!-- Checks -->
+                    <GroupBox Header="Checks"
+              Grid.Row="1"
+              Foreground="#e9e9ef"
+              BorderBrush="#444"
+              Margin="0,0,0,10">
+                        <Grid Margin="8">
+                            <ListBox x:Name="ChecksList"
+                 Background="#1e1e1e"
+                 BorderBrush="#444"
+                 Foreground="#e9e9ef">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="0,4">
+                                            <CheckBox IsChecked="{Binding IsSelected}"
+                          Content="{Binding Name}"
+                          Foreground="#e9e9ef"/>
+                                            <TextBlock Text="{Binding Description}"
+                           Foreground="#bdbdbd"
+                           FontSize="12"
+                           Margin="22,2,0,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
+                    </GroupBox>
+
+                    <!-- Run -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,0,0,10">
+                        <Button x:Name="RunChecksBtn"
+              Content="Check"
+              Width="140"
+              Click="RunChecksBtn_Click"/>
+                        <TextBlock x:Name="AnalyzeStatusText"
+                 Margin="12,0,0,0"
+                 Foreground="#bdbdbd"
+                 VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Results -->
+                    <TextBox x:Name="AnalyzeResultsTextBox"
+             Grid.Row="3"
+             Background="#111"
+             Foreground="#e9e9ef"
+             BorderBrush="#444"
+             Padding="10"
+             IsReadOnly="True"
+             TextWrapping="Wrap"
+             VerticalScrollBarVisibility="Auto"/>
+                </Grid>
+            </TabItem>
             <TabItem Header="Info">
                 <Grid Background="#1e1e1e">
                     <!-- Match dark background -->
