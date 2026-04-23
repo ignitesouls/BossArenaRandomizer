@@ -8,9 +8,7 @@ using System.IO;
 using System.Security.Policy;
 using System.Security.Cryptography.X509Certificates;
 
-
-
-namespace BossArenaRandomizer
+namespace BossArenaRandomizer.Core
 {
     public class ArenaInfo
     {

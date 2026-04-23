@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System;
 using System.Linq;
 
-namespace BossArenaRandomizer
+namespace BossArenaRandomizer.Core
 {
     public sealed class OMotherCheck : ISeedCheck
     {

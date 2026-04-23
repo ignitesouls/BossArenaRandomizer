@@ -106,5 +106,29 @@ namespace BossArenaRandomizer.Properties {
                 this["LastUsedBossPreset"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseBossRushDifficultyCurve {
+            get {
+                return ((bool)(this["UseBossRushDifficultyCurve"]));
+            }
+            set {
+                this["UseBossRushDifficultyCurve"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseLooseDifficulty {
+            get {
+                return ((bool)(this["UseLooseDifficulty"]));
+            }
+            set {
+                this["UseLooseDifficulty"] = value;
+            }
+        }
     }
 }

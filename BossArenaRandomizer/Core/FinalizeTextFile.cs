@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Windows;
 
-namespace BossArenaRandomizer
+namespace BossArenaRandomizer.Core
 {
     public static class FinalizeTextFile
     {

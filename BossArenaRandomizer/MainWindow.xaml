@@ -3,757 +3,125 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BossArenaRandomizer"
+        xmlns:viewModels="clr-namespace:BossArenaRandomizer.ViewModels"
+        xmlns:views="clr-namespace:BossArenaRandomizer.Views.Pages"
         mc:Ignorable="d"
-        ResizeMode="CanMinimize"
-        WindowStartupLocation="CenterScreen"
-        WindowStyle="SingleBorderWindow"
-        Title="Boss Arena Randomizer v0.8-beta" Height="500" Width="1000">
+        Title="Boss Arena Randomizer"
+        Height="800"
+        Width="1320"
+        MinHeight="700"
+        MinWidth="1100"
+        Background="#0D0D12"
+        WindowStartupLocation="CenterScreen">
+
     <Window.Resources>
-        <!-- Styles -->
-        <Style x:Key="FocusVisual">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
-        <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
-        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
-        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
-        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
-        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
-        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
-        <Style x:Key="RoundedButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-            <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource Button.Static.Border}"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <DataTemplate DataType="{x:Type viewModels:DashboardViewModel}">
+            <views:DashboardView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:GenerateViewModel}">
+            <views:GenerateView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:ArenaViewModel}">
+            <views:ArenaView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:BossViewModel}">
+            <views:BossView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:AnalyzeViewModel}">
+            <views:AnalyzeView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:ArenaEditorViewModel}">
+            <views:ArenaEditorView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:BossEditorViewModel}">
+            <views:BossEditorView />
+        </DataTemplate>
+
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="Background" Value="#1C1C25"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="1"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" CornerRadius="20" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="12">
+                            <ContentPresenter VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsDefaulted" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                            </Trigger>
-                            <!--<Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#FF7408FB"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="#FF7408FB"/>
-                            </Trigger>-->
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="border" Value="{StaticResource Button.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Button.Disabled.Border}"/>
-                                <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{StaticResource Button.Disabled.Foreground}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="RoundedComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="MinWidth" Value="120"/>
-            <Setter Property="MinHeight" Value="30"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBox">
-                        <Grid>
-                            <ToggleButton
-                        Name="ToggleButton"
-                        Grid.Column="2"
-                        Focusable="false"
-                        IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                        ClickMode="Press"
-                        Background="#FF7408FB"
-                        BorderThickness="0"
-                        BorderBrush="Transparent"
-                        >
-                                <Grid>
-                                    <Path
-                                x:Name="Arrow"
-                                Fill="White"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Data="M 0 0 L 4 4 L 8 0 Z"/>
-                                </Grid>
-                            </ToggleButton>
-                            <ContentPresenter
-                        Name="ContentSite"
-                        IsHitTestVisible="False"
-                        Content="{TemplateBinding SelectionBoxItem}"
-                        ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                        ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                        Margin="10,0,30,0"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Left"/>
-                            <Popup
-                        Name="Popup"
-                        Placement="Bottom"
-                        IsOpen="{TemplateBinding IsDropDownOpen}"
-                        AllowsTransparency="True"
-                        Focusable="False"
-                        PopupAnimation="Slide">
-                                <Grid
-                            Name="DropDown"
-                            SnapsToDevicePixels="True"
-                            MinWidth="{TemplateBinding ActualWidth}"
-                            MaxHeight="200"
-                            Background="White"
-                            >
-                                    <Border 
-                                CornerRadius="6"
-                                BorderThickness="1"
-                                BorderBrush="#FF7408FB"
-                                Background="White">
-                                        <ScrollViewer Margin="4" SnapsToDevicePixels="True">
-                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
-                                        </ScrollViewer>
-                                    </Border>
-                                </Grid>
-                            </Popup>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="ToggleButton" Property="Foreground" Value="Gray"/>
-                                <Setter TargetName="Arrow" Property="Fill" Value="Gray"/>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#7B42FF"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ToggleButton" Property="Background" Value="#FF986FF9"/>
+                                <Setter Property="Background" Value="#2A2A36"/>
                             </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="BorderBrush" Value="#FF7408FB"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="5"/>
-        </Style>
-        <Style x:Key="ModernCheckBoxStyle" TargetType="CheckBox">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="CheckBox">
-                        <StackPanel Orientation="Horizontal">
-                            <Border Width="18" Height="18"
-                            Background="Transparent"
-                            BorderBrush="White"
-                            BorderThickness="2"
-                            CornerRadius="3"
-                            VerticalAlignment="Center">
-                                <Canvas Width="18" Height="18">
-                                    <Path x:Name="CheckMark"
-                                  Data="M 4 9 L 7 12 L 14 5"
-                                  Stroke="White"
-                                  StrokeThickness="2"
-                                  StrokeStartLineCap="Round"
-                                  StrokeEndLineCap="Round"
-                                  Visibility="Collapsed">
-                                        <Path.RenderTransform>
-                                            <TranslateTransform X="-1"/>
-                                        </Path.RenderTransform>
-                                    </Path>
-                                </Canvas>
-                            </Border>
-                            <ContentPresenter Margin="6,0,0,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
-                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="#7B42FF"/>
+                            </MultiTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ModernButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#FF6A00FF"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                        CornerRadius="8"
-                        SnapsToDevicePixels="True" 
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        BorderBrush="{TemplateBinding BorderBrush}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"
-                                      RecognizesAccessKey="True"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Focusable" Value="False"/>
-            <Setter Property="IsTabStop" Value="False"/>
-            <Setter Property="ClickMode" Value="Press"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ToggleButton">
-                        <Border CornerRadius="6"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}">
-                            <Grid>
-                                <Path x:Name="Arrow"
-                      HorizontalAlignment="Right"
-                      VerticalAlignment="Center"
-                      Margin="0,0,10,0"
-                      Data="M 0 0 L 4 4 L 8 0 Z"
-                      Fill="White"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="ModernComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#2C2C2C"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Padding" Value="6"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ComboBox">
-                        <Grid>
-                            <ToggleButton Name="ToggleButton"
-                                  Grid.Column="1"
-                                  Style="{StaticResource ComboBoxToggleButton}"
-                                  Background="#2C2C2C"
-                                  BorderThickness="0"
-                                  Focusable="False"
-                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                  ClickMode="Press"/>
-
-                            <ContentPresenter Name="ContentSite"
-                                      IsHitTestVisible="False"
-                                      Content="{TemplateBinding SelectionBoxItem}"
-                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                      Margin="10,3,35,3"
-                                      VerticalAlignment="Center"
-                                      HorizontalAlignment="Left"/>
-
-                            <Popup Name="Popup"
-                           Placement="Bottom"
-                           IsOpen="{TemplateBinding IsDropDownOpen}"
-                           AllowsTransparency="True"
-                           Focusable="False"
-                           PopupAnimation="Slide">
-                                <Border Name="DropDownBorder"
-                                Background="#2C2C2C"
-                                BorderThickness="1"
-                                BorderBrush="#444"
-                                CornerRadius="6"
-                                SnapsToDevicePixels="True">
-                                    <ScrollViewer Margin="4,6,4,6"
-                                          SnapsToDevicePixels="True">
-                                        <StackPanel IsItemsHost="True"
-                                            KeyboardNavigation.DirectionalNavigation="Contained"/>
-                                    </ScrollViewer>
-                                </Border>
-                            </Popup>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
     </Window.Resources>
 
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-    <Grid Background="#FF7100FF">
-        <TabControl x:Name="MainTabControl" Background="Black" SelectionChanged="MainTabControl_SelectionChanged">
-            <TabItem Header="Randomizer">
-                <Border Background="#1E1E1E" Padding="20" HorizontalAlignment="Right" Width="994">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <!-- Header -->
-                            <RowDefinition Height="Auto"/>
-                            <!-- Preset Options -->
-                            <RowDefinition Height="Auto"/>
-                            <!-- Output Path -->
-                            <RowDefinition Height="Auto"/>
-                            <!-- Randomize Button -->
-                            <RowDefinition Height="*"/>
-                            <!-- Spacer + Filters -->
-                        </Grid.RowDefinitions>
-
-                        <!-- Header Section -->
-                        <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Top">
-                            <Image Height="80" Width="72" Source="/Ignite Logo.png" Margin="0,0,20,0"/>
-                            <TextBlock Text="Randomizer Settings"
-                           FontSize="24"
-                           Foreground="White"
-                           VerticalAlignment="Center"
-                           FontWeight="Bold"/>
-                        </StackPanel>
-
-                        <!-- Presets Section -->
-                        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,20,0,0" HorizontalAlignment="Left">
-                            <ComboBox x:Name="OptionsPresetComboBox"
-                          Style="{StaticResource ModernComboBoxStyle}"
-                          Width="250"
-                          Height="38" Margin="0,0,0,0"/>
-                            <Button Content="Load Options Preset"
-                        Click="SelectOptionsPreset_Click"
-                        Style="{StaticResource ModernButtonStyle}"
-                        Width="180"
-                        Margin="10,0,0,0"/>
-                        </StackPanel>
-
-                        <!-- Output Path Section -->
-                        <StackPanel Grid.Row="2" Margin="0,20,0,0" >
-                            <Button Content="Set Output Path"
-                        Click="SetOutputPath_Click"
-                        Style="{StaticResource ModernButtonStyle}"
-                        Width="230" Height="38" HorizontalAlignment="Left"/>
-                            <TextBlock x:Name="OutputPathDisplay"
-                           Margin="0,10,0,0"
-                           
-                           FontSize="14"
-                           Foreground="White"
-                           Text="No path selected."/>
-                        </StackPanel>
-
-                        <!-- Randomize Section -->
-                        <StackPanel Grid.Row="3" Margin="10,70,0,0">
-                            <TextBlock x:Name="SeedTextBlock"
-                           FontWeight="Bold"
-                           FontSize="12"
-                           Foreground="#CCCCCC"
-                           Text="Seed Used: Who Knows?" Margin="5,0,0,0"/>
-                            <Button Content="RANDOMIZE"
-                        Style="{StaticResource ModernButtonStyle}"
-                        Click="Randomize_Click"
-                        Width="232"
-                        Height="66"
-                        FontWeight="Bold"
-                        FontSize="16"
-                        Margin="0,10,0,0"
-                        Background="#FF8800FF"
-                        Foreground="White" HorizontalAlignment="Left"/>
-                        </StackPanel>
-
-                        <!-- Discord Link Section -->
-                        <TextBlock Grid.Row="4"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Margin="0,10,0,0"
-                            TextDecorations="Underline"
-                            Foreground="#7289DA"
-                            Cursor="Hand"
-                            FontSize="14"
-                            Text="Join our Discord"
-                            MouseLeftButtonUp="DiscordLink_Click"/>
-
-                        <!-- Filters Section -->
-                        <TextBlock Text="{Binding ArenaFilter.SelectedCount, StringFormat=Selected Arenas: \{0\}}"
-                           FontWeight="Bold"
-                           Foreground="White"
-                           Margin="788,120,10,89" Grid.Row="3"
-                           />
-                        <TextBlock Text="{Binding BossesFilter.SelectedCount, StringFormat=Selected Bosses: \{0\}}"
-                                FontWeight="Bold"
-                                Foreground="White" 
-                                Margin="788,140,10,89" Grid.Row="3"/>
-                    </Grid>
-                </Border>
-            </TabItem>
-
-            <TabItem Header="Arena Selection">
-                <Grid>
-                    <!-- Modern Gradient Background -->
-                    <Grid.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#FF2E2E2E" Offset="0" />
-                            <GradientStop Color="#FF121212" Offset="1" />
-                        </LinearGradientBrush>
-                    </Grid.Background>
-
-                    <!-- Grid Layout -->
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Top Buttons -->
-                    <StackPanel Orientation="Horizontal" Margin="20,20,20,10" HorizontalAlignment="Left">
-                        <Button Content="Reset All"
-                    Click="ResetAllArenas_Click"
-                    Height="40" Width="100"
-                    Style="{StaticResource ModernButtonStyle}"
-                    Margin="0,0,10,0"/>
-                        <Button Content="Clear All"
-                    Click="ClearAllArenas_Click"
-                    Height="40" Width="138"
-                    Style="{StaticResource ModernButtonStyle}" Margin="0,0,10,0"/>
-                        <Button Content="Base Game Arenas"
-                    Click="SelectBaseGameArenas_Click"
-                    Height="40" Width="148"
-                    Style="{StaticResource ModernButtonStyle}"
-                    Margin="0,0,10,0"/>
-                        <Button Content="DLC Arenas"
-                    Click="SelectDLCArenas_Click"
-                    Height="40" Width="140"
-                    Style="{StaticResource ModernButtonStyle}"/>
-                        
-                    </StackPanel>
-
-                    <!-- Right Checkboxes -->
-                    <StackPanel Orientation="Vertical" Margin="0,20,20,0" HorizontalAlignment="Right">
-                        <CheckBox x:Name="ClearArenasCheckbox"
-                      Content="Clear Arenas"
-                      FontSize="14"
-                      Foreground="White"
-                      FontWeight="SemiBold"
-                      Checked="ClearArenasCheckbox_Checked"
-                      Style="{StaticResource ModernCheckBoxStyle}"
-                      Margin="0,0,0,10"/>
-                        <CheckBox x:Name="ArenaSizeRestriction"
-                      Content="Size Restrictions"
-                      FontSize="14"
-                      Foreground="White"
-                      FontWeight="SemiBold"
-                      Checked="ArenaSizeRestrictionCheckbox_Checked"
-                      Style="{StaticResource ModernCheckBoxStyle}"
-                      Margin="0,0,0,10"/>
-                        <CheckBox x:Name="ArenaDifficultyRestriction"
-                      Content="Boss Arena Difficulty Curve"
-                      FontSize="14"
-                      Foreground="White"
-                      FontWeight="SemiBold"
-                      Checked="ArenaDifficultyRestrictionCheckbox_Checked"
-                      Style="{StaticResource ModernCheckBoxStyle}"/>
-                    </StackPanel>
-
-                    <!-- Selected Count Text -->
-                    <TextBlock Text="{Binding ArenaFilter.SelectedCount, StringFormat='Selected Arenas: {0}'}"
-                   FontWeight="Bold"
-                   Foreground="White"
-                   FontSize="16"
-                   HorizontalAlignment="Center"
-                   Margin="0,80,0,0"/>
-
-                    <!-- Arena Selection List -->
-                    <ScrollViewer Grid.Row="1" Margin="20,10,240,10">
-                        <ItemsControl ItemsSource="{Binding ArenaFilter.RegionGroups}" Width="700">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="0,5,0,10">
-                                        <!-- Region Header -->
-                                        <TextBlock Text="{Binding RegionName}"
-                               FontSize="18"
+        <Border Grid.Column="0"
+                Background="#14141B"
+                BorderBrush="#242430"
+                BorderThickness="0,0,1,0">
+            <DockPanel Margin="16">
+                <StackPanel DockPanel.Dock="Top" Margin="0,0,0,20">
+                    <TextBlock Text="Boss Arena"
+                               FontSize="24"
                                FontWeight="Bold"
-                               Foreground="Orange"
-                               Margin="0,5,0,2"/>
-
-                                        <!-- Arenas under that region -->
-                                        <ItemsControl ItemsSource="{Binding Arenas}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox Content="{Binding Name}"
-                                          IsChecked="{Binding IsSelected}"
-                                          FontSize="14"
-                                          Foreground="White"
-                                          Style="{StaticResource ModernCheckBoxStyle}"/>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-
-                    <!-- Preset Options -->
-                    <StackPanel Grid.Row="1" HorizontalAlignment="Right" Width="200" Margin="0,10,20,0">
-                        <ComboBox x:Name="ArenaPresetComboBox"
-                                  Style="{StaticResource ModernComboBoxStyle}"
-                      Background="#222"
-                      Foreground="White"
-                      FontSize="14"
-                      Width="198"
-                      Margin="0,0,0,10"
-                      BorderThickness="0"
-                      Padding="5"/>
-                        <Button Content="Load Preset"
-                    Click="SelectArenaPreset_Click"
-                    Width="180"
-                    Style="{StaticResource ModernButtonStyle}"
-                    Margin="0,0,0,10"/>
-                        <Button Content="Save Custom Arenas"
-                    Click="SaveCustomArenaSelection_Click"
-                    Width="180"
-                    Style="{StaticResource ModernButtonStyle}"/>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-
-
-            <TabItem Header="Boss Selection">
-                <Grid>
-                    <!-- Modern Gradient Background -->
-                    <Grid.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#FF2E2E2E" Offset="0"/>
-                            <GradientStop Color="#FF121212" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Grid.Background>
-
-                    <!-- Grid Layout -->
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Top Buttons -->
-                    <StackPanel Orientation="Horizontal" Margin="20,20,20,10" HorizontalAlignment="Left">
-                        <Button Content="Reset All"
-                    Click="ResetAllBosses_Click"
-                    Height="40" Width="100"
-                    Style="{StaticResource ModernButtonStyle}"
-                    Margin="0,0,10,0"/>
-                        <Button Content="Clear All"
-                    Click="ClearAllBosses_Click"
-                    Height="40" Width="150"
-                    Style="{StaticResource ModernButtonStyle}" Margin= "0,0,10,0"/>
-                        <Button Content="Base Game Bosses"
-                    Click="SelectBaseGameBosses_Click"
-                    Height="40" Width="180"
-                    Style="{StaticResource ModernButtonStyle}"
-                    Margin="0,0,10,0"/>
-                        <Button Content="DLC Bosses"
-                    Click="SelectDLCBosses_Click"
-                    Height="40" Width="140"
-                    Style="{StaticResource ModernButtonStyle}"
-                    Margin="0,0,10,0"/>
-                        
-                    </StackPanel>
-
-                    <!-- Selected Count -->
-                    <TextBlock Text="{Binding BossesFilter.SelectedCount, StringFormat='Selected Bosses: {0}'}"
-                   FontWeight="Bold"
-                   Foreground="White"
-                   FontSize="16"
-                   HorizontalAlignment="Center"
-                   Margin="0,80,0,0"/>
-
-                    <!-- Boss Selection List -->
-                    <ScrollViewer Grid.Row="1" Margin="20,10,240,10">
-                        <ItemsControl ItemsSource="{Binding BossesFilter.RegionGroups}" Width="700">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="0,5,0,10">
-                                        <!-- Region Header -->
-                                        <TextBlock Text="{Binding RegionName}"
-                               FontSize="18"
+                               Foreground="White"/>
+                    <TextBlock Text="Randomizer"
+                               FontSize="24"
                                FontWeight="Bold"
-                               Foreground="Orange"
-                               Margin="0,5,0,2"/>
+                               Foreground="#9E74FF"/>
+                    <TextBlock Text="Seed builder and editor"
+                               Margin="0,8,0,0"
+                               Foreground="#A9A9B3"/>
+                </StackPanel>
 
-                                        <!-- Bosses under that region -->
-                                        <ItemsControl ItemsSource="{Binding Bosses}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <CheckBox Content="{Binding Name}"
-                                          IsChecked="{Binding IsSelected}"
-                                          FontSize="14"
-                                          Foreground="White"
-                                          Style="{StaticResource ModernCheckBoxStyle}"/>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
+                <ListBox ItemsSource="{Binding NavigationItems}"
+                         SelectedItem="{Binding SelectedNavigationItem}"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Foreground="White"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Title}"
+                                       FontSize="15"
+                                       FontWeight="SemiBold"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
 
-                    <!-- Preset Options -->
-                    <StackPanel Grid.Row="1" HorizontalAlignment="Right" Width="200" Margin="0,10,20,0">
-                        <ComboBox x:Name="BossPresetComboBox"
-                      Style="{StaticResource ModernComboBoxStyle}"
-                      Background="#222"
-                      Foreground="White"
-                      FontSize="14"
-                      Width="200"
-                      Margin="0,0,0,10"
-                      BorderThickness="0"
-                      Padding="5" Height="28"/>
-                        <Button Content="Load Preset"
-                    Click="SelectBossPreset_Click"
-                    Width="180"
-                    Style="{StaticResource ModernButtonStyle}"
-                    Margin="0,0,0,10"/>
-                        <Button Content="Save Custom Bosses"
-                    Click="SaveCustomBossSelection_Click"
-                    Width="180"
-                    Style="{StaticResource ModernButtonStyle}"/>
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="Analyze Seed">
-                <Grid Background="#1e1e1e" Margin="12">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Import -->
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
-                        <Button x:Name="ImportSeedBtn"
-              Content="Import Seed..."
-              Width="140"
-              Margin="0,0,10,0"
-              Click="ImportSeedBtn_Click"/>
-
-                        <TextBox x:Name="SeedPathTextBox"
-               Width="520"
-               IsReadOnly="True"
-               Background="#2a2a2a"
-               Foreground="#e9e9ef"
-               BorderBrush="#444"
-               Padding="8,6"
-               Text="No seed selected"/>
-                    </StackPanel>
-
-                    <!-- Checks -->
-                    <GroupBox Header="Checks"
-              Grid.Row="1"
-              Foreground="#e9e9ef"
-              BorderBrush="#444"
-              Margin="0,0,0,10">
-                        <Grid Margin="8">
-                            <ListBox x:Name="ChecksList"
-                 Background="#1e1e1e"
-                 BorderBrush="#444"
-                 Foreground="#e9e9ef">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="0,4">
-                                            <CheckBox IsChecked="{Binding IsSelected}"
-                          Content="{Binding Name}"
-                          Foreground="#e9e9ef"/>
-                                            <TextBlock Text="{Binding Description}"
-                           Foreground="#bdbdbd"
-                           FontSize="12"
-                           Margin="22,2,0,0"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </Grid>
-                    </GroupBox>
-
-                    <!-- Run -->
-                    <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,0,0,10">
-                        <Button x:Name="RunChecksBtn"
-              Content="Check"
-              Width="140"
-              Click="RunChecksBtn_Click"/>
-                        <TextBlock x:Name="AnalyzeStatusText"
-                 Margin="12,0,0,0"
-                 Foreground="#bdbdbd"
-                 VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <!-- Results -->
-                    <TextBox x:Name="AnalyzeResultsTextBox"
-             Grid.Row="3"
-             Background="#111"
-             Foreground="#e9e9ef"
-             BorderBrush="#444"
-             Padding="10"
-             IsReadOnly="True"
-             TextWrapping="Wrap"
-             VerticalScrollBarVisibility="Auto"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Info">
-                <Grid Background="#1e1e1e">
-                    <!-- Match dark background -->
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20,10,240,10">
-                        <TextBlock TextWrapping="Wrap"
-                       FontSize="14"
-                       Foreground="White"
-                       FontWeight="Bold"
-                       Width="520">
-                Welcome to the Boss Arena Randomizer!
-                <LineBreak />
-                <LineBreak />
-                Credits:  Helios | Shura | Psiphicode
-                <LineBreak/>
-                <LineBreak/>  
-                Icon Credit: Chocolate Icon created by photo3idea_studio - Flaticon
-                <LineBreak/>
-                <LineBreak/>
-                This application is built to assign bosses to arenas using certain constraints.
-                <LineBreak />
-                The logic revolves around not allowing certain bosses to be in certain arenas.
-                <LineBreak />
-                <LineBreak/>
-                If you'd like to edit the logic, go to the <Bold>arenas.json</Bold> and <Bold>bosses.json</Bold> files to fine-tune it to your liking.
-                <LineBreak />
-                <LineBreak/>
-                - First, select an options file placed in the Options folder.
-                <LineBreak />
-                - Load the options file.
-                <LineBreak />
-                - Choose your arenas, bosses, and their restrictions.
-                <LineBreak />
-                - Click <Bold>Randomize</Bold> to send to the given output path.
-                        </TextBlock>
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="Spoiler">
-                <Grid Background="#1e1e1e">
-                    <ListBox Name="ResultList"
-                 Foreground="White"
-                 FontSize="14"
-                 FontWeight="Bold"
-                 Background="#1e1e1e"
-                 BorderThickness="0"
-                 Margin="20,10,20,10"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 d:ItemsSource="{d:SampleData ItemCount=5}">
-                    </ListBox>
-                </Grid>
-            </TabItem>
-
-        </TabControl>
+        <Grid Grid.Column="1" Background="#0D0D12">
+            <ContentControl Content="{Binding CurrentPageViewModel}"
+                            Margin="24"/>
+        </Grid>
     </Grid>
 </Window>

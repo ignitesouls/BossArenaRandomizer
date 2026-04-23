@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BossArenaRandomizer
+namespace BossArenaRandomizer.Core
 {
     public static class HCData
     {

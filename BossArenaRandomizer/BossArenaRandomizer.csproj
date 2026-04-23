@@ -10,17 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\**" />
-    <EmbeddedResource Remove="Data\**" />
-    <None Remove="Data\**" />
-    <Page Remove="Data\**" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Remove="Assets\BAR.ico" />
     <None Remove="Ignite Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\BAR.ico" />
     <Content Include="bin\Debug\net8.0-windows\Assets\BAR.ico" />
   </ItemGroup>
 
@@ -33,25 +28,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="CsvTranslation.cs">
+    <Compile Update="Core\CsvTranslation.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
-    <Compile Update="FilterArenas.cs">
+    <Compile Update="Core\FilterArenas.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
-    <Compile Update="FilterBosses.cs">
+    <Compile Update="Core\FilterBosses.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Update="FinalizeTextFile.cs">
+    <Compile Update="Core\FinalizeTextFile.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
-    <Compile Update="HCFilterIds.cs">
+    <Compile Update="Core\HCFilterIds.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
-    <Compile Update="InitialDataRead.cs">
+    <Compile Update="Core\InitialDataRead.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
-    <Compile Update="Modules.cs">
+    <Compile Update="Core\Modules.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
@@ -66,6 +61,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

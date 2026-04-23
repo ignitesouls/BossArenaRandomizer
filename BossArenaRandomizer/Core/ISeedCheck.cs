@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BossArenaRandomizer
+namespace BossArenaRandomizer.Core
 {
     public interface ISeedCheck
     {
@@ -22,4 +22,3 @@ namespace BossArenaRandomizer
         public string Message { get; init; } = "";
     }
 }
-

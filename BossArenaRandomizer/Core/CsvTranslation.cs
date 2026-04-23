@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace BossArenaRandomizer
+namespace BossArenaRandomizer.Core
 {
     public static class CsvTranslation
     {
@@ -17,7 +17,7 @@ namespace BossArenaRandomizer
         {
             var sb = new StringBuilder();
 
-            //Line Cool Stuff Current Bitmap Single = 16
+            //Line Cool Stuff Current Bitmap Single = 19/32
             sb.AppendLine("ArenaBossName,ArenaBossID,ArenaBitmap,BossBitmap,ArenaSizeBitmap,BossSizeBitmap,ArenaDifficultyBitmap,BossDifficultBitmap,arenaDifficultyPassThroughBitmap,bossBaseDifficulty");
 
             foreach (var arenaEntry in arenas)
@@ -27,16 +27,16 @@ namespace BossArenaRandomizer
                 string arenaTypeEvergaol = GetArenaType(arena.arenaType); //Checks for arenaType 7 which is Evergaol See HCData.cs for categories
                 string arenaBitmap = GetArenaBitmap(arena, arenaTypeEvergaol);
                 string arenaSizeBitmap = GetArenaSizeBitmap(arena.arenaSize);
-                string arenaDifficultyBitmap = GetArenaDifficultyBitmap(arena.hardNotAllowed);
-                string arenaDifficultyPassThroughBitmap = GetArenaDifficultyPassThroughBitmap(arena.difficultyPassThrough);
+                string arenaBossRushDifficulty = GetArenaBoshRushDifficultyBitmap(arena.hardNotAllowed);
+                string arenaLooseDifficultyCurve = GetArenaLooseDifficultyCurveBitmap(arena.difficultyPassThrough);
 
                 if (bosses.TryGetValue(name, out BossInfo? boss))
                 {
                     string bossBitmap = GetBossBitmap(boss);
                     string bossSizeBitmap = GetBossSizeBitmap(boss.bossSize);
-                    string bossDifficultyBitmap = GetBossDifficultyBitmap(boss.isHard);
+                    string bossBossRushDifficulty = GetBossRushDifficultyBitmap(boss.isHard);
                     string bossBaseDifficulty = GetBossBaseDifficultyBitap(boss.baseDifficulty);
-                    sb.AppendLine($"{name},{arena.id},{arenaBitmap},{bossBitmap},{arenaSizeBitmap},{bossSizeBitmap},{arenaDifficultyBitmap},{bossDifficultyBitmap},{arenaDifficultyPassThroughBitmap},{bossBaseDifficulty}");
+                    sb.AppendLine($"{name},{arena.id},{arenaBitmap},{bossBitmap},{arenaSizeBitmap},{bossSizeBitmap},{arenaBossRushDifficulty},{bossBossRushDifficulty},{arenaLooseDifficultyCurve},{bossBaseDifficulty}");
                 }
             }
 
@@ -79,7 +79,7 @@ namespace BossArenaRandomizer
             };
         }
 
-        private static string GetArenaDifficultyBitmap(int difficulty)
+        private static string GetArenaBoshRushDifficultyBitmap(int difficulty)
         {
             return difficulty switch
             {
@@ -89,7 +89,7 @@ namespace BossArenaRandomizer
             };
         }
 
-        private static string GetBossDifficultyBitmap(int difficulty)
+        private static string GetBossRushDifficultyBitmap(int difficulty)
         {
             return difficulty switch
             {
@@ -108,7 +108,7 @@ namespace BossArenaRandomizer
             };
         }
 
-        private static string GetArenaDifficultyPassThroughBitmap (int passDifficulty)
+        private static string GetArenaLooseDifficultyCurveBitmap(int passDifficulty)
         {
             return passDifficulty switch
             {

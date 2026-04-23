@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace BossArenaRandomizer
+namespace BossArenaRandomizer.Core
 {
     public static class ArenaBossAssigner
     {
@@ -19,13 +19,6 @@ namespace BossArenaRandomizer
             }
         }
 
-        /// <summary>
-        /// Core randomization logic
-        /// - arenas/bosses dictionaries use the KEY as the display name (arenaName/bossName).
-        /// - selectedArenaIds/selectedBossIds are your filter selection IDs (string).
-        /// - validator must support Validate(int arenaId, int bossId).
-        /// - warnDupeMode called ONCE if arenas > bosses.
-        /// </summary>
         public static bool TryAssign(
             Dictionary<string, ArenaInfo> arenas,
             Dictionary<string, BossInfo> bosses,

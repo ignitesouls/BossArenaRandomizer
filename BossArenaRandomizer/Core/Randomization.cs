@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UniversalReplacementRandomizer;
 using System.IO;
 
-namespace BossArenaRandomizer
+namespace BossArenaRandomizer.Core
 {
     public static class Randomization
     {
@@ -31,7 +31,7 @@ namespace BossArenaRandomizer
             return true;
         }
 
-        public static EncodedBitmapValidator LoadBitmapsFromCsv(string csvPath, bool useSizeBitmaps = false, bool useDifficultyBitmap = false)
+        public static EncodedBitmapValidator LoadBitmapsFromCsv(string csvPath, bool useSizeBitmaps = false, bool useDifficultyBitmap = false, bool useLooseDifficultyBitmap = false)
         {
             var targetArenas = new Dictionary<int, int>();
             var replacementBosses = new Dictionary<int, int>();
@@ -42,7 +42,7 @@ namespace BossArenaRandomizer
             {
                 var parts = line.Split(',');
 
-                if (parts.Length < 8)
+                if (parts.Length < 10)
                     continue;
 
                 string arenaName = parts[0];
@@ -52,8 +52,10 @@ namespace BossArenaRandomizer
                 string bossBitmapStr = parts[3];
                 string arenaSizeBitmapStr = parts[4]; 
                 string bossSizeBitmapStr = parts[5];
-                string arenaDifficultyBitmapStr = parts[6];
-                string bossDifficultyBitmapStr = parts[7];
+                string arenaBossRushDifficultyBitmapStr = parts[6];
+                string bossRushDifficultyBitmapStr = parts[7];
+                string arenaLooseDifficultyBitmapStr = parts[8];
+                string bossBaseDifficultyBitmapStr = parts[9];
 
                 string finalArenaBitmap = "";
                 string finalBossBitmap = "";
@@ -66,8 +68,14 @@ namespace BossArenaRandomizer
 
                 if (useDifficultyBitmap)
                 {
-                    finalArenaBitmap += arenaDifficultyBitmapStr;
-                    finalBossBitmap += bossDifficultyBitmapStr;
+                    finalArenaBitmap += arenaBossRushDifficultyBitmapStr;
+                    finalBossBitmap += bossRushDifficultyBitmapStr;
+                }
+
+                if (useLooseDifficultyBitmap)
+                {
+                    finalArenaBitmap += arenaLooseDifficultyBitmapStr;
+                    finalBossBitmap += bossBaseDifficultyBitmapStr;
                 }
 
                 finalArenaBitmap += arenaBitmapStr;
