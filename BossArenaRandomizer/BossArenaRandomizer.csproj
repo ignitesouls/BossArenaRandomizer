@@ -6,17 +6,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>bin\Debug\net8.0-windows\Assets\BAR.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\BAR.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\BAR.ico" />
-    <None Remove="Ignite Logo.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Assets\BAR.ico" />
-    <Content Include="bin\Debug\net8.0-windows\Assets\BAR.ico" />
+	<Content Include="Data\**\*.*">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+	</Content>
   </ItemGroup>
 
   <ItemGroup>
