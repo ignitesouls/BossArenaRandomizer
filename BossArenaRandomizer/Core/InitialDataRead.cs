@@ -8,77 +8,76 @@ using System.IO;
 using System.Security.Policy;
 using System.Security.Cryptography.X509Certificates;
 
-namespace BossArenaRandomizer.Core
+namespace BossArenaRandomizer.Core;
+
+public class ArenaInfo
 {
-    public class ArenaInfo
+    public string id { get; set; } = string.Empty;
+    public int arenaSize { get; set; }
+    public int arenaType { get; set; }
+    public int twoPhaseNotAllowed { get; set; }
+    public int nightBoss { get; set; }
+    public int dragonNotAllowed { get; set; }
+    public int npcNotAllowed { get; set; }
+    public int isEscapable { get; set; }
+    public int messmerNotAllowed { get; set; }
+    public int malikethNotAllowed { get; set; }
+    public int godskinduoNotAllowed {  get; set; }
+    public int hardNotAllowed { get; set; }
+    public int difficultyPassThrough {  get; set; }
+    public int spawner { get; set; }
+    public int region { get; set; }
+    public int scaling { get; set; }
+    public int dlc { get; set; }
+}
+
+public class BossInfo
+{
+    public string id { get; set; } = string.Empty;
+    public int bossSize { get; set; }
+    public int bossType { get; set; }
+    public int isTwoPhase { get; set; }
+    public int nightBoss { get; set; }
+    public int isDragon { get; set; }
+    public int isNPC { get; set; }
+    public int canEscape { get; set; }
+    public int isMessmer { get; set; }
+    public int isMaliketh { get; set; }
+    public int isEvergaolIncompatible { get; set; }
+    public int isGodskinDuo { get; set; }
+    public int isHard { get; set; }
+    public int baseDifficulty { get; set; }
+    public int spawner { get; set; }
+    public int region { get; set; }
+    public int scaling { get; set; }
+    public int dlc { get; set; }
+}
+
+class InitialDataRead
+{
+    //Load up Arenas
+    public static Dictionary<string, ArenaInfo> LoadArenas(string filepath)
     {
-        public string id { get; set; } = string.Empty;
-        public int arenaSize { get; set; }
-        public int arenaType { get; set; }
-        public int twoPhaseNotAllowed { get; set; }
-        public int nightBoss { get; set; }
-        public int dragonNotAllowed { get; set; }
-        public int npcNotAllowed { get; set; }
-        public int isEscapable { get; set; }
-        public int messmerNotAllowed { get; set; }
-        public int malikethNotAllowed { get; set; }
-        public int godskinduoNotAllowed {  get; set; }
-        public int hardNotAllowed { get; set; }
-        public int difficultyPassThrough {  get; set; }
-        public int spawner { get; set; }
-        public int region { get; set; }
-        public int scaling { get; set; }
-        public int dlc { get; set; }
+        string jsonString = File.ReadAllText(filepath);
+
+        var options = new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+        return JsonSerializer.Deserialize<Dictionary<string, ArenaInfo>>(jsonString, options) ?? new();
     }
 
-    public class BossInfo
+    //Load up Bosses
+    public static Dictionary<string, BossInfo> LoadBosses(string filepath)
     {
-        public string id { get; set; } = string.Empty;
-        public int bossSize { get; set; }
-        public int bossType { get; set; }
-        public int isTwoPhase { get; set; }
-        public int nightBoss { get; set; }
-        public int isDragon { get; set; }
-        public int isNPC { get; set; }
-        public int canEscape { get; set; }
-        public int isMessmer { get; set; }
-        public int isMaliketh { get; set; }
-        public int isEvergaolIncompatible { get; set; }
-        public int isGodskinDuo { get; set; }
-        public int isHard { get; set; }
-        public int baseDifficulty { get; set; }
-        public int spawner { get; set; }
-        public int region { get; set; }
-        public int scaling { get; set; }
-        public int dlc { get; set; }
-    }
+        string jsonString = File.ReadAllText(filepath);
 
-    class InitialDataRead
-    {
-        //Load up Arenas
-        public static Dictionary<string, ArenaInfo> LoadArenas(string filepath)
+        var options = new JsonSerializerOptions()
         {
-            string jsonString = File.ReadAllText(filepath);
+            PropertyNameCaseInsensitive = true
+        };
 
-            var options = new JsonSerializerOptions()
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
-            return JsonSerializer.Deserialize<Dictionary<string, ArenaInfo>>(jsonString, options) ?? new();
-        }
-
-        //Load up Bosses
-        public static Dictionary<string, BossInfo> LoadBosses(string filepath)
-        {
-            string jsonString = File.ReadAllText(filepath);
-
-            var options = new JsonSerializerOptions()
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
-            return JsonSerializer.Deserialize<Dictionary<string, BossInfo>>(jsonString, options) ?? new();
-        }
+        return JsonSerializer.Deserialize<Dictionary<string, BossInfo>>(jsonString, options) ?? new();
     }
 }

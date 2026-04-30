@@ -6,89 +6,88 @@ using System.Threading.Tasks;
 using UniversalReplacementRandomizer;
 using System.IO;
 
-namespace BossArenaRandomizer.Core
+namespace BossArenaRandomizer.Core;
+
+public static class Randomization
 {
-    public static class Randomization
+    public static int ConvertBitmapToInt(string bitmap)
     {
-        public static int ConvertBitmapToInt(string bitmap)
+        if( string.IsNullOrWhiteSpace(bitmap) || !IsBinary(bitmap))
+            throw new ArgumentException("Input must be a non-empty binary string.", nameof(bitmap));
+
+
+        return Convert.ToInt32(bitmap, 2);
+    }
+
+    private static bool IsBinary(string input)
+    {
+        foreach (char c in input)
         {
-            if( string.IsNullOrWhiteSpace(bitmap) || !IsBinary(bitmap))
-                throw new ArgumentException("Input must be a non-empty binary string.", nameof(bitmap));
-
-
-            return Convert.ToInt32(bitmap, 2);
-        }
-
-        private static bool IsBinary(string input)
-        {
-            foreach (char c in input)
+            if (c != '0' && c != '1')
             {
-                if (c != '0' && c != '1')
-                {
-                    return false;
-                }
+                return false;
             }
-            return true;
         }
+        return true;
+    }
 
-        public static EncodedBitmapValidator LoadBitmapsFromCsv(string csvPath, bool useSizeBitmaps = false, bool useDifficultyBitmap = false, bool useLooseDifficultyBitmap = false)
+    public static EncodedBitmapValidator LoadBitmapsFromCsv(string csvPath, bool useSizeBitmaps = false, bool useDifficultyBitmap = false, bool useLooseDifficultyBitmap = false)
+    {
+        var targetArenas = new Dictionary<int, int>();
+        var replacementBosses = new Dictionary<int, int>();
+
+        var lines = File.ReadAllLines(csvPath);
+
+        foreach (var line in lines.Skip(1)) // Skip header
         {
-            var targetArenas = new Dictionary<int, int>();
-            var replacementBosses = new Dictionary<int, int>();
+            var parts = line.Split(',');
 
-            var lines = File.ReadAllLines(csvPath);
+            if (parts.Length < 10)
+                continue;
 
-            foreach (var line in lines.Skip(1)) // Skip header
+            string arenaName = parts[0];
+            if (!int.TryParse(parts[1], out int arenaId)) continue;
+
+            string arenaBitmapStr = parts[2];
+            string bossBitmapStr = parts[3];
+            string arenaSizeBitmapStr = parts[4]; 
+            string bossSizeBitmapStr = parts[5];
+            string arenaBossRushDifficultyBitmapStr = parts[6];
+            string bossRushDifficultyBitmapStr = parts[7];
+            string arenaLooseDifficultyBitmapStr = parts[8];
+            string bossBaseDifficultyBitmapStr = parts[9];
+
+            string finalArenaBitmap = "";
+            string finalBossBitmap = "";
+            
+            if (useSizeBitmaps)
             {
-                var parts = line.Split(',');
-
-                if (parts.Length < 10)
-                    continue;
-
-                string arenaName = parts[0];
-                if (!int.TryParse(parts[1], out int arenaId)) continue;
-
-                string arenaBitmapStr = parts[2];
-                string bossBitmapStr = parts[3];
-                string arenaSizeBitmapStr = parts[4]; 
-                string bossSizeBitmapStr = parts[5];
-                string arenaBossRushDifficultyBitmapStr = parts[6];
-                string bossRushDifficultyBitmapStr = parts[7];
-                string arenaLooseDifficultyBitmapStr = parts[8];
-                string bossBaseDifficultyBitmapStr = parts[9];
-
-                string finalArenaBitmap = "";
-                string finalBossBitmap = "";
-                
-                if (useSizeBitmaps)
-                {
-                    finalArenaBitmap += arenaSizeBitmapStr;
-                    finalBossBitmap += bossSizeBitmapStr;
-                }
-
-                if (useDifficultyBitmap)
-                {
-                    finalArenaBitmap += arenaBossRushDifficultyBitmapStr;
-                    finalBossBitmap += bossRushDifficultyBitmapStr;
-                }
-
-                if (useLooseDifficultyBitmap)
-                {
-                    finalArenaBitmap += arenaLooseDifficultyBitmapStr;
-                    finalBossBitmap += bossBaseDifficultyBitmapStr;
-                }
-
-                finalArenaBitmap += arenaBitmapStr;
-                finalBossBitmap += bossBitmapStr;
-
-                int arenaInt = ConvertBitmapToInt(finalArenaBitmap);
-                int bossInt = ConvertBitmapToInt(finalBossBitmap);
-
-                targetArenas[arenaId] = arenaInt;
-                replacementBosses[arenaId] = bossInt;
+                finalArenaBitmap += arenaSizeBitmapStr;
+                finalBossBitmap += bossSizeBitmapStr;
             }
 
-            return new EncodedBitmapValidator(targetArenas, replacementBosses);
+            if (useDifficultyBitmap)
+            {
+                finalArenaBitmap += arenaBossRushDifficultyBitmapStr;
+                finalBossBitmap += bossRushDifficultyBitmapStr;
+            }
+
+            if (useLooseDifficultyBitmap)
+            {
+                finalArenaBitmap += arenaLooseDifficultyBitmapStr;
+                finalBossBitmap += bossBaseDifficultyBitmapStr;
+            }
+
+            finalArenaBitmap += arenaBitmapStr;
+            finalBossBitmap += bossBitmapStr;
+
+            int arenaInt = ConvertBitmapToInt(finalArenaBitmap);
+            int bossInt = ConvertBitmapToInt(finalBossBitmap);
+
+            targetArenas[arenaId] = arenaInt;
+            replacementBosses[arenaId] = bossInt;
         }
+
+        return new EncodedBitmapValidator(targetArenas, replacementBosses);
     }
 }

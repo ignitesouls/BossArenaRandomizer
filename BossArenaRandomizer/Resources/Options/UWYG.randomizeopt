@@ -1,0 +1,765 @@
+Game: ER
+Version: v0.11.4
+Options: allmaps bossbgm copydrops crashfix customitem deathless dlc dlcblessing dlckeysilo enemy helper item markareas markitems mats nohand phasehp raceloc_altboss racemode_health racemode_key racemode_scadu racemode_upgrades scale sombermode swapboss swaprewards v15 weaponreqs woodsfast bias:0 seed:2025704576 --preset Custom
+EnemyPreset: >+
+  Classes:
+    Basic: {}
+    Boss: {}
+    MinorBoss:
+      MergeParent: true
+      Pools:
+      - Weight: 1000
+        Pool: default
+    Miniboss:
+      MergeParent: true
+      Pools:
+      - Weight: 1000
+        Pool: default
+    NightMiniboss:
+      MergeParent: true
+      Pools:
+      - Weight: 1000
+        Pool: default
+    DragonMiniboss:
+      MergeParent: true
+      Pools:
+      - Weight: 1000
+        Pool: default
+    Evergaol:
+      MergeParent: true
+      Pools:
+      - Weight: 1000
+        Pool: default
+    Wildlife:
+      InheritParent: true
+    HostileNPC: {}
+    Scarab: {}
+  Options: bosshp regularhp v4
+
+  Enemies:
+    18000850: 14000800
+    1042360800: 20000800
+    31150800: 16000800
+    30020800: 16000801
+    31030800: 31070800
+    1042370800: 31210800
+    1043360800: 28000800
+    32010800: 43000800
+    30040800: 30150800
+    31170800: 2051450720
+    30110800: 15000850
+    1045390800: 41000800
+    1044350800: 1038410800
+    1044360800: 2047450800
+    1043370340: 1047400800
+    1042380800: 2046450800
+    1042380850: 11000850
+    18000800: 1042380800
+    31010800: 16000860
+    32000800: 1044530800
+    30000800: 34140850
+    1043330800: 2050480860
+    1042330800: 16000850
+    31020800: 1042550800
+    30010800: 2050480800
+    1044320342: 12080800
+    1044320340: 1050570800
+    1043300800: 1049370800
+    10000850: 18000800
+    10000800: 1042380850
+    31040800: 30070800
+    1038410800: 1039440800
+    31050800: 22000800
+    1035420800: 30080800
+    1037420340: 1049380800
+    1039430340: 11000800
+    1039440800: 30050850
+    30060800: 1040520800
+    1034450800: 13000801
+    31060800: 2054390850
+    1033450800: 32010800
+    10010800: 30200800
+    1033430800: 1045390800
+    30030800: 32080800
+    1036450340: 1048510800
+    32020800: 30040800
+    1034480800: 30190800
+    1035500800: 1043530800
+    1036500800: 1037460800
+    1036480340: 1044320342
+    30050800: 30030800
+    30050850: 12020850
+    1038480800: 31200800
+    1037460800: 1043300800
+    39200800: 1039430340
+    14000850: 2044470800
+    14000801: 2048440800
+    14000800: 31020800
+    1047400800: 13000850
+    30140800: 1048400800
+    1048400800: 10000800
+    31110800: 30020800
+    1049390850: 30060800
+    31200800: 1051430800
+    32070800: 1049390850
+    31210800: 1048410800
+    1048370800: 1044320340
+    1049370800: 1248550800
+    1049370850: 31040800
+    1049380800: 1044360800
+    32080800: 1034480800
+    1049390800: 1044350800
+    30150800: 32040800
+    1052380800: 2045440800
+    1051360800: 2049480800
+    30160800: 1054560800
+    1048410800: 1049520800
+    34130800: 12040800
+    31100800: 1039510800
+    1051400800: 30110800
+    1052410800: 1051360800
+    1052410850: 1036480340
+    1051430800: 41010800
+    31070800: 1040530800
+    1035530800: 1043360800
+    1037530800: 39200800
+    30090800: 1042360800
+    31090800: 1038480800
+    1036540800: 2046380800
+    1037540810: 32050800
+    16000850: 14000850
+    16000860: 34130800
+    16000801: 31220800
+    16000800: 20010801
+    30120800: 1035420800
+    31190850: 12090800
+    31190800: 1037420340
+    1038510800: 1039500800
+    1038520340: 35000850
+    30070800: 1036540800
+    32040800: 21010800
+    1039540800: 11050850
+    1039510800: 43010800
+    1039500800: 31190800
+    1041500800: 1039540800
+    1041510801: 31170800
+    1041510800: 32110800
+    31180800: 2049450800
+    1040530800: 41020800
+    1041530800: 1041510801
+    32050800: 12020830
+    1042550800: 12050800
+    1041520800: 2050470800
+    30080800: 40000800
+    1040520800: 31090800
+    34120800: 34120800
+    1043530800: 18000850
+    1044530800: 25000800
+    1045520800: 30120800
+    30130800: 10010800
+    30100800: 1052520800
+    35000850: 31180800
+    35000800: 1052560800
+    11000850: 1035530800
+    11000800: 32000800
+    34140850: 1034420800
+    30180800: 19000810
+    1050570800: 12010800
+    1052560800: 1041510800
+    1051570800: 21000850
+    1054560800: 30130800
+    31220800: 1051570800
+    1053560800: 2046400800
+    30170800: 31190850
+    1052520801: 2049440710
+    1052520800: 14000801
+    1048510800: 32070800
+    1049520800: 30050800
+    13000850: 1041500800
+    13000830: 1038510800
+    13000801: 31010800
+    13000800: 31150800
+    11050850: 12030390
+    11050801: 1045520800
+    11050800: 11050800
+    19000810: 2044450800
+    19000800: 31060800
+    30200800: 1048570800
+    30190800: 19000800
+    1050560800: 2046460800
+    31120800: 1049390800
+    1050570850: 32020800
+    1048570800: 30160800
+    1248550801: 10000850
+    1248550800: 1037540810
+    32110800: 1052410850
+    15000850: 2052480800
+    15000800: 1037530800
+    12080800: 30010800
+    12020830: 13000830
+    12010800: 1050570850
+    12020850: 30170800
+    12090800: 11050801
+    12020800: 2052400800
+    12030800: 1043370340
+    12030850: 31100800
+    12030390: 31120800
+    12010850: 1043330800
+    12040800: 1034450800
+    1034420800: 2049410800
+    1033420800: 1052380800
+    12050800: 30140800
+    2045440800: 2048380850
+    2046410800: 1042370800
+    43000800: 1036500800
+    41000800: 20010800
+    40000800: 1049370850
+    20000800: 30090800
+    43010800: 1053560800
+    2048440800: 40010800
+    2049430800: 2049430800
+    2049450800: 1048370800
+    2044470800: 2047390800
+    2049440710: 21010801
+    2049430850: 31030800
+    2047450800: 1033450800
+    2046450800: 1033430800
+    40010800: 2051440800
+    41010800: 35000800
+    2049480800: 1041520800
+    2050480800: 1052410800
+    21000850: 30100800
+    21010801: 1051400800
+    21010800: 13000800
+    25000800: 1036450340
+    2050480860: 2046410800
+    2050470800: 1041530800
+    2052480800: 12030850
+    2051450720: 30180800
+    2048380850: 1033420800
+    2046380800: 2049430850
+    2046400800: 15000800
+    22000800: 12010850
+    2047390800: 2052430800
+    41020800: 30000800
+    2049410800: 31110800
+    2052400800: 12020800
+    2054390850: 1035500800
+    2054390800: 2054390800
+    2051440800: 31050800
+    2052430800: 1038520340
+    28000800: 12030800
+    2046460800: 1052520801
+    2044450800: 1248550801
+    20010801: 1050560800
+    20010800: 1042330800
+ItemPreset: >+
+  KeyItemSilo: DLC
+
+  NorandomItems:
+
+  - Name: Spectral Steed Whistle
+    ID: goods:130
+  - Name: Flask of Wondrous Physick
+    ID: goods:250
+  - Name: Crafting Kit
+    ID: goods:8500
+  - Name: Spirit Calling Bell
+    ID: goods:8158
+  - Name: Whetstone Knife
+    ID: goods:8590
+  - Name: Lantern
+    ID: goods:2070
+  - Name: Gaol Lower Level Key
+    ID: goods:2008006
+  - Name: Gaol Upper Level Key
+    ID: goods:2008005
+  - Name: O Mother
+    ID: goods:2009004
+  Placements:
+
+  - Type: KeyItems
+    Mode: Important
+    Items:
+    - Group: keyitems
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: altboss
+    Excludes:
+    - Tag: missable
+  - Type: QuestItems
+    Mode: Anywhere
+    Items:
+    - Group: questitems
+    - Name: Shabriri Grape
+      ID: goods:1240
+    - Name: Seedbed Curse
+      ID: goods:8193
+    - Name: Deathroot
+      ID: goods:2090
+    Excludes:
+    - Tag: missable
+  - Type: CoreMechanics
+    Mode: Custom
+    Items:
+    - Name: Talisman Pouch
+      ID: goods:10040
+    - Name: Memory Stone
+      ID: goods:10030
+    - Name: Iron Whetblade
+      ID: goods:8970
+    - Name: Red-Hot Whetblade
+      ID: goods:8971
+    - Name: Sanctified Whetblade
+      ID: goods:8972
+    - Name: Glintstone Whetblade
+      ID: goods:8973
+    - Name: Black Whetblade
+      ID: goods:8974
+    - Group: crystaltears
+    - Name: Mohg's Shackle
+      ID: goods:2150
+    - Name: Margit's Shackle
+      ID: goods:2140
+    - Name: Cerulean Amber Medallion
+      ID: accessory:1010
+    - Name: Cerulean Amber Medallion +1
+      ID: accessory:1011
+    - Name: Cerulean Amber Medallion +2
+      ID: accessory:1012
+    - Name: Cerulean Amber Medallion +3
+      ID: accessory:7010
+    - Name: Crimson Amber Medallion
+      ID: accessory:1000
+    - Name: Crimson Amber Medallion +1
+      ID: accessory:1001
+    - Name: Crimson Amber Medallion +2
+      ID: accessory:1002
+    - Name: Crimson Amber Medallion +3
+      ID: accessory:7000
+    - Name: Cerulean Seed Talisman
+      ID: accessory:5010
+    - Name: Cerulean Seed Talisman +1
+      ID: accessory:7150
+    - Name: Crimson Seed Talisman
+      ID: accessory:5000
+    - Name: Crimson Seed Talisman +1
+      ID: accessory:7140
+    - Name: Viridian Amber Medallion
+      ID: accessory:1020
+    - Name: Viridian Amber Medallion +1
+      ID: accessory:1021
+    - Name: Viridian Amber Medallion +2
+      ID: accessory:1022
+    - Name: Viridian Amber Medallion +3
+      ID: accessory:7020
+    - Name: Erdtree's Favor
+      ID: accessory:1040
+    - Name: Erdtree's Favor +1
+      ID: accessory:1041
+    - Name: Erdtree's Favor +2
+      ID: accessory:1042
+    - Name: Blue Dancer Charm
+      ID: accessory:2110
+    - Name: Boltdrake Talisman
+      ID: accessory:4030
+    - Name: Boltdrake Talisman +1
+      ID: accessory:4031
+    - Name: Boltdrake Talisman +2
+      ID: accessory:4032
+    - Name: Boltdrake Talisman +3
+      ID: accessory:7110
+    - Name: Flamedrake Talisman
+      ID: accessory:4020
+    - Name: Flamedrake Talisman +1
+      ID: accessory:4021
+    - Name: Flamedrake Talisman +2
+      ID: accessory:4022
+    - Name: Flamedrake Talisman +3
+      ID: accessory:7100
+    - Name: Haligdrake Talisman
+      ID: accessory:4040
+    - Name: Haligdrake Talisman +1
+      ID: accessory:4041
+    - Name: Haligdrake Talisman +2
+      ID: accessory:4042
+    - Name: Golden Braid
+      ID: accessory:7120
+    - Name: Spelldrake Talisman
+      ID: accessory:4010
+    - Name: Spelldrake Talisman +1
+      ID: accessory:4011
+    - Name: Spelldrake Talisman +2
+      ID: accessory:4012
+    - Name: Spelldrake Talisman +3
+      ID: accessory:7090
+    - Name: Pearldrake Talisman
+      ID: accessory:4050
+    - Name: Pearldrake Talisman +1
+      ID: accessory:4051
+    - Name: Pearldrake Talisman +2
+      ID: accessory:4052
+    - Name: Pearldrake Talisman +3
+      ID: accessory:7130
+    - Name: Dragoncrest Shield Talisman
+      ID: accessory:4000
+    - Name: Dragoncrest Shield Talisman +1
+      ID: accessory:4001
+    - Name: Dragoncrest Shield Talisman +2
+      ID: accessory:4002
+    - Name: Dragoncrest Greatshield Talisman
+      ID: accessory:4003
+    - Name: Clarifying Horn Charm
+      ID: accessory:1180
+    - Name: Clarifying Horn Charm +1
+      ID: accessory:1181
+    - Name: Clarifying Horn Charm +2
+      ID: accessory:7060
+    - Name: Immunizing Horn Charm
+      ID: accessory:1170
+    - Name: Immunizing Horn Charm +1
+      ID: accessory:1171
+    - Name: Immunizing Horn Charm +2
+      ID: accessory:7050
+    - Name: Stalwart Horn Charm
+      ID: accessory:1160
+    - Name: Stalwart Horn Charm +1
+      ID: accessory:1161
+    - Name: Stalwart Horn Charm +2
+      ID: accessory:7040
+    - Name: Mottled Necklace
+      ID: accessory:1200
+    - Name: Mottled Necklace +1
+      ID: accessory:1201
+    - Name: Mottled Necklace +2
+      ID: accessory:7080
+    - Name: Arsenal Charm
+      ID: accessory:1030
+    - Name: Arsenal Charm +1
+      ID: accessory:1031
+    - Name: Great-Jar's Arsenal
+      ID: accessory:1032
+    - Name: Verdigris Discus
+      ID: accessory:8210
+    - Name: Marika's Scarseal
+      ID: accessory:1220
+    - Name: Radagon's Scarseal
+      ID: accessory:1050
+    - Name: Marika's Soreseal
+      ID: accessory:1221
+    - Name: Radagon's Soreseal
+      ID: accessory:1051
+    - Name: Stargazer Heirloom
+      ID: accessory:1080
+    - Name: Two Fingers Heirloom
+      ID: accessory:1090
+    - Name: Starscourge Heirloom
+      ID: accessory:1060
+    - Name: Prosthesis-Wearer Heirloom
+      ID: accessory:1070
+    - Name: Outer God Heirloom
+      ID: accessory:8020
+    - Name: Crusade Insignia
+      ID: accessory:8050
+    - Name: Green Turtle Talisman
+      ID: accessory:1150
+    - Name: Two-Headed Turtle Talisman
+      ID: accessory:7030
+    - Name: Blessed Blue Dew Talisman
+      ID: accessory:8000
+    - Name: Blessed Dew Talisman
+      ID: accessory:5020
+    - Name: Retaliatory Crossed-Tree
+      ID: accessory:8130
+    - Name: Lacerating Crossed-Tree
+      ID: accessory:8140
+    - Name: Aged One's Exultation
+      ID: accessory:8060
+    - Name: Talisman of Lord's Bestowal
+      ID: accessory:8200
+    - Name: Ailment Talisman
+      ID: accessory:8120
+    - Name: Dried Bouquet
+      ID: accessory:8100
+    - Name: Rellana's Cameo
+      ID: accessory:8220
+    - Name: Pearl Shield Talisman
+      ID: accessory:8090
+    - Name: Blade of Mercy
+      ID: accessory:8230
+    - Name: Smithing Talisman
+      ID: accessory:8110
+    - Name: St. Trina's Smile
+      ID: accessory:8160
+    - Name: Enraged Divine Beast
+      ID: accessory:8180
+    - Name: Prince of Death's Pustule
+      ID: accessory:1190
+    - Name: Prince of Death's Cyst
+      ID: accessory:1191
+    - Name: Two-Handed Sword Talisman
+      ID: accessory:8040
+    - Name: Dagger Talisman
+      ID: accessory:2090
+    - Name: Curved Sword Talisman
+      ID: accessory:2200
+    - Name: Twinblade Talisman
+      ID: accessory:2120
+    - Name: Axe Talisman
+      ID: accessory:2130
+    - Name: Hammer Talisman
+      ID: accessory:2070
+    - Name: Spear Talisman
+      ID: accessory:2060
+    - Name: Lance Talisman
+      ID: accessory:2140
+    - Name: Claw Talisman
+      ID: accessory:2180
+    - Name: Greatshield Talisman
+      ID: accessory:4100
+    - Name: Sharpshot Talisman
+      ID: accessory:8150
+    - Name: Arrow's Sting Talisman
+      ID: accessory:2150
+    - Name: Arrow's Reach Talisman
+      ID: accessory:2100
+    - Name: Arrow's Soaring Sting Talisman
+      ID: accessory:8070
+    - Name: Shattered Stone Talisman
+      ID: accessory:8030
+    - Name: Talisman of the Dread
+      ID: accessory:8170
+    - Name: Graven-School Talisman
+      ID: accessory:3000
+    - Name: Graven-Mass Talisman
+      ID: accessory:3001
+    - Name: Faithful's Canvas Talisman
+      ID: accessory:3040
+    - Name: Flock's Canvas Talisman
+      ID: accessory:3050
+    - Name: Primal Glintstone Blade
+      ID: accessory:3080
+    - Name: Moon of Nokstella
+      ID: accessory:1140
+    - Name: Old Lord's Talisman
+      ID: accessory:3060
+    - Name: Radagon Icon
+      ID: accessory:3070
+    - Name: Godfrey Icon
+      ID: accessory:3090
+    - Name: Beloved Stardust
+      ID: accessory:8190
+    - Name: Perfumer's Talisman
+      ID: accessory:2220
+    - Name: Carian Filigreed Crest
+      ID: accessory:6020
+    - Name: Warrior Jar Shard
+      ID: accessory:1230
+    - Name: Shard of Alexander
+      ID: accessory:1231
+    - Name: Crucible Scale Talisman
+      ID: accessory:4060
+    - Name: Crucible Knot Talisman
+      ID: accessory:4110
+    - Name: Talisman of All Crucibles
+      ID: accessory:8240
+    - Name: Fine Crucible Feather Talisman
+      ID: accessory:8010
+    - Name: Crucible Feather Talisman
+      ID: accessory:4070
+    - Name: Bull-Goat's Talisman
+      ID: accessory:1210
+    - Name: Blue-Feathered Branchsword
+      ID: accessory:4080
+    - Name: Red-Feathered Branchsword
+      ID: accessory:2040
+    - Name: Ritual Sword Talisman
+      ID: accessory:2050
+    - Name: Ritual Shield Talisman
+      ID: accessory:4090
+    - Name: Assassin's Crimson Dagger
+      ID: accessory:5050
+    - Name: Assassin's Cerulean Dagger
+      ID: accessory:5060
+    - Name: Fire Scorpion Charm
+      ID: accessory:2020
+    - Name: Lightning Scorpion Charm
+      ID: accessory:2010
+    - Name: Sacred Scorpion Charm
+      ID: accessory:2030
+    - Name: Magic Scorpion Charm
+      ID: accessory:2000
+    - Name: Winged Sword Insignia
+      ID: accessory:2080
+    - Name: Rotten Winged Sword Insignia
+      ID: accessory:2081
+    - Name: Millicent's Prosthesis
+      ID: accessory:1250
+    - Name: Godskin Swaddling Cloth
+      ID: accessory:5040
+    - Name: Kindred of Rot's Exultation
+      ID: accessory:2170
+    - Name: Lord of Blood's Exultation
+      ID: accessory:2160
+    - Name: Taker's Cameo
+      ID: accessory:5030
+    - Name: Ancestral Spirit's Horn
+      ID: accessory:6110
+    - Name: Gold Scarab
+      ID: accessory:1110
+    - Name: Silver Scarab
+      ID: accessory:1100
+    - Name: Crepus's Vial
+      ID: accessory:6000
+    - Name: Concealing Veil
+      ID: accessory:6010
+    - Name: Furled Finger's Trick-Mirror
+      ID: accessory:6080
+    - Name: Host's Trick-Mirror
+      ID: accessory:6090
+    - Name: Companion Jar
+      ID: accessory:2210
+    - Name: Daedicar's Woe
+      ID: accessory:6060
+    - Name: Shabriri's Woe
+      ID: accessory:6050
+    - Name: Roar Medallion
+      ID: accessory:2190
+    - Name: Longtail Cat Talisman
+      ID: accessory:6040
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: altboss
+    - Tag: catacombboss
+    - Tag: caveboss
+    - Tag: night
+    - Tag: evergaol
+    - Tag: gaolboss
+    - Tag: graveboss
+    - Tag: minidungeonboss
+    - Tag: namelessmausoleum
+    - Tag: criticalpath
+    - Tag: tunnelboss
+    Excludes:
+    - Tag: missable
+  - Type: SacredFlaskUpgrades
+    Mode: Important
+    Items:
+    - Name: Golden Seed
+      ID: goods:10010
+    - Name: Sacred Tear
+      ID: goods:10020
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: altboss
+    Excludes:
+    - Tag: missable
+  - Type: UpgradeBellBearings
+    Mode: Anywhere
+    Items:
+    - Group: upgradeashes
+    Excludes:
+    - Tag: missable
+  - Type: ShadowRealmBlessings
+    Mode: Important
+    Items:
+    - Name: Scadutree Fragment
+      ID: goods:2010000
+    - Name: Revered Spirit Ash
+      ID: goods:2010100
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: altboss
+    Excludes:
+    - Tag: missable
+  - Type: BossTools
+    Mode: Custom
+    Items: []
+    Requires: []
+    Excludes:
+    - Tag: missable
+    - Tag: boss
+    - Tag: altboss
+  - Type: BaseOnlyItems
+    Mode: Custom
+    Items:
+    - Name: Black Whetblade
+      ID: goods:8974
+    - Name: Glintstone Whetblade
+      ID: goods:8973
+    - Name: Iron Whetblade
+      ID: goods:8970
+    - Name: Red-Hot Whetblade
+      ID: goods:8971
+    - Name: Sanctified Whetblade
+      ID: goods:8972
+    - Name: Whetstone Knife
+      ID: goods:8590
+    - Name: Golden Seed
+      ID: goods:10010
+    - Name: Sacred Tear
+      ID: goods:10020
+    - Name: Margit's Shackle
+      ID: goods:2140
+    - Name: Mohg's Shackle
+      ID: goods:2150
+    Requires: []
+    Excludes:
+    - Tag: dlc
+  - Type: DlcOnlyItems
+    Mode: Custom
+    Items:
+    - Name: Scadutree Fragment
+      ID: goods:2010000
+    - Name: Revered Spirit Ash
+      ID: goods:2010100
+    Requires: []
+    Excludes:
+    - Tag: nodlc
+  LocationGroups:
+
+  - Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: altboss
+    Excludes:
+    - Tag: missable
+  Version: 1
+HelperConfig: >+
+  [settings]
+
+  autoEquip = true
+
+  equipShop = false
+
+  equipWeapons = true
+
+  bowLeft = true
+
+  castLeft = true
+
+  equipArmor = true
+
+  equipAccessory = true
+
+  equipSpells = true
+
+  equipCrystalTears = true
+
+  autoUpgrade = true
+
+  autoUpgradeWeapons = true
+
+  regionLockWeapons = false
+
+  weaponLevelsBelowMax = 0
+
+  weaponLevelRange = 0
+
+  autoUpgradeSpiritAshes = false
+
+  autoUpgradeDropped = false

@@ -1,0 +1,442 @@
+Game: ER
+Version: v0.11.4
+Options: allcraft allmaps bossbgm copydrops crashfix customitem dlc dlcblessing dlckeysilo dlcroundtable dlcstart editnames enemy ignoresize item mats maxbb maxflask maxmemslot maxpouch maxwhetblade messmershard:17 nerfgargoyles nerfsh nohand phasehp playerlevel:60 racemode_health racemode_key racemode_scadu racemode_upgrades scale shardreq:7 sombermode swapboss v15 weaponprogression woodsfast bias:0 seed:1246105958 --preset FinalResults
+EnemyPreset: >+
+  Classes:
+    Basic: {}
+    Boss: {}
+    MinorBoss:
+      InheritParent: true
+    Miniboss:
+      InheritParent: true
+    NightMiniboss:
+      InheritParent: true
+    DragonMiniboss:
+      InheritParent: true
+    Evergaol:
+      InheritParent: true
+    Wildlife:
+      InheritParent: true
+    HostileNPC: {}
+    Scarab: {}
+  Options: bosshp regularhp v4
+
+  Enemies:
+    2049440815: 2801984
+    2049430810: 2801984
+    2049440811: 2801984
+    2049440818: 2801984
+    2049440814: 2801984
+    2049440813: 2801984
+    2049440812: 2801984
+    2049440810: 2801984
+    2049440817: 2801984
+    2049430812: 2801984
+    2049440816: 2801984
+    2830472: 2801984
+    2830448: 2801984
+    2047450224: 2801984
+    2047450223: 2801984
+    2830465: 2801984
+    2830464: 2801984
+    2830466: 2801984
+    2830467: 2801984
+    2047450208: 2801984
+    2830443: 2801984
+    2830442: 2801984
+    2830444: 2801984
+    2830445: 2801984
+    2047450204: 2801984
+    2830447: 2801984
+    2047450222: 2801984
+    2830460: 2801984
+    2831859: 2801984
+    2831858: 2801984
+    2831860: 2801984
+    2831931: 2801984
+    2831857: 2801984
+    2823684: 2801984
+    2830810: 2801984
+    2823683: 2801984
+    2047390208: 2801984
+    2047390205: 2801984
+    2823681: 2801984
+    2052400200: 2801984
+    2820892: 2801984
+    2820891: 2801984
+    2820890: 2801984
+    2820889: 2801984
+    2820898: 2801984
+    2820900: 2801984
+    2820899: 2801984
+    2820897: 2801984
+    2820881: 2801984
+    2045440800: 30120800
+    2046410800: 1042360800
+    43000800: 30180800
+    41000800: 34130800
+    40000800: 30020800
+    20000800: 1038510800
+    2047420300: 30200800
+    2048440800: 1041530800
+    2049430800: 1051400800
+    2049450800: 39200800
+    2044470800: 2049480800
+    2049440710: 1041510800
+    2049430850: 1049520800
+    2047450800: 31110800
+    2046450800: 28000800
+    40010800: 1045390800
+    41010800: 13000800
+    2049480800: 1038410800
+    2050480800: 11000800
+    21000850: 1048400800
+    21010801: 2049440710
+    21010800: 30080800
+    25000800: 31060800
+    2050480860: 21010800
+    2050470800: 31170800
+    2052480800: 2047420300
+    2048380850: 1034420800
+    2046380800: 10000800
+    2046400800: 1044360800
+    22000800: 2054390800
+    2047390800: 1039440800
+    41020800: 12090800
+    2049410800: 1051360800
+    2052400800: 34120800
+    2054390850: 19000800
+    2054390800: 22000800
+    2051440800: 2050480860
+    2052430800: 1049390850
+    28000800: 1035420800
+    2046460800: 12050800
+    2044450800: 1035500800
+    20010801: 2049450800
+    20010800: 32080800
+ItemPreset: >+
+  KeyItemSilo: DLC
+
+  NorandomItems:
+
+  - Name: Spectral Steed Whistle
+    ID: goods:130
+  - Name: Flask of Wondrous Physick
+    ID: goods:250
+  - Name: Crafting Kit
+    ID: goods:8500
+  - Name: Spirit Calling Bell
+    ID: goods:8158
+  - Name: Whetstone Knife
+    ID: goods:8590
+  - Name: Lantern
+    ID: goods:2070
+  - Name: Gaol Lower Level Key
+    ID: goods:2008006
+  - Name: Gaol Upper Level Key
+    ID: goods:2008005
+  - Name: Star-Lined Sword
+    ID: weapon:2520000
+  - Name: Ymir's Bell Bearing
+    ID: goods:2008901
+  - Name: Maternal Staff
+    ID: weapon:33520000
+  - Name: High Priest Gloves
+    ID: protector:5060200
+  - Name: High Priest Hat
+    ID: protector:5060000
+  - Name: High Priest Robe
+    ID: protector:5060100
+  - Name: High Priest Undergarments
+    ID: protector:5060300
+  - Name: Revered Spirit Ash
+    ID: goods:2010100
+  - Name: Remembrance of the Mother of Fingers
+    ID: goods:2002909
+  Placements:
+
+  - Type: KeyItems
+    Mode: Custom
+    Items:
+    - Group: keyitems
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: namelessmausoleum
+    - Tag: criticalpath
+    - Tag: overworldboss
+    - Tag: dragonboss
+    Excludes:
+    - Tag: missable
+    - Tag: night
+  - Type: QuestItems
+    Mode: Anywhere
+    Items:
+    - Group: questitems
+    - Name: Shabriri Grape
+      ID: goods:1240
+    - Name: Seedbed Curse
+      ID: goods:8193
+    - Name: Deathroot
+      ID: goods:2090
+    Excludes:
+    - Tag: missable
+  - Type: CoreMechanics
+    Mode: Important
+    Items:
+    - Name: Talisman Pouch
+      ID: goods:10040
+    - Name: Memory Stone
+      ID: goods:10030
+    - Name: Iron Whetblade
+      ID: goods:8970
+    - Name: Red-Hot Whetblade
+      ID: goods:8971
+    - Name: Sanctified Whetblade
+      ID: goods:8972
+    - Name: Glintstone Whetblade
+      ID: goods:8973
+    - Name: Black Whetblade
+      ID: goods:8974
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    Excludes:
+    - Tag: missable
+  - Type: SacredFlaskUpgrades
+    Mode: Custom
+    Items:
+    - Name: Golden Seed
+      ID: goods:10010
+    - Name: Sacred Tear
+      ID: goods:10020
+    Requires:
+    - Tag: boss
+    - Tag: namelessmausoleum
+    - Tag: racemode
+    - Tag: criticalpath
+    - Tag: overworldboss
+    - Tag: dragonboss
+    Excludes:
+    - Tag: missable
+    - Tag: minidungeon
+  - Type: UpgradeBellBearings
+    Mode: Norandom
+    Items:
+    - Group: upgradeashes
+  - Type: ShadowRealmBlessings
+    Mode: Custom
+    Items:
+    - Name: Scadutree Fragment
+      ID: goods:2010000
+    - Name: Revered Spirit Ash
+      ID: goods:2010100
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: namelessmausoleum
+    - Tag: criticalpath
+    - Tag: overworldboss
+    - Tag: dragonboss
+    Excludes:
+    - Tag: missable
+    - Tag: minidungeon
+  - Type: BossTools
+    Mode: Custom
+    Items:
+    - Name: Margit's Shackle
+      ID: goods:2140
+    - Name: Mohg's Shackle
+      ID: goods:2150
+    - Name: Miquella's Great Rune
+      ID: goods:2008000
+    - Name: Sentry's Torch
+      ID: weapon:24070000
+    - Name: Purifying Crystal Tear
+      ID: goods:11027
+    Requires: []
+    Excludes:
+    - Tag: missable
+    - Tag: boss
+    - Tag: altboss
+  - Type: BaseOnlyItems
+    Mode: Custom
+    Items:
+    - Name: Arteria Leaf
+      ID: goods:20691
+    - Name: Golden Rune [2]
+      ID: goods:2901
+    - Name: Golden Rune [3]
+      ID: goods:2902
+    - Name: Golden Rune [4]
+      ID: goods:2903
+    - Name: Golden Rune [5]
+      ID: goods:2904
+    - Name: Aeonian Butterfly
+      ID: goods:20801
+    - Name: Altus Bloom
+      ID: goods:20681
+    - Name: Albinauric Bloodclot
+      ID: goods:15420
+    - Name: Ancient Ruins Cross Message
+      ID: goods:2008028
+    - Name: Ballista Bolt
+      ID: weapon:53000000
+    - Name: Beast Blood
+      ID: goods:15030
+    - Name: Beast Horn
+      ID: goods:2015000
+    - Name: Beast Liver
+      ID: goods:15010
+    - Name: Blood-Tainted Excrement
+      ID: goods:20831
+    - Name: Bloodrose
+      ID: goods:20723
+    - Name: Budding Cave Moss
+      ID: goods:20841
+    - Name: Budding Horn
+      ID: goods:15050
+    - Name: Cave Moss
+      ID: goods:20840
+    - Name: Crab Eggs
+      ID: goods:15130
+    - Name: Cuckoo Glintstone
+      ID: goods:3030
+    - Name: Dewgem
+      ID: goods:2020005
+    - Name: Dragon Heart
+      ID: goods:10060
+    - Name: Eye of Yelough
+      ID: goods:20740
+    - Name: Explosive Bolt
+      ID: weapon:52060000
+    - Name: Explosive Greatbolt
+      ID: weapon:53020000
+    - Name: Festering Bloody Finger
+      ID: goods:111
+    - Name: Fire Blossom
+      ID: goods:20682
+    - Name: Furlcalling Finger Remedy
+      ID: goods:150
+    - Name: Fulgurbloom
+      ID: goods:20652
+    - Name: Glass Shard
+      ID: goods:10000
+    - Name: Glintstone Firefly
+      ID: goods:20812
+    - Name: Glintstone Scrap
+      ID: goods:3050
+    - Name: Glowstone
+      ID: goods:2030
+    - Name: Grace Mimic
+      ID: goods:2050
+    - Name: Gravel Stone
+      ID: goods:20855
+    - Name: Hefty Beast Bone
+      ID: goods:15341
+    - Name: Human Bone Shard
+      ID: goods:15100
+    - Name: Knot Resin
+      ID: goods:2020004
+    - Name: Large Glintstone Scrap
+      ID: goods:3051
+    - Name: Living Jar Shard
+      ID: goods:15410
+    - Name: Lump of Flesh
+      ID: goods:15020
+    - Name: Miranda Powder
+      ID: goods:15150
+    - Name: Nascent Butterfly
+      ID: goods:20800
+    - Name: Old Fang
+      ID: goods:15040
+    - Name: Poisonbloom
+      ID: goods:20650
+    - Name: Poisoned Stone
+      ID: goods:1840
+    - Name: Rainbow Stone
+      ID: goods:2020
+    - Name: Rimed Crystal Bud
+      ID: goods:20751
+    - Name: Root Resin
+      ID: goods:20775
+    - Name: Sacramental Bud
+      ID: goods:20753
+    - Name: Sacred Bloody Flesh
+      ID: goods:2001210
+    - Name: Silver-Pickled Fowl Foot
+      ID: goods:1190
+    - Name: Sliver of Meat
+      ID: goods:15000
+    - Name: Slumbering Egg
+      ID: goods:15120
+    - Name: Spiritgrave Stone
+      ID: goods:2020028
+    - Name: Stormhawk Feather
+      ID: goods:15430
+    - Name: String
+      ID: goods:15400
+    - Name: Strip of White Flesh
+      ID: goods:15160
+    - Name: Turtle Neck Meat
+      ID: goods:15090
+    - Name: Golden Rune [1]
+      ID: goods:2900
+    - Name: Deathroot
+      ID: goods:2090
+    - Name: Stonesword Key
+      ID: goods:8000
+    - Name: Furnace Visage
+      ID: goods:2020035
+    - Group: cookbooks
+    Requires: []
+    Excludes:
+    - Tag: dlc
+  - Type: DlcOnlyItems
+    Mode: Custom
+    Items:
+    - Name: Scadutree Fragment
+      ID: goods:2010000
+    - Name: Revered Spirit Ash
+      ID: goods:2010100
+    - Name: Golden Seed
+      ID: goods:10010
+    - Name: Sacred Tear
+      ID: goods:10020
+    - Name: Talisman Pouch
+      ID: goods:10040
+    - Name: Memory Stone
+      ID: goods:10030
+    - Group: crystaltears
+    - Group: itemashes
+    - Group: upgradeashes
+    - Name: Miquella's Great Rune
+      ID: goods:2008000
+    - Group: whetblades
+    - Name: Golden Rune [10]
+      ID: goods:2909
+    - Name: Golden Rune [11]
+      ID: goods:2910
+    - Name: Golden Rune [12]
+      ID: goods:2911
+    - Name: Golden Rune [13]
+      ID: goods:2912
+    - Name: Marika's Rune
+      ID: goods:2002960
+    - Name: Lord's Rune
+      ID: goods:2919
+    - Name: Numen's Rune
+      ID: goods:2913
+    - Group: bosssouls
+    Requires: []
+    Excludes:
+    - Tag: nodlc
+  LocationGroups:
+
+  - Requires:
+    - Tag: racemode
+    - Tag: boss
+    Excludes:
+    - Tag: missable
+  Version: 1
+HelperConfig: 

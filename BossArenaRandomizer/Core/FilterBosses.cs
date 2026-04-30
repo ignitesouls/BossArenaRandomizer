@@ -7,117 +7,116 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace BossArenaRandomizer.Core
+namespace BossArenaRandomizer.Core;
+
+public class BossSelection : INotifyPropertyChanged
 {
-    public class BossSelection : INotifyPropertyChanged
+    private bool isSelected;
+
+    public string Name { get; set; }
+    public string Id { get; set; }
+    public int RegionId { get; set; }    
+    public string RegionName { get; set; }
+
+    public bool IsSelected
     {
-        private bool isSelected;
-
-        public string Name { get; set; }
-        public string Id { get; set; }
-        public int RegionId { get; set; }    
-        public string RegionName { get; set; }
-
-        public bool IsSelected
+        get => isSelected;
+        set
         {
-            get => isSelected;
-            set
+            if (isSelected != value)
             {
-                if (isSelected != value)
-                {
-                    isSelected = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSelected)));
-                }
+                isSelected = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsSelected)));
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 
+    public event PropertyChangedEventHandler PropertyChanged;
+}
 
-    public class RegionGroupBoss
+
+public class RegionGroupBoss
+{
+    public string RegionName { get; set; }
+    public ObservableCollection<BossSelection> Bosses { get; set; }
+
+    public RegionGroupBoss(string name)
     {
-        public string RegionName { get; set; }
-        public ObservableCollection<BossSelection> Bosses { get; set; }
-
-        public RegionGroupBoss(string name)
-        {
-            RegionName = name;
-            Bosses = new ObservableCollection<BossSelection>();
-        }
+        RegionName = name;
+        Bosses = new ObservableCollection<BossSelection>();
     }
+}
 
-    public class FilterBosses : INotifyPropertyChanged
+public class FilterBosses : INotifyPropertyChanged
+{
+    public ObservableCollection<BossSelection> BossSelections { get; private set; }
+    public ObservableCollection<RegionGroupBoss> RegionGroups { get; private set; }
+
+    public int SelectedCount =>
+        RegionGroups?.Sum(r => r.Bosses.Count(a => a.IsSelected)) ?? 0;
+
+    private readonly string basePath = AppDomain.CurrentDomain.BaseDirectory;
+
+    public FilterBosses(Dictionary<string, BossInfo> bossesJson)
     {
-        public ObservableCollection<BossSelection> BossSelections { get; private set; }
-        public ObservableCollection<RegionGroupBoss> RegionGroups { get; private set; }
+        BossSelections = new ObservableCollection<BossSelection>();
+        RegionGroups = new ObservableCollection<RegionGroupBoss>();
 
-        public int SelectedCount =>
-            RegionGroups?.Sum(r => r.Bosses.Count(a => a.IsSelected)) ?? 0;
-
-        private readonly string basePath = AppDomain.CurrentDomain.BaseDirectory;
-
-        public FilterBosses(Dictionary<string, BossInfo> bossesJson)
+        // Load base list from CSV
+        if (File.Exists("ArenaBossData.csv"))
         {
-            BossSelections = new ObservableCollection<BossSelection>();
-            RegionGroups = new ObservableCollection<RegionGroupBoss>();
-
-            // Load base list from CSV
-            if (File.Exists("ArenaBossData.csv"))
+            var lines = File.ReadAllLines(Path.Combine(basePath, "ArenaBossData.csv")).Skip(1); // Skip header
+            foreach (var line in lines)
             {
-                var lines = File.ReadAllLines(Path.Combine(basePath, "ArenaBossData.csv")).Skip(1); // Skip header
-                foreach (var line in lines)
+                var parts = line.Split(',');
+                if (parts.Length >= 2)
                 {
-                    var parts = line.Split(',');
-                    if (parts.Length >= 2)
+                    string name = parts[0];
+                    string id = parts[1];
+
+                    var boss = new BossSelection
                     {
-                        string name = parts[0];
-                        string id = parts[1];
+                        Name = name,
+                        Id = id,
+                        IsSelected = !HCFilterIds.UncheckArenaBossIds.Contains(id)
+                    };
 
-                        var boss = new BossSelection
-                        {
-                            Name = name,
-                            Id = id,
-                            IsSelected = !HCFilterIds.UncheckArenaBossIds.Contains(id)
-                        };
-
-                        // Set to checkbox changes
-                        boss.PropertyChanged += (s, e) =>
-                        {
-                            if (e.PropertyName == nameof(BossSelection.IsSelected))
-                            {
-                                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCount)));
-                            }
-                        };
-
-                        BossSelections.Add(boss);
-                    }
-                }
-            }
-
-            // Enrich with region info from JSON + group
-            foreach (var boss in BossSelections)
-            {
-                if (bossesJson.TryGetValue(boss.Name, out var bossInfo))
-                {
-                    boss.RegionId = bossInfo.region;
-                    boss.RegionName = HCData.RegionNames.ContainsKey(boss.RegionId)
-                        ? HCData.RegionNames[boss.RegionId]
-                        : $"Region {boss.RegionId}";
-
-                    // Find or create region group
-                    var regionGroup = RegionGroups.FirstOrDefault(r => r.RegionName == boss.RegionName);
-                    if (regionGroup == null)
+                    // Set to checkbox changes
+                    boss.PropertyChanged += (s, e) =>
                     {
-                        regionGroup = new RegionGroupBoss(boss.RegionName);
-                        RegionGroups.Add(regionGroup);
-                    }
+                        if (e.PropertyName == nameof(BossSelection.IsSelected))
+                        {
+                            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCount)));
+                        }
+                    };
 
-                    regionGroup.Bosses.Add(boss);
+                    BossSelections.Add(boss);
                 }
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        // Enrich with region info from JSON + group
+        foreach (var boss in BossSelections)
+        {
+            if (bossesJson.TryGetValue(boss.Name, out var bossInfo))
+            {
+                boss.RegionId = bossInfo.region;
+                boss.RegionName = HCData.RegionNames.ContainsKey(boss.RegionId)
+                    ? HCData.RegionNames[boss.RegionId]
+                    : $"Region {boss.RegionId}";
+
+                // Find or create region group
+                var regionGroup = RegionGroups.FirstOrDefault(r => r.RegionName == boss.RegionName);
+                if (regionGroup == null)
+                {
+                    regionGroup = new RegionGroupBoss(boss.RegionName);
+                    RegionGroups.Add(regionGroup);
+                }
+
+                regionGroup.Bosses.Add(boss);
+            }
+        }
     }
+
+    public event PropertyChangedEventHandler PropertyChanged;
 }

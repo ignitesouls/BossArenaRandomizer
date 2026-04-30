@@ -4,27 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BossArenaRandomizer.Core
+namespace BossArenaRandomizer.Core;
+
+public sealed class SeedCheckRunner
 {
-    public sealed class SeedCheckRunner
+    private readonly List<ISeedCheck> _checks;
+
+    public SeedCheckRunner(IEnumerable<ISeedCheck> checks)
     {
-        private readonly List<ISeedCheck> _checks;
+        _checks = checks.ToList();
+    }
 
-        public SeedCheckRunner(IEnumerable<ISeedCheck> checks)
-        {
-            _checks = checks.ToList();
-        }
+    public IReadOnlyList<ISeedCheck> AvailableChecks => _checks;
 
-        public IReadOnlyList<ISeedCheck> AvailableChecks => _checks;
+    public List<SeedCheckResult> RunSelected(string seedText, IEnumerable<string> selectedCheckIds)
+    {
+        var selected = new HashSet<string>(selectedCheckIds);
 
-        public List<SeedCheckResult> RunSelected(string seedText, IEnumerable<string> selectedCheckIds)
-        {
-            var selected = new HashSet<string>(selectedCheckIds);
-
-            return _checks
-                .Where(c => selected.Contains(c.Id))
-                .Select(c => c.Run(seedText))
-                .ToList();
-        }
+        return _checks
+            .Where(c => selected.Contains(c.Id))
+            .Select(c => c.Run(seedText))
+            .ToList();
     }
 }

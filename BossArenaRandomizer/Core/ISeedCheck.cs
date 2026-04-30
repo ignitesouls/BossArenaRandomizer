@@ -4,21 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BossArenaRandomizer.Core
+namespace BossArenaRandomizer.Core;
+
+public interface ISeedCheck
 {
-    public interface ISeedCheck
-    {
-        string Id { get; }
-        string DisplayName { get; }
-        string Description { get; }
+    string Id { get; }
+    string DisplayName { get; }
+    string Description { get; }
 
-        SeedCheckResult Run(string seedText);
-    }
+    SeedCheckResult Run(string seedText);
+}
 
-    public sealed class SeedCheckResult
-    {
-        public string CheckId { get; init; } = "";
-        public bool Passed { get; init; }
-        public string Message { get; init; } = "";
-    }
+public sealed class SeedCheckResult
+{
+    public string CheckId { get; init; } = "";
+    public bool Passed { get; init; }
+    public string Message { get; init; } = "";
 }

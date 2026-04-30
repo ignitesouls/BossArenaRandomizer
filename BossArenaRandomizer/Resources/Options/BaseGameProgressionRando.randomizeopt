@@ -1,0 +1,453 @@
+Game: ER
+Version: v0.11.4
+Options: allcraft allmaps bossbgm crashfix customitem dlc dlcblessing dlckeysilo earlylegacy earlymedal editnames enemy helper ignoresize item mats nerfgargoyles nerfsh nohand phasehp racemode_health racemode_key racemode_scadu racemode_upgrades runes_leyndell:0 runes_rold:0 scale snowfast sombermode swapboss v15 weaponprogression woodsfast bias:20 seed:1308181188 --preset 1
+EnemyPreset: >+
+  Classes:
+    Basic: {}
+    Boss: {}
+    MinorBoss:
+      InheritParent: true
+    Miniboss:
+      InheritParent: true
+    NightMiniboss:
+      InheritParent: true
+    DragonMiniboss:
+      InheritParent: true
+    Evergaol:
+      InheritParent: true
+    Wildlife:
+      InheritParent: true
+    HostileNPC: {}
+    Scarab: {}
+  Options: bosshp regularhp v4
+
+  Enemies:
+    1043360800: 12080800
+    1043300800: 1248550801
+    10000850: 11000800
+    10000800: 2045470200
+    1034450800: 20000800
+    1035500800: 1049390850
+    39200800: 31190850
+    14000850: 30090800
+    14000801: 2044450800
+    14000800: 32000800
+    1048370800: 12010850
+    1052380800: 1038480800
+    1052410800: 1040520800
+    16000850: 10000800
+    16000860: 16000860
+    16000801: 32050800
+    16000800: 12090800
+    1039540800: 32040800
+    1041520800: 12040800
+    1045520800: 20010801
+    35000800: 19000810
+    11000850: 40010800
+    11000800: 31220800
+    1051570800: 2047450800
+    1054560800: 2048440800
+    1052520801: 30170800
+    1052520800: 31110800
+    13000850: 1052380800
+    13000830: 2050470800
+    13000801: 30070800
+    13000800: 2049480800
+    11050850: 2046400800
+    11050801: 16000850
+    11050800: 1034480800
+    19000810: 12020800
+    19000800: 21010800
+    15000850: 1051430800
+    15000800: 30130800
+    12080800: 40000800
+    12010800: 31010800
+    12020850: 1048410800
+    12090800: 1033420800
+    12020800: 10010800
+    12030800: 35000850
+    12040800: 31060800
+    1034420800: 41010800
+    12050800: 31120800
+ItemPreset: >+
+  KeyItemSilo: DLC
+
+  NorandomItems:
+
+  - Name: Spectral Steed Whistle
+    ID: goods:130
+  - Name: Flask of Wondrous Physick
+    ID: goods:250
+  - Name: Crafting Kit
+    ID: goods:8500
+  - Name: Spirit Calling Bell
+    ID: goods:8158
+  - Name: Whetstone Knife
+    ID: goods:8590
+  - Name: Lantern
+    ID: goods:2070
+  - Name: Gaol Lower Level Key
+    ID: goods:2008006
+  - Name: Gaol Upper Level Key
+    ID: goods:2008005
+  - Name: O Mother
+    ID: goods:2009004
+  - Name: Cursemark of Death
+    ID: goods:8191
+  - Name: Smithing-Stone Miner's Bell Bearing [1]
+    ID: goods:8951
+  - Name: Smithing-Stone Miner's Bell Bearing [2]
+    ID: goods:8952
+  - Name: Somberstone Miner's Bell Bearing [1]
+    ID: goods:8955
+  - Name: Somberstone Miner's Bell Bearing [2]
+    ID: goods:8956
+  - Name: Stargazer Heirloom
+    ID: accessory:1080
+  - Name: Imbued Sword Key
+    ID: goods:8186
+  - Name: Remembrance of Hoarah Loux
+    ID: goods:2957
+  - Name: Remembrance of the Black Blade
+    ID: goods:2956
+  - Name: Remembrance of the Dragonlord
+    ID: goods:2958
+  - Name: Smithing-Stone Miner's Bell Bearing [4]
+    ID: goods:8954
+  - Name: 'Ash of War: Black Flame Tornado'
+    ID: gem:22100
+  - Group: upgradeashes
+
+  - Name: Dark Moon Ring
+    ID: goods:8121
+  Placements:
+
+  - Type: KeyItems
+    Mode: Custom
+    Items:
+    - Group: keyitems
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: dragonboss
+    Excludes:
+    - Tag: missable
+  - Type: QuestItems
+    Mode: Anywhere
+    Items:
+    - Group: questitems
+    - Name: Shabriri Grape
+      ID: goods:1240
+    - Name: Seedbed Curse
+      ID: goods:8193
+    - Name: Deathroot
+      ID: goods:2090
+    Requires: []
+    Excludes:
+    - Tag: missable
+  - Type: CoreMechanics
+    Mode: Custom
+    Items:
+    - Name: Talisman Pouch
+      ID: goods:10040
+    - Name: Memory Stone
+      ID: goods:10030
+    - Group: whetblades
+    Requires:
+    - Tag: boss
+    - Tag: dragonboss
+    Excludes:
+    - Tag: missable
+  - Type: SacredFlaskUpgrades
+    Mode: Custom
+    Items:
+    - Name: Golden Seed
+      ID: goods:10010
+    - Name: Sacred Tear
+      ID: goods:10020
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: dragonboss
+    Excludes:
+    - Tag: missable
+  - Type: UpgradeBellBearings
+    Mode: Custom
+    Items:
+    - Group: upgradeashes
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: dragonboss
+    Excludes:
+    - Tag: missable
+  - Type: ShadowRealmBlessings
+    Mode: Important
+    Items:
+    - Name: Scadutree Fragment
+      ID: goods:2010000
+    - Name: Revered Spirit Ash
+      ID: goods:2010100
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    Excludes:
+    - Tag: missable
+  - Type: BossTools
+    Mode: Custom
+    Items: []
+    Requires: []
+    Excludes:
+    - Tag: missable
+    - Tag: boss
+    - Tag: altboss
+  - Type: BaseOnlyItems
+    Mode: Custom
+    Items:
+    - Name: Black Whetblade
+      ID: goods:8974
+    - Name: Glintstone Whetblade
+      ID: goods:8973
+    - Name: Iron Whetblade
+      ID: goods:8970
+    - Name: Red-Hot Whetblade
+      ID: goods:8971
+    - Name: Sanctified Whetblade
+      ID: goods:8972
+    - Name: Whetstone Knife
+      ID: goods:8590
+    - Name: Golden Seed
+      ID: goods:10010
+    - Name: Sacred Tear
+      ID: goods:10020
+    - Name: Margit's Shackle
+      ID: goods:2140
+    - Name: Mohg's Shackle
+      ID: goods:2150
+    - Group: bosssouls
+    - Group: regularstones
+    - Group: somberstones
+    - Group: souls
+    - Group: gems
+    Requires: []
+    Excludes:
+    - Tag: dlc
+  - Type: DlcOnlyItems
+    Mode: Custom
+    Items:
+    - Name: Scadutree Fragment
+      ID: goods:2010000
+    - Name: Revered Spirit Ash
+      ID: goods:2010100
+    - Name: Memory Stone
+      ID: goods:10030
+    - Group: cookbooks
+    - Name: Furlcalling Finger Remedy
+      ID: goods:150
+    - Name: Furnace Visage
+      ID: goods:2020035
+    - Name: Arteria Leaf
+      ID: goods:20691
+    - Name: Whiteflesh Mushroom
+      ID: goods:2020003
+    - Name: Thin Beast Bones
+      ID: goods:15340
+    - Name: Albinauric Bloodclot
+      ID: goods:15420
+    - Name: Beast Blood
+      ID: goods:15030
+    - Name: Beast Horn
+      ID: goods:2015000
+    - Name: Beast Liver
+      ID: goods:15010
+    - Name: Blessed Bone Shard
+      ID: goods:2020031
+    - Name: Blood-Tainted Excrement
+      ID: goods:20831
+    - Name: Budding Cave Moss
+      ID: goods:20841
+    - Name: Budding Horn
+      ID: goods:15050
+    - Name: Congealed Putrescence
+      ID: goods:2020026
+    - Name: Fire Blossom
+      ID: goods:20682
+    - Name: Frozen Maggot
+      ID: goods:2020013
+    - Name: Black Pyrefly
+      ID: goods:2020006
+    - Name: Crab Eggs
+      ID: goods:15130
+    - Name: Cuckoo Glintstone
+      ID: goods:3030
+    - Name: Celestial Dew
+      ID: goods:2130
+    - Name: Dewgem
+      ID: goods:2020005
+    - Name: Ember of Messmer
+      ID: goods:2020030
+    - Name: Explosive Stone Clump
+      ID: goods:1831
+    - Name: Eye of Yelough
+      ID: goods:20740
+    - Name: Grave Cricket
+      ID: goods:2020022
+    - Name: Festering Bloody Finger
+      ID: goods:111
+    - Name: Fireproof Dried Liver
+      ID: goods:1160
+    - Name: Scorpion Liver
+      ID: goods:2015030
+    - Name: Fireproof Pickled Liver
+      ID: goods:2001130
+    - Name: Holyproof Dried Liver
+      ID: goods:1180
+    - Name: Holyproof Pickled Liver
+      ID: goods:2001150
+    - Name: Lightningproof Dried Liver
+      ID: goods:1170
+    - Name: Lightningproof Pickled Liver
+      ID: goods:2001140
+    - Name: Spellproof Dried Liver
+      ID: goods:1150
+    - Name: Spellproof Pickled Liver
+      ID: goods:2001120
+    - Name: Human Bone Shard
+      ID: goods:15100
+    - Name: Flight Pinion
+      ID: goods:15060
+    - Name: Fly Mold
+      ID: goods:2015040
+    - Name: Four-Toed Fowl Foot
+      ID: goods:15080
+    - Name: Fulgurbloom
+      ID: goods:20652
+    - Name: Glass Shard
+      ID: goods:10000
+    - Name: Glintslab Firefly
+      ID: goods:2020007
+    - Name: Glintstone Firefly
+      ID: goods:20812
+    - Name: Gold Firefly
+      ID: goods:20811
+    - Name: Silver Firefly
+      ID: goods:20810
+    - Name: Glintstone Scrap
+      ID: goods:3050
+    - Name: Glowstone
+      ID: goods:2030
+    - Name: Gold-Tinged Excrement
+      ID: goods:20830
+    - Name: Golden Sunflower
+      ID: goods:20683
+    - Name: Grace Mimic
+      ID: goods:2050
+    - Name: Gravel Stone
+      ID: goods:20855
+    - Name: Grave Violet
+      ID: goods:20654
+    - Name: Great Dragonfly Head
+      ID: goods:15110
+    - Name: Hefty Beast Bone
+      ID: goods:15341
+    - Name: Innard Meat
+      ID: goods:2001700
+    - Name: Knot Resin
+      ID: goods:2020004
+    - Name: Large Glintstone Scrap
+      ID: goods:3051
+    - Name: Living Jar Shard
+      ID: goods:15410
+    - Name: Lost Ashes of War
+      ID: goods:10070
+    - Name: Lump of Flesh
+      ID: goods:15020
+    - Name: Miquella's Lily
+      ID: goods:20653
+    - Name: Miranda Powder
+      ID: goods:15150
+    - Name: Nascent Butterfly
+      ID: goods:20800
+    - Name: Redflesh Mushroom
+      ID: goods:2020002
+    - Name: Yellow Fulgurbloom
+      ID: goods:2020008
+    - Name: Volcanic Stone
+      ID: goods:20850
+    - Name: Toxic Mossling
+      ID: goods:2020010
+    - Name: Toxic Mushroom
+      ID: goods:20770
+    - Name: Swollen Grape
+      ID: goods:2020017
+    - Name: Strip of White Flesh
+      ID: goods:15160
+    - Name: String
+      ID: goods:15400
+    - Name: Spirit Calculus
+      ID: goods:2015010
+    - Name: Sacramental Bud
+      ID: goods:20753
+    - Name: Silver-Pickled Fowl Foot
+      ID: goods:1190
+    - Name: Sliver of Meat
+      ID: goods:15000
+    - Name: Silver Tear Husk
+      ID: goods:20825
+    - Name: Old Fang
+      ID: goods:15040
+    - Name: Sacrificial Twig
+      ID: accessory:6070
+    - Name: Shadow Sunflower
+      ID: goods:2020009
+    - Name: Spiritgrave Stone
+      ID: goods:2020028
+    - Name: Ruin Fragment
+      ID: goods:1760
+    - Name: Rainbow Stone
+      ID: goods:2020
+    Requires: []
+    Excludes:
+    - Tag: nodlc
+  LocationGroups:
+
+  - Requires:
+    - Tag: racemode
+    - Tag: boss
+    Excludes:
+    - Tag: missable
+  Version: 1
+HelperConfig: >+
+  [settings]
+
+  autoEquip = false
+
+  equipShop = false
+
+  equipWeapons = true
+
+  bowLeft = true
+
+  castLeft = true
+
+  equipArmor = true
+
+  equipAccessory = true
+
+  equipSpells = true
+
+  equipCrystalTears = true
+
+  autoUpgrade = true
+
+  autoUpgradeWeapons = true
+
+  regionLockWeapons = false
+
+  weaponLevelsBelowMax = 0
+
+  weaponLevelRange = 0
+
+  autoUpgradeSpiritAshes = false
+
+  autoUpgradeDropped = false

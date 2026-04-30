@@ -4,83 +4,124 @@ using System.Linq;
 using BossArenaRandomizer.Models;
 using BossArenaRandomizer.Services;
 
-namespace BossArenaRandomizer.ViewModels
+namespace BossArenaRandomizer.ViewModels;
+
+public sealed class MainViewModel : ViewModelBase
 {
-    public sealed class MainViewModel : ViewModelBase
+    private readonly AppStateService _appStateService;
+
+    public ObservableCollection<NavigationItem> NavigationItems { get; }
+
+    private NavigationItem? _selectedNavigationItem;
+    public NavigationItem? SelectedNavigationItem
     {
-        private readonly AppStateService _appStateService;
-
-        public ObservableCollection<NavigationItem> NavigationItems { get; }
-
-        private NavigationItem? _selectedNavigationItem;
-        public NavigationItem? SelectedNavigationItem
+        get => _selectedNavigationItem;
+        set
         {
-            get => _selectedNavigationItem;
-            set
+            if (SetProperty(ref _selectedNavigationItem, value))
             {
-                if (SetProperty(ref _selectedNavigationItem, value))
-                {
-                    CurrentPageViewModel = value?.ViewModel;
-                }
+                CurrentPageViewModel = value?.ViewModel;
             }
         }
+    }
 
-        private object? _currentPageViewModel;
-        public object? CurrentPageViewModel
+    private object? _currentPageViewModel;
+    public object? CurrentPageViewModel
+    {
+        get => _currentPageViewModel;
+        set => SetProperty(ref _currentPageViewModel, value);
+    }
+
+    public MainViewModel(string basePath, AppStateService appStateService)
+    {
+        _appStateService = appStateService ?? throw new ArgumentNullException(nameof(appStateService));
+
+        var settingsService = new SettingsService();
+        var presetService = new PresetService(basePath);
+        var seedGenerationService = new SeedGenerationService();
+        var seedAnalysisService = new SeedAnalysisService();
+        var dataRepository = new DataRepository(basePath);
+
+        GenerateViewModel? generateVm = null;
+        DashboardViewModel? dashboardVm = null;
+        ArenaViewModel? arenaVm = null;
+        BossViewModel? bossVm = null;
+
+        void NavigateTo(string title)
         {
-            get => _currentPageViewModel;
-            set => SetProperty(ref _currentPageViewModel, value);
+            var match = NavigationItems.FirstOrDefault(x => x.Title == title);
+            if (match != null)
+                SelectedNavigationItem = match;
         }
 
-        public MainViewModel(string basePath, AppStateService appStateService)
+        generateVm = new GenerateViewModel(
+            basePath,
+            settingsService,
+            presetService,
+            seedGenerationService,
+            () => _appStateService.Arenas,
+            () => _appStateService.Bosses,
+            () => _appStateService.Modules.ArenaFilter,
+            () => _appStateService.Modules.BossesFilter
+        );
+
+        dashboardVm = new DashboardViewModel(
+            () => _appStateService.Modules.ArenaFilter.SelectedCount,
+            () => _appStateService.Modules.BossesFilter.SelectedCount,
+            () => generateVm.DashboardSelectedOptionsPreset,
+            () => generateVm.DashboardOutputPath,
+            () => generateVm.DashboardLastSeedText,
+            () => generateVm.DashboardLastStatusText,
+            NavigateTo
+        );
+
+        void RefreshSharedState()
         {
-            _appStateService = appStateService ?? throw new ArgumentNullException(nameof(appStateService));
+            generateVm.RefreshSelectionSummary();
+            dashboardVm.Refresh();
+        }
 
-            var settingsService = new SettingsService();
-            var presetService = new PresetService(basePath);
-            var seedGenerationService = new SeedGenerationService();
-            var seedAnalysisService = new SeedAnalysisService();
-            var dataRepository = new DataRepository(basePath);
+        arenaVm = new ArenaViewModel(
+            _appStateService.Modules.ArenaFilter,
+            presetService,
+            settingsService,
+            RefreshSharedState
+        );
 
-            GenerateViewModel? generateVm = null;
-            DashboardViewModel? dashboardVm = null;
-            ArenaViewModel? arenaVm = null;
-            BossViewModel? bossVm = null;
+        bossVm = new BossViewModel(
+            _appStateService.Modules.BossesFilter,
+            presetService,
+            settingsService,
+            RefreshSharedState
+        );
 
-            void NavigateTo(string title)
-            {
-                var match = NavigationItems.FirstOrDefault(x => x.Title == title);
-                if (match != null)
-                    SelectedNavigationItem = match;
-            }
+        var analyzeVm = new AnalyzeViewModel(seedAnalysisService);
 
-            generateVm = new GenerateViewModel(
-                basePath,
-                settingsService,
-                presetService,
-                seedGenerationService,
-                () => _appStateService.Arenas,
-                () => _appStateService.Bosses,
-                () => _appStateService.Modules.ArenaFilter,
-                () => _appStateService.Modules.BossesFilter
-            );
+        var arenaEditorVm = new ArenaEditorViewModel(
+            dataRepository,
+            _appStateService,
+            RefreshSharedState
+        );
 
-            dashboardVm = new DashboardViewModel(
-                () => _appStateService.Modules.ArenaFilter.SelectedCount,
-                () => _appStateService.Modules.BossesFilter.SelectedCount,
-                () => generateVm.DashboardSelectedOptionsPreset,
-                () => generateVm.DashboardOutputPath,
-                () => generateVm.DashboardLastSeedText,
-                () => generateVm.DashboardLastStatusText,
-                NavigateTo
-            );
+        var bossEditorVm = new BossEditorViewModel(
+            dataRepository,
+            _appStateService,
+            RefreshSharedState
+        );
 
-            void RefreshSharedState()
-            {
-                generateVm.RefreshSelectionSummary();
-                dashboardVm.Refresh();
-            }
+        NavigationItems = new ObservableCollection<NavigationItem>
+        {
+            new NavigationItem { Title = "Dashboard", ViewModel = dashboardVm },
+            new NavigationItem { Title = "Generate", ViewModel = generateVm },
+            new NavigationItem { Title = "Arenas", ViewModel = arenaVm },
+            new NavigationItem { Title = "Bosses", ViewModel = bossVm },
+            new NavigationItem { Title = "Analyze", ViewModel = analyzeVm },
+            new NavigationItem { Title = "Arena JSON", ViewModel = arenaEditorVm },
+            new NavigationItem { Title = "Boss JSON", ViewModel = bossEditorVm },
+        };
 
+        _appStateService.StateReloaded += (_, _) =>
+        {
             arenaVm = new ArenaViewModel(
                 _appStateService.Modules.ArenaFilter,
                 presetService,
@@ -95,68 +136,26 @@ namespace BossArenaRandomizer.ViewModels
                 RefreshSharedState
             );
 
-            var analyzeVm = new AnalyzeViewModel(seedAnalysisService);
-
-            var arenaEditorVm = new ArenaEditorViewModel(
-                dataRepository,
-                _appStateService,
-                RefreshSharedState
-            );
-
-            var bossEditorVm = new BossEditorViewModel(
-                dataRepository,
-                _appStateService,
-                RefreshSharedState
-            );
-
-            NavigationItems = new ObservableCollection<NavigationItem>
-            {
-                new NavigationItem { Title = "Dashboard", ViewModel = dashboardVm },
-                new NavigationItem { Title = "Generate", ViewModel = generateVm },
-                new NavigationItem { Title = "Arenas", ViewModel = arenaVm },
-                new NavigationItem { Title = "Bosses", ViewModel = bossVm },
-                new NavigationItem { Title = "Analyze", ViewModel = analyzeVm },
-                new NavigationItem { Title = "Arena JSON", ViewModel = arenaEditorVm },
-                new NavigationItem { Title = "Boss JSON", ViewModel = bossEditorVm },
-            };
-
-            _appStateService.StateReloaded += (_, _) =>
-            {
-                arenaVm = new ArenaViewModel(
-                    _appStateService.Modules.ArenaFilter,
-                    presetService,
-                    settingsService,
-                    RefreshSharedState
-                );
-
-                bossVm = new BossViewModel(
-                    _appStateService.Modules.BossesFilter,
-                    presetService,
-                    settingsService,
-                    RefreshSharedState
-                );
-
-                ReplaceNavigationViewModel("Arenas", arenaVm);
-                ReplaceNavigationViewModel("Bosses", bossVm);
-
-                RefreshSharedState();
-            };
+            ReplaceNavigationViewModel("Arenas", arenaVm);
+            ReplaceNavigationViewModel("Bosses", bossVm);
 
             RefreshSharedState();
-            SelectedNavigationItem = NavigationItems[0];
-        }
+        };
 
-        private void ReplaceNavigationViewModel(string title, object newViewModel)
-        {
-            var item = NavigationItems.FirstOrDefault(x => x.Title == title);
-            if (item == null)
-                return;
+        RefreshSharedState();
+        SelectedNavigationItem = NavigationItems[0];
+    }
 
-            bool wasSelected = SelectedNavigationItem == item;
-            item.ViewModel = newViewModel;
+    private void ReplaceNavigationViewModel(string title, object newViewModel)
+    {
+        var item = NavigationItems.FirstOrDefault(x => x.Title == title);
+        if (item == null)
+            return;
 
-            if (wasSelected)
-                CurrentPageViewModel = newViewModel;
-        }
+        bool wasSelected = SelectedNavigationItem == item;
+        item.ViewModel = newViewModel;
+
+        if (wasSelected)
+            CurrentPageViewModel = newViewModel;
     }
 }

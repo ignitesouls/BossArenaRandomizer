@@ -10,19 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<Content Include="Data\**\*.*">
-		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		<CopyToPublishDirectory>Always</CopyToPublishDirectory>
-	</Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\dependencies\UniversalReplacementRandomizer\UniversalReplacementRandomizer\UniversalReplacementRandomizer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Ignite Logo.png" />
   </ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Resources/**/*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</Content>
+	</ItemGroup>
 
   <ItemGroup>
     <Compile Update="Core\CsvTranslation.cs">
@@ -32,7 +33,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Core\FilterBosses.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Core\FinalizeTextFile.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -58,10 +59,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

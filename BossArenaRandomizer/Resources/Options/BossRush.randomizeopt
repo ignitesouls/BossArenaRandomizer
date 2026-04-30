@@ -1,0 +1,648 @@
+Game: ER
+Version: v0.11.4
+Options: allcraft allmaps bossbgm copydrops crashfix customitem dlc dlcblessing dlckeysilo earlylegacy earlymedal editnames enemy helper ignoresize mats nerfgargoyles nerfsh nohand phasehp racemode_health racemode_key racemode_scadu racemode_upgrades scale sombermode v15 weaponprogression weaponreqs woodsfast bias:0 seed:473684967 --preset BossArenaRandomizerPreset
+EnemyPreset: >+
+  Classes:
+    Basic:
+      Pools:
+      - Weight: 1000
+        Pool: Springhare
+    Boss: {}
+    MinorBoss:
+      InheritParent: true
+    Miniboss:
+      InheritParent: true
+    NightMiniboss:
+      InheritParent: true
+    DragonMiniboss:
+      InheritParent: true
+    Evergaol:
+      InheritParent: true
+    Wildlife:
+      InheritParent: true
+      Pools:
+      - Weight: 1000
+        Pool: Springhare
+    HostileNPC: {}
+    Scarab: {}
+  Options: bosshp regularhp v4
+
+  Enemies:
+    2812691: 2832488
+    2812682: 2832488
+    2812683: 2832488
+    2812690: 2832488
+    2812688: 2832488
+    2812693: 2832488
+    2812686: 2832488
+    2812687: 2832488
+    2812689: 2832488
+    2812684: 2832488
+    2812685: 2832488
+    2812695: 2832488
+    2812696: 2832488
+    2813980: 2832488
+    2813981: 2832488
+    2813983: 2832488
+    2813982: 2832488
+    2812744: 2832488
+    2812743: 2832488
+    2812745: 2832488
+    2812742: 2832488
+    2812741: 2832488
+    2812740: 2832488
+    2812735: 2832488
+    2813499: 2832488
+    2812135: 2832488
+    1042380300: 2832488
+    2812499: 2832488
+    2812496: 2832488
+    2813100: 2832488
+    2813101: 2832488
+    2813099: 2832488
+    2802514: 2832488
+    2802513: 2832488
+    2802512: 2832488
+    1035420209: 2832488
+    1035420211: 2832488
+    1035420212: 2832488
+    1037420300: 2832488
+    2810409: 2832488
+    2801867: 2832488
+    2810112: 2832488
+    2810110: 2832488
+    2810113: 2832488
+    2810114: 2832488
+    2810111: 2832488
+    2820244: 2832488
+    2820238: 2832488
+    2820243: 2832488
+    2820237: 2832488
+    1046400212: 2832488
+    1037530351: 2832488
+    1037530353: 2832488
+    1037530350: 2832488
+    1037530354: 2832488
+    1037530352: 2832488
+    2810566: 2832488
+    2810565: 2832488
+    2810562: 2832488
+    2810563: 2832488
+    2810574: 2832488
+    2810576: 2832488
+    2810577: 2832488
+    2810567: 2832488
+    2811601: 2832488
+    1041530815: 2832488
+    1041530812: 2832488
+    1041530816: 2832488
+    1043530207: 2832488
+    1043530206: 2832488
+    1043530204: 2832488
+    2813681: 2832488
+    2813682: 2832488
+    2813685: 2832488
+    2813680: 2832488
+    2813683: 2832488
+    2813684: 2832488
+    1044530237: 2832488
+    1044530206: 2832488
+    2820443: 2832488
+    2820444: 2832488
+    2821385: 2832488
+    2821368: 2832488
+    2821369: 2832488
+    2821383: 2832488
+    2821384: 2832488
+    2820892: 2832488
+    2820891: 2832488
+    2820890: 2832488
+    2820889: 2832488
+    2820898: 2832488
+    2820900: 2832488
+    2820899: 2832488
+    2820897: 2832488
+    2820881: 2832488
+    2801727: 2832488
+    2801724: 2832488
+    2801725: 2832488
+    2801722: 2832488
+    2801723: 2832488
+    2801719: 2832488
+    2801721: 2832488
+    2801726: 2832488
+    2823098: 2832488
+    2823093: 2832488
+    2823091: 2832488
+    2823090: 2832488
+    2823095: 2832488
+    2823089: 2832488
+    2823092: 2832488
+    2823094: 2832488
+    2823134: 2832488
+    2823133: 2832488
+    2823096: 2832488
+    2823097: 2832488
+    2823225: 2832488
+    2823229: 2832488
+    2823220: 2832488
+    2823154: 2832488
+    2822292: 2832488
+    2822475: 2832488
+    2822472: 2832488
+    2823237: 2832488
+    2822651: 2832488
+    2823155: 2832488
+    2822753: 2832488
+    2823157: 2832488
+    2822390: 2832488
+    2822391: 2832488
+    2822388: 2832488
+    2822387: 2832488
+    2822389: 2832488
+    2822423: 2832488
+    2049440815: 2832488
+    2049430810: 2832488
+    2049440811: 2832488
+    2049440818: 2832488
+    2049440814: 2832488
+    2049440813: 2832488
+    2049440812: 2832488
+    2049440810: 2832488
+    2049440817: 2832488
+    2049430812: 2832488
+    2049440816: 2832488
+    2830472: 2832488
+    2830448: 2832488
+    2047450224: 2832488
+    2047450223: 2832488
+    2830465: 2832488
+    2830464: 2832488
+    2830466: 2832488
+    2830467: 2832488
+    2047450208: 2832488
+    2830443: 2832488
+    2830442: 2832488
+    2830444: 2832488
+    2830445: 2832488
+    2047450204: 2832488
+    2830447: 2832488
+    2047450222: 2832488
+    2830460: 2832488
+    2047450236: 2832488
+    2830446: 2832488
+    2831859: 2832488
+    2831858: 2832488
+    2831860: 2832488
+    2831931: 2832488
+    2831857: 2832488
+    2831932: 2832488
+    2831933: 2832488
+    2831934: 2832488
+    2831935: 2832488
+    2831930: 2832488
+    2831929: 2832488
+    2823684: 2832488
+    2830810: 2832488
+    2823683: 2832488
+    2047390208: 2832488
+    2047390205: 2832488
+    2823681: 2832488
+    2823745: 2832488
+    2823746: 2832488
+    2823751: 2832488
+    2823750: 2832488
+    2823752: 2832488
+    2823734: 2832488
+    2823735: 2832488
+    2823738: 2832488
+    2823867: 2832488
+    2822952: 2832488
+    2822947: 2832488
+    2822939: 2832488
+    2822940: 2832488
+    2822943: 2832488
+    2822944: 2832488
+    2822936: 2832488
+    2822937: 2832488
+    2822942: 2832488
+    2822948: 2832488
+    2822949: 2832488
+    2822941: 2832488
+    2822935: 2832488
+    2822945: 2832488
+    2822931: 2832488
+    2822950: 2832488
+    2822946: 2832488
+    2822951: 2832488
+    2052400200: 2832488
+    2045460307: 2832488
+    2045460308: 2832488
+    2045460309: 2832488
+    2045460310: 2832488
+    2045460311: 2832488
+    2045460312: 2832488
+    2045460313: 2832488
+    2045460317: 2832488
+    2045460318: 2832488
+    12080800: 31020800
+    12040800: 30090800
+    32110800: 10010800
+    13000801: 2050480860
+    31100800: 10000800
+    30000800: 1038480800
+    12030390: 31040800
+    31060800: 1035500800
+    1036450340: 35000800
+    1048370800: 1048400800
+    12010800: 1049390850
+    12020830: 41010800
+    13000830: 31070800
+    19000800: 32040800
+    1052560800: 1052410800
+    1043330800: 1040530800
+    35000850: 30190800
+    32080800: 2049440710
+    34140850: 32000800
+    31210800: 1050570850
+    1034420800: 30130800
+    1034450800: 1038520340
+    11050801: 30160800
+    34130800: 1053560800
+    31220800: 1041530800
+    31170800: 1044360800
+    11050800: 2049480800
+    12030850: 31030800
+    39200800: 2044470800
+    15000800: 1038410800
+    13000800: 21010800
+    31120800: 30030800
+    12050800: 31180800
+    11000800: 1052520800
+    1044320342: 1042370800
+    34120800: 41020800
+    30160800: 31170800
+    19000810: 31190850
+    12090800: 30180800
+    14000801: 1035420800
+    14000800: 1044530800
+    32020800: 1039500800
+    1035500800: 12080800
+    16000801: 1051430800
+    16000800: 2047450800
+    32000800: 14000800
+    30060800: 15000850
+    18000850: 1248550801
+    1045390800: 11000850
+    12020800: 1041520800
+ItemPreset: >+
+  KeyItemSilo: DLC
+
+  NorandomItems:
+
+  - Name: Spectral Steed Whistle
+    ID: goods:130
+  - Name: Flask of Wondrous Physick
+    ID: goods:250
+  - Name: Crafting Kit
+    ID: goods:8500
+  - Name: Spirit Calling Bell
+    ID: goods:8158
+  - Name: Whetstone Knife
+    ID: goods:8590
+  - Name: Lantern
+    ID: goods:2070
+  - Name: Gaol Lower Level Key
+    ID: goods:2008006
+  - Name: Gaol Upper Level Key
+    ID: goods:2008005
+  - Name: Star-Lined Sword
+    ID: weapon:2520000
+  - Name: Ymir's Bell Bearing
+    ID: goods:2008901
+  - Name: Maternal Staff
+    ID: weapon:33520000
+  - Name: High Priest Gloves
+    ID: protector:5060200
+  - Name: High Priest Hat
+    ID: protector:5060000
+  - Name: High Priest Robe
+    ID: protector:5060100
+  - Name: High Priest Undergarments
+    ID: protector:5060300
+  - Name: Revered Spirit Ash
+    ID: goods:2010100
+  - Name: Remembrance of the Mother of Fingers
+    ID: goods:2002909
+  Placements:
+
+  - Type: KeyItems
+    Mode: Custom
+    Items:
+    - Group: keyitems
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: namelessmausoleum
+    - Tag: criticalpath
+    - Tag: overworldboss
+    - Tag: dragonboss
+    Excludes:
+    - Tag: missable
+    - Tag: night
+  - Type: QuestItems
+    Mode: Anywhere
+    Items:
+    - Group: questitems
+    - Name: Shabriri Grape
+      ID: goods:1240
+    - Name: Seedbed Curse
+      ID: goods:8193
+    - Name: Deathroot
+      ID: goods:2090
+    Excludes:
+    - Tag: missable
+  - Type: CoreMechanics
+    Mode: Important
+    Items:
+    - Name: Talisman Pouch
+      ID: goods:10040
+    - Name: Memory Stone
+      ID: goods:10030
+    - Name: Iron Whetblade
+      ID: goods:8970
+    - Name: Red-Hot Whetblade
+      ID: goods:8971
+    - Name: Sanctified Whetblade
+      ID: goods:8972
+    - Name: Glintstone Whetblade
+      ID: goods:8973
+    - Name: Black Whetblade
+      ID: goods:8974
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    Excludes:
+    - Tag: missable
+  - Type: SacredFlaskUpgrades
+    Mode: Custom
+    Items:
+    - Name: Golden Seed
+      ID: goods:10010
+    - Name: Sacred Tear
+      ID: goods:10020
+    Requires:
+    - Tag: boss
+    - Tag: namelessmausoleum
+    - Tag: racemode
+    - Tag: criticalpath
+    - Tag: overworldboss
+    - Tag: dragonboss
+    Excludes:
+    - Tag: missable
+    - Tag: minidungeon
+  - Type: UpgradeBellBearings
+    Mode: Norandom
+    Items:
+    - Group: upgradeashes
+    Excludes:
+    - Tag: missable
+  - Type: ShadowRealmBlessings
+    Mode: Custom
+    Items:
+    - Name: Scadutree Fragment
+      ID: goods:2010000
+    - Name: Revered Spirit Ash
+      ID: goods:2010100
+    Requires:
+    - Tag: racemode
+    - Tag: boss
+    - Tag: namelessmausoleum
+    - Tag: criticalpath
+    - Tag: overworldboss
+    - Tag: dragonboss
+    Excludes:
+    - Tag: missable
+    - Tag: minidungeon
+  - Type: BossTools
+    Mode: Custom
+    Items:
+    - Name: Margit's Shackle
+      ID: goods:2140
+    - Name: Mohg's Shackle
+      ID: goods:2150
+    - Name: Miquella's Great Rune
+      ID: goods:2008000
+    - Name: Sentry's Torch
+      ID: weapon:24070000
+    - Name: Purifying Crystal Tear
+      ID: goods:11027
+    Requires: []
+    Excludes:
+    - Tag: missable
+    - Tag: boss
+    - Tag: altboss
+  - Type: BaseOnlyItems
+    Mode: Custom
+    Items:
+    - Name: Arteria Leaf
+      ID: goods:20691
+    - Name: Golden Rune [2]
+      ID: goods:2901
+    - Name: Golden Rune [3]
+      ID: goods:2902
+    - Name: Golden Rune [4]
+      ID: goods:2903
+    - Name: Golden Rune [5]
+      ID: goods:2904
+    - Name: Aeonian Butterfly
+      ID: goods:20801
+    - Name: Altus Bloom
+      ID: goods:20681
+    - Name: Albinauric Bloodclot
+      ID: goods:15420
+    - Name: Ancient Ruins Cross Message
+      ID: goods:2008028
+    - Name: Ballista Bolt
+      ID: weapon:53000000
+    - Name: Beast Blood
+      ID: goods:15030
+    - Name: Beast Horn
+      ID: goods:2015000
+    - Name: Beast Liver
+      ID: goods:15010
+    - Name: Blood-Tainted Excrement
+      ID: goods:20831
+    - Name: Bloodrose
+      ID: goods:20723
+    - Name: Budding Cave Moss
+      ID: goods:20841
+    - Name: Budding Horn
+      ID: goods:15050
+    - Name: Cave Moss
+      ID: goods:20840
+    - Name: Crab Eggs
+      ID: goods:15130
+    - Name: Cuckoo Glintstone
+      ID: goods:3030
+    - Name: Dewgem
+      ID: goods:2020005
+    - Name: Dragon Heart
+      ID: goods:10060
+    - Name: Eye of Yelough
+      ID: goods:20740
+    - Name: Explosive Bolt
+      ID: weapon:52060000
+    - Name: Explosive Greatbolt
+      ID: weapon:53020000
+    - Name: Festering Bloody Finger
+      ID: goods:111
+    - Name: Fire Blossom
+      ID: goods:20682
+    - Name: Furlcalling Finger Remedy
+      ID: goods:150
+    - Name: Fulgurbloom
+      ID: goods:20652
+    - Name: Glass Shard
+      ID: goods:10000
+    - Name: Glintstone Firefly
+      ID: goods:20812
+    - Name: Glintstone Scrap
+      ID: goods:3050
+    - Name: Glowstone
+      ID: goods:2030
+    - Name: Grace Mimic
+      ID: goods:2050
+    - Name: Gravel Stone
+      ID: goods:20855
+    - Name: Hefty Beast Bone
+      ID: goods:15341
+    - Name: Human Bone Shard
+      ID: goods:15100
+    - Name: Knot Resin
+      ID: goods:2020004
+    - Name: Large Glintstone Scrap
+      ID: goods:3051
+    - Name: Living Jar Shard
+      ID: goods:15410
+    - Name: Lump of Flesh
+      ID: goods:15020
+    - Name: Miranda Powder
+      ID: goods:15150
+    - Name: Nascent Butterfly
+      ID: goods:20800
+    - Name: Old Fang
+      ID: goods:15040
+    - Name: Poisonbloom
+      ID: goods:20650
+    - Name: Poisoned Stone
+      ID: goods:1840
+    - Name: Rainbow Stone
+      ID: goods:2020
+    - Name: Rimed Crystal Bud
+      ID: goods:20751
+    - Name: Root Resin
+      ID: goods:20775
+    - Name: Sacramental Bud
+      ID: goods:20753
+    - Name: Sacred Bloody Flesh
+      ID: goods:2001210
+    - Name: Silver-Pickled Fowl Foot
+      ID: goods:1190
+    - Name: Sliver of Meat
+      ID: goods:15000
+    - Name: Slumbering Egg
+      ID: goods:15120
+    - Name: Spiritgrave Stone
+      ID: goods:2020028
+    - Name: Stormhawk Feather
+      ID: goods:15430
+    - Name: String
+      ID: goods:15400
+    - Name: Strip of White Flesh
+      ID: goods:15160
+    - Name: Turtle Neck Meat
+      ID: goods:15090
+    - Name: Golden Rune [1]
+      ID: goods:2900
+    - Name: Deathroot
+      ID: goods:2090
+    - Name: Stonesword Key
+      ID: goods:8000
+    - Name: Furnace Visage
+      ID: goods:2020035
+    - Group: cookbooks
+    Requires: []
+    Excludes:
+    - Tag: dlc
+  - Type: DlcOnlyItems
+    Mode: Custom
+    Items:
+    - Name: Scadutree Fragment
+      ID: goods:2010000
+    - Name: Revered Spirit Ash
+      ID: goods:2010100
+    - Group: crystaltears
+    - Group: itemashes
+    - Name: Miquella's Great Rune
+      ID: goods:2008000
+    - Name: Golden Rune [10]
+      ID: goods:2909
+    - Name: Golden Rune [11]
+      ID: goods:2910
+    - Name: Golden Rune [12]
+      ID: goods:2911
+    - Name: Golden Rune [13]
+      ID: goods:2912
+    - Name: Marika's Rune
+      ID: goods:2002960
+    - Name: Lord's Rune
+      ID: goods:2919
+    - Name: Numen's Rune
+      ID: goods:2913
+    - Group: bosssouls
+    Requires: []
+    Excludes:
+    - Tag: nodlc
+  LocationGroups:
+
+  - Requires:
+    - Tag: racemode
+    - Tag: boss
+    Excludes:
+    - Tag: missable
+  Version: 1
+HelperConfig: >+
+  [settings]
+
+  autoEquip = false
+
+  equipShop = false
+
+  equipWeapons = false
+
+  bowLeft = false
+
+  castLeft = false
+
+  equipArmor = false
+
+  equipAccessory = false
+
+  equipSpells = false
+
+  equipCrystalTears = false
+
+  autoUpgrade = true
+
+  autoUpgradeWeapons = true
+
+  regionLockWeapons = false
+
+  weaponLevelsBelowMax = 0
+
+  weaponLevelRange = 0
+
+  autoUpgradeSpiritAshes = false
+
+  autoUpgradeDropped = true
