@@ -6,17 +6,14 @@ namespace BossArenaRandomizer.Services;
 
 public sealed class AppStateService
 {
-    private readonly string _basePath;
-
     public Dictionary<string, ArenaInfo> Arenas { get; private set; } = new();
     public Dictionary<string, BossInfo> Bosses { get; private set; } = new();
     public Modules Modules { get; private set; } = default!;
 
     public event EventHandler? StateReloaded;
 
-    public AppStateService(string basePath)
+    public AppStateService()
     {
-        _basePath = basePath ?? throw new ArgumentNullException(nameof(basePath));
         ReloadAll();
     }
 

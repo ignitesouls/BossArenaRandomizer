@@ -32,15 +32,15 @@ public sealed class MainViewModel : ViewModelBase
         set => SetProperty(ref _currentPageViewModel, value);
     }
 
-    public MainViewModel(string basePath, AppStateService appStateService)
+    public MainViewModel(AppStateService appStateService)
     {
         _appStateService = appStateService ?? throw new ArgumentNullException(nameof(appStateService));
 
         var settingsService = new SettingsService();
-        var presetService = new PresetService(basePath);
+        var presetService = new PresetService();
         var seedGenerationService = new SeedGenerationService();
         var seedAnalysisService = new SeedAnalysisService();
-        var dataRepository = new DataRepository(basePath);
+        var dataRepository = new DataRepository();
 
         GenerateViewModel? generateVm = null;
         DashboardViewModel? dashboardVm = null;
@@ -55,7 +55,6 @@ public sealed class MainViewModel : ViewModelBase
         }
 
         generateVm = new GenerateViewModel(
-            basePath,
             settingsService,
             presetService,
             seedGenerationService,

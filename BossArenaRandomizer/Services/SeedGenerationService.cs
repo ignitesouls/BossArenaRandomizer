@@ -30,7 +30,6 @@ public sealed class GenerationRequest
     public required List<string> SelectedArenaIds { get; init; }
     public required List<string> SelectedBossIds { get; init; }
 
-    public required string BasePath { get; init; }
     public required string OutputPath { get; init; }
     public required string SelectedOptionsPreset { get; init; }
 
@@ -119,8 +118,11 @@ public sealed class SeedGenerationService
 
         for (int i = 1; i <= request.SeedCount; i++)
         {
-            var rng = new Random();
+            // TODO: Implement a Batch-aware deterministic protocol for randomization
+            var randomizer = new UniversalReplacementRandomizer.SeedManager(prefix: Constants.BARPrefix);
+            int seed = randomizer.GetBaseSeed();
 
+            var rng = randomizer.GetRandomByKey($"Batch_{i}");
             bool ok = ArenaBossAssigner.TryAssign(
                 arenas: request.Arenas,
                 bosses: request.Bosses,
@@ -146,9 +148,6 @@ public sealed class SeedGenerationService
             }
 
             Dictionary<string, string> finalAssignments = assignResult.Assignments;
-
-            var randomizer = new UniversalReplacementRandomizer.SeedManager();
-            int seed = randomizer.GetBaseSeed();
 
             string outputPath = BuildBatchOutputPath(
                 request.OutputPath,

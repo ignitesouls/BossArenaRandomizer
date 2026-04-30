@@ -63,9 +63,9 @@ public class FilterBosses : INotifyPropertyChanged
         RegionGroups = new ObservableCollection<RegionGroupBoss>();
 
         // Load base list from CSV
-        if (File.Exists("ArenaBossData.csv"))
+        if (File.Exists(Constants.ArenaBossDataPath))
         {
-            var lines = File.ReadAllLines(Path.Combine(basePath, "ArenaBossData.csv")).Skip(1); // Skip header
+            var lines = File.ReadAllLines(Constants.ArenaBossDataPath).Skip(1); // Skip header
             foreach (var line in lines)
             {
                 var parts = line.Split(',');

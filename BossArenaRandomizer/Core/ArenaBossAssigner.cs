@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using UniversalReplacementRandomizer;
 
 namespace BossArenaRandomizer.Core;
 
@@ -24,7 +25,7 @@ public static class ArenaBossAssigner
         Dictionary<string, BossInfo> bosses,
         IReadOnlyCollection<string> selectedArenaIds,
         IReadOnlyCollection<string> selectedBossIds,
-        dynamic validator,
+        IReplacementValidator validator,
         int maxAttempts,
         Random rng,
         out AssignResult? result,

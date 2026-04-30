@@ -17,8 +17,8 @@ namespace BossArenaRandomizer
 
             InitializeComponent();
 
-            var appStateService = new AppStateService(_basePath);
-            DataContext = new MainViewModel(_basePath, appStateService);
+            var appStateService = new AppStateService();
+            DataContext = new MainViewModel(appStateService);
         }
     }
 }

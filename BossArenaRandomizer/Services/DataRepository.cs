@@ -8,16 +8,10 @@ namespace BossArenaRandomizer.Services;
 
 public sealed class DataRepository
 {
-    private readonly string _basePath;
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
         WriteIndented = true
     };
-
-    public DataRepository(string basePath)
-    {
-        _basePath = basePath ?? throw new ArgumentNullException(nameof(basePath));
-    }
 
     public Dictionary<string, ArenaInfo> LoadArenaDictionary()
     {

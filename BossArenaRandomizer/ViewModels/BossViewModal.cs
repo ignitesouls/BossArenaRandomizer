@@ -163,7 +163,7 @@ public sealed class BossViewModel : ViewModelBase
     {
         var dialog = new SaveFileDialog
         {
-            InitialDirectory = _presetService.BossPresetDirectory,
+            InitialDirectory = Constants.BossPresetDirectory,
             Filter = "JSON files (*.json)|*.json",
             DefaultExt = ".json",
             FileName = "MyCustomBossPreset"

@@ -9,14 +9,6 @@ namespace BossArenaRandomizer.Services;
 
 public sealed class PresetService
 {
-    private readonly string _basePath;
-
-    public PresetService(string basePath)
-    {
-        _basePath = basePath ?? throw new ArgumentNullException(nameof(basePath));
-    }
-
-
     public List<string> GetArenaPresetFiles()
     {
         EnsureDirectory(Constants.ArenaPresetDirectory);

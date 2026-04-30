@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.IO;
 using System.Windows.Data;
 using BossArenaRandomizer.Services;
 using Microsoft.Win32;
@@ -163,7 +164,7 @@ public sealed class ArenaViewModel : ViewModelBase
     {
         var dialog = new SaveFileDialog
         {
-            InitialDirectory = _presetService.ArenaPresetDirectory,
+            InitialDirectory = Constants.ArenaPresetDirectory,
             Filter = "JSON files (*.json)|*.json",
             DefaultExt = ".json",
             FileName = "MyCustomArenaPreset"

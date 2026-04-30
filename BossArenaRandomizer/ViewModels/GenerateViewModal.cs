@@ -30,7 +30,6 @@ public sealed class GenerateViewModel : ViewModelBase
     private readonly PresetService _presetService;
     private readonly SeedGenerationService _seedGenerationService;
 
-    private readonly string _basePath;
     private readonly Func<Dictionary<string, ArenaInfo>> _getArenas;
     private readonly Func<Dictionary<string, BossInfo>> _getBosses;
     private readonly Func<FilterArenas> _getArenaFilter;
@@ -176,7 +175,6 @@ public sealed class GenerateViewModel : ViewModelBase
     public RelayCommand ToggleSpoilerCommand { get; }
 
     public GenerateViewModel(
-        string basePath,
         SettingsService settingsService,
         PresetService presetService,
         SeedGenerationService seedGenerationService,
@@ -185,7 +183,6 @@ public sealed class GenerateViewModel : ViewModelBase
         Func<FilterArenas> getArenaFilter,
         Func<FilterBosses> getBossFilter)
     {
-        _basePath = basePath ?? throw new ArgumentNullException(nameof(basePath));
         _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
         _presetService = presetService ?? throw new ArgumentNullException(nameof(presetService));
         _seedGenerationService = seedGenerationService ?? throw new ArgumentNullException(nameof(seedGenerationService));
@@ -306,7 +303,6 @@ public sealed class GenerateViewModel : ViewModelBase
             Bosses = _getBosses(),
             SelectedArenaIds = selectedArenaIds,
             SelectedBossIds = selectedBossIds,
-            BasePath = _basePath,
             OutputPath = OutputPath,
             SelectedOptionsPreset = SelectedOptionsPreset,
             ClearArenasEnabled = ClearArenasEnabled,
