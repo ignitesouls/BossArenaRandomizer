@@ -43,11 +43,11 @@
         <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,18">
             <Border Background="#171720" CornerRadius="16" Padding="16" Margin="0,0,12,0">
                 <StackPanel>
-                    <TextBlock Text="Imported Seed" Foreground="#A9A9B3"/>
+                    <TextBlock Text="Imported Spoiler Log" Foreground="#A9A9B3"/>
                     <TextBox Text="{Binding ImportedSeedPath}"
                              Margin="0,10,0,0"
                              IsReadOnly="True"/>
-                    <Button Content="Import Seed File"
+                    <Button Content="Import Spoiler Log"
                             Command="{Binding ImportSeedCommand}"
                             Margin="0,10,0,0"
                             Height="32"/>

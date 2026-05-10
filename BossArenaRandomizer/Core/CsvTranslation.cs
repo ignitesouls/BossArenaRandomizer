@@ -24,8 +24,9 @@ namespace BossArenaRandomizer.Core
             {
                 string name = arenaEntry.Key;
                 ArenaInfo arena = arenaEntry.Value;
-                string arenaTypeEvergaol = GetArenaType(arena.arenaType); //Checks for arenaType 7 which is Evergaol See HCData.cs for categories
-                string arenaBitmap = GetArenaBitmap(arena, arenaTypeEvergaol);
+                string arenaTypeEvergaol = GetArenaTypeEvergaol(arena.arenaType); //Checks for arenaType 7 which is Evergaol See HCData.cs for categories
+                string arenaTypeOpenworld = GetArenaTypeOpenworld(arena.arenaType); //Check for arenaType 3 which is Overworld See HCData.cs for categories
+                string arenaBitmap = GetArenaBitmap(arena, arenaTypeEvergaol, arenaTypeOpenworld);
                 string arenaSizeBitmap = GetArenaSizeBitmap(arena.arenaSize);
                 string arenaBossRushDifficulty = GetArenaBoshRushDifficultyBitmap(arena.hardNotAllowed);
                 string arenaLooseDifficultyCurve = GetArenaLooseDifficultyCurveBitmap(arena.difficultyPassThrough);
@@ -43,14 +44,14 @@ namespace BossArenaRandomizer.Core
             File.WriteAllText(outputPath, sb.ToString());
         }
 
-        private static string GetArenaBitmap(ArenaInfo arena, string arenaTypeEvergaol)
+        private static string GetArenaBitmap(ArenaInfo arena, string arenaTypeEvergaol, string arenaTypeOpenworld)
         {
-            return $"{arena.twoPhaseNotAllowed}{arena.dragonNotAllowed}{arena.npcNotAllowed}{arena.isEscapable}{arena.messmerNotAllowed}{arena.malikethNotAllowed}{arenaTypeEvergaol}{arena.godskinduoNotAllowed}";
+            return $"{arena.twoPhaseNotAllowed}{arena.dragonNotAllowed}{arena.npcNotAllowed}{arena.isEscapable}{arena.messmerNotAllowed}{arena.malikethNotAllowed}{arenaTypeEvergaol}{arenaTypeOpenworld}{arena.godskinduoNotAllowed}";
         }
 
         private static string GetBossBitmap(BossInfo boss)
         {
-            return $"{boss.isTwoPhase}{boss.isDragon}{boss.isNPC}{boss.canEscape}{boss.isMessmer}{boss.isMaliketh}{boss.isEvergaolIncompatible}{boss.isGodskinDuo}";
+            return $"{boss.isTwoPhase}{boss.isDragon}{boss.isNPC}{boss.canEscape}{boss.isMessmer}{boss.isMaliketh}{boss.isEvergaolIncompatible}{boss.isOpenworldIncompatible}{boss.isGodskinDuo}";
         }
 
         private static string GetArenaSizeBitmap(int size)
@@ -99,11 +100,20 @@ namespace BossArenaRandomizer.Core
             };
         }
 
-        private static string GetArenaType(int arenaType)
+        private static string GetArenaTypeEvergaol(int arenaType)
         {
             return arenaType switch
             {
                 7 => "1",
+                _ => "0" //default
+            };
+        }
+
+        private static string GetArenaTypeOpenworld(int arenaType)
+        {
+            return arenaType switch
+            {
+                3 => "1",
                 _ => "0" //default
             };
         }

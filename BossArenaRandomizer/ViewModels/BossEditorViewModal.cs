@@ -102,6 +102,7 @@ namespace BossArenaRandomizer.ViewModels
             ["isMessmer"] = "Is Messmer",
             ["isMaliketh"] = "Is Maliketh",
             ["isEvergaolIncompatible"] = "Evergaol Incompatible",
+            ["isOpenworldIncompatible"] = "Open World Incompatible",
             ["isGodskinDuo"] = "Is Godskin Duo",
             ["isHard"] = "Is Hard",
             ["baseDifficulty"] = "Base Difficulty",
@@ -159,6 +160,7 @@ namespace BossArenaRandomizer.ViewModels
             ["isMessmer"] = ZeroOneOptions(),
             ["isMaliketh"] = ZeroOneOptions(),
             ["isEvergaolIncompatible"] = ZeroOneOptions(),
+            ["isOpenworldIncompatible"] = ZeroOneOptions(),
             ["isGodskinDuo"] = ZeroOneOptions(),
             ["isHard"] = ZeroOneOptions(),
             ["spawner"] = ZeroOneOptions()

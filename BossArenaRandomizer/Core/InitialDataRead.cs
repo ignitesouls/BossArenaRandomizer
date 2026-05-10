@@ -45,6 +45,7 @@ namespace BossArenaRandomizer.Core
         public int isMaliketh { get; set; }
         public int isEvergaolIncompatible { get; set; }
         public int isGodskinDuo { get; set; }
+        public int isOpenworldIncompatible { get; set; }
         public int isHard { get; set; }
         public int baseDifficulty { get; set; }
         public int spawner { get; set; }
