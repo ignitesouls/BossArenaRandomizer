@@ -56,7 +56,7 @@ namespace BossArenaRandomizer.Core
 
             if (includeClearArenas)
             {
-                string clearArenaAnimal = "2832488"; // Springhare
+                string clearArenaAnimal = "2822374"; // Springhare
                 foreach (var extraId in HCFilterIds.ClearArenasIds)
                     enemiesBlock.AppendLine($"    {extraId}: {clearArenaAnimal}");
             }
