@@ -104,6 +104,7 @@ namespace BossArenaRandomizer.ViewModels
             ["isEvergaolIncompatible"] = "Evergaol Incompatible",
             ["isOpenworldIncompatible"] = "Open World Incompatible",
             ["isGodskinDuo"] = "Is Godskin Duo",
+            ["isFiregiant"] = "Is Fire Giant",
             ["isHard"] = "Is Hard",
             ["baseDifficulty"] = "Base Difficulty",
             ["spawner"] = "Spawner",

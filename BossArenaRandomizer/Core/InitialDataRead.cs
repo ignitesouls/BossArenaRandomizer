@@ -23,6 +23,7 @@ namespace BossArenaRandomizer.Core
         public int messmerNotAllowed { get; set; }
         public int malikethNotAllowed { get; set; }
         public int godskinduoNotAllowed {  get; set; }
+        public int firegiantNotAllowed { get; set; }
         public int hardNotAllowed { get; set; }
         public int difficultyPassThrough {  get; set; }
         public int spawner { get; set; }
@@ -45,6 +46,7 @@ namespace BossArenaRandomizer.Core
         public int isMaliketh { get; set; }
         public int isEvergaolIncompatible { get; set; }
         public int isGodskinDuo { get; set; }
+        public int isFiregiant { get; set; }
         public int isOpenworldIncompatible { get; set; }
         public int isHard { get; set; }
         public int baseDifficulty { get; set; }

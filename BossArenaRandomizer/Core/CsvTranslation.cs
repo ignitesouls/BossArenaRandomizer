@@ -46,12 +46,12 @@ namespace BossArenaRandomizer.Core
 
         private static string GetArenaBitmap(ArenaInfo arena, string arenaTypeEvergaol, string arenaTypeOpenworld)
         {
-            return $"{arena.twoPhaseNotAllowed}{arena.dragonNotAllowed}{arena.npcNotAllowed}{arena.isEscapable}{arena.messmerNotAllowed}{arena.malikethNotAllowed}{arenaTypeEvergaol}{arenaTypeOpenworld}{arena.godskinduoNotAllowed}";
+            return $"{arena.twoPhaseNotAllowed}{arena.dragonNotAllowed}{arena.npcNotAllowed}{arena.isEscapable}{arena.messmerNotAllowed}{arena.malikethNotAllowed}{arenaTypeEvergaol}{arenaTypeOpenworld}{arena.godskinduoNotAllowed}{arena.firegiantNotAllowed}";
         }
 
         private static string GetBossBitmap(BossInfo boss)
         {
-            return $"{boss.isTwoPhase}{boss.isDragon}{boss.isNPC}{boss.canEscape}{boss.isMessmer}{boss.isMaliketh}{boss.isEvergaolIncompatible}{boss.isOpenworldIncompatible}{boss.isGodskinDuo}";
+            return $"{boss.isTwoPhase}{boss.isDragon}{boss.isNPC}{boss.canEscape}{boss.isMessmer}{boss.isMaliketh}{boss.isEvergaolIncompatible}{boss.isOpenworldIncompatible}{boss.isGodskinDuo}{boss.isFiregiant}";
         }
 
         private static string GetArenaSizeBitmap(int size)

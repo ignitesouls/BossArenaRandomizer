@@ -158,6 +158,7 @@ namespace BossArenaRandomizer.ViewModels
             ["messmerNotAllowed"] = ZeroOneOptions(),
             ["malikethNotAllowed"] = ZeroOneOptions(),
             ["godskinduoNotAllowed"] = ZeroOneOptions(),
+            ["firegiantNotAllowed"] = ZeroOneOptions(),
             ["hardNotAllowed"] = ZeroOneOptions(),
             ["spawner"] = ZeroOneOptions()
         };
