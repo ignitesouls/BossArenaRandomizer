@@ -46,6 +46,7 @@ namespace BossArenaRandomizer.ViewModels
             DashboardViewModel? dashboardVm = null;
             ArenaViewModel? arenaVm = null;
             BossViewModel? bossVm = null;
+            DatabaseEditorViewModel? databaseEditorVm = null;
 
             void NavigateTo(string title)
             {
@@ -99,14 +100,13 @@ namespace BossArenaRandomizer.ViewModels
 
             var arenaEditorVm = new ArenaEditorViewModel(
                 dataRepository,
-                _appStateService,
-                RefreshSharedState
+                presetService,
+                _appStateService
             );
 
-            var bossEditorVm = new BossEditorViewModel(
+            databaseEditorVm = new DatabaseEditorViewModel(
                 dataRepository,
-                _appStateService,
-                RefreshSharedState
+                _appStateService
             );
 
             NavigationItems = new ObservableCollection<NavigationItem>
@@ -116,8 +116,8 @@ namespace BossArenaRandomizer.ViewModels
                 new NavigationItem { Title = "Arenas", ViewModel = arenaVm },
                 new NavigationItem { Title = "Bosses", ViewModel = bossVm },
                 new NavigationItem { Title = "Analyze", ViewModel = analyzeVm },
-                new NavigationItem { Title = "Arena JSON", ViewModel = arenaEditorVm },
-                new NavigationItem { Title = "Boss JSON", ViewModel = bossEditorVm },
+                new NavigationItem { Title = "Preset Pairings", ViewModel = arenaEditorVm },
+                new NavigationItem { Title = "Main Database", ViewModel = databaseEditorVm },
             };
 
             _appStateService.StateReloaded += (_, _) =>
@@ -138,6 +138,20 @@ namespace BossArenaRandomizer.ViewModels
 
                 ReplaceNavigationViewModel("Arenas", arenaVm);
                 ReplaceNavigationViewModel("Bosses", bossVm);
+
+                arenaEditorVm = new ArenaEditorViewModel(
+                    dataRepository,
+                    presetService,
+                    _appStateService
+                );
+
+                databaseEditorVm = new DatabaseEditorViewModel(
+                    dataRepository,
+                    _appStateService
+                );
+
+                ReplaceNavigationViewModel("Preset Pairings", arenaEditorVm);
+                ReplaceNavigationViewModel("Main Database", databaseEditorVm);
 
                 RefreshSharedState();
             };

@@ -18,47 +18,84 @@ namespace BossArenaRandomizer.Services
         public string ArenaPresetDirectory => Path.Combine(_basePath, "Presets", "Arenas");
         public string BossPresetDirectory => Path.Combine(_basePath, "Presets", "Bosses");
         public string OptionsPresetDirectory => Path.Combine(_basePath, "Options");
+        public string DataDirectory => Path.Combine(_basePath, "Data");
+        public string PairingPresetDirectory => Path.Combine(DataDirectory, "Pairings");
+
+        public static string ResolveContentPath(string basePath, params string[] relativeParts)
+        {
+            string relativePath = Path.Combine(relativeParts);
+            foreach (var root in GetContentRoots(basePath))
+            {
+                string candidate = Path.Combine(root, relativePath);
+                if (File.Exists(candidate) || Directory.Exists(candidate))
+                    return candidate;
+            }
+
+            return Path.Combine(basePath, relativePath);
+        }
 
         public List<string> GetArenaPresetFiles()
         {
             EnsureDirectory(ArenaPresetDirectory);
-            return Directory.GetFiles(ArenaPresetDirectory, "*.json")
+            return GetFilesFromContentDirectories(Path.Combine("Presets", "Arenas"), "*.json")
                 .Select(Path.GetFileName)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(x => x)
                 .ToList()!;
         }
 
         public List<string> GetBossPresetFiles()
         {
             EnsureDirectory(BossPresetDirectory);
-            return Directory.GetFiles(BossPresetDirectory, "*.json")
+            return GetFilesFromContentDirectories(Path.Combine("Presets", "Bosses"), "*.json")
                 .Select(Path.GetFileName)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(x => x)
                 .ToList()!;
         }
 
         public List<string> GetOptionsPresetNames()
         {
             EnsureDirectory(OptionsPresetDirectory);
-            return Directory.GetFiles(OptionsPresetDirectory, "*.randomizeopt")
+            return GetFilesFromContentDirectories("Options", "*.randomizeopt")
                 .Select(Path.GetFileNameWithoutExtension)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(x => x)
+                .ToList()!;
+        }
+
+        public List<string> GetPairingPresetFiles()
+        {
+            EnsureDirectory(PairingPresetDirectory);
+            return GetFilesFromContentDirectories(Path.Combine("Data", "Pairings"), "*.json")
+                .Select(Path.GetFileName)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(x => x)
                 .ToList()!;
         }
 
         public string GetArenaPresetPath(string presetFileName)
         {
-            return Path.Combine(ArenaPresetDirectory, presetFileName);
+            return ResolveContentPath(_basePath, "Presets", "Arenas", presetFileName);
         }
 
         public string GetBossPresetPath(string presetFileName)
         {
-            return Path.Combine(BossPresetDirectory, presetFileName);
+            return ResolveContentPath(_basePath, "Presets", "Bosses", presetFileName);
         }
 
         public string GetOptionsPresetPath(string presetName)
         {
-            return Path.Combine(OptionsPresetDirectory, presetName + ".randomizeopt");
+            return ResolveContentPath(_basePath, "Options", presetName + ".randomizeopt");
+        }
+
+        public string GetPairingPresetPath(string presetFileName)
+        {
+            return ResolveContentPath(_basePath, "Data", "Pairings", presetFileName);
         }
 
         public List<string> LoadArenaPresetIds(string presetFileName)
@@ -128,6 +165,36 @@ namespace BossArenaRandomizer.Services
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
+        }
+
+        private IEnumerable<string> GetFilesFromContentDirectories(string relativeDirectory, string searchPattern)
+        {
+            foreach (var root in GetContentRoots(_basePath))
+            {
+                string directory = Path.Combine(root, relativeDirectory);
+                if (!Directory.Exists(directory))
+                    continue;
+
+                foreach (var file in Directory.GetFiles(directory, searchPattern))
+                    yield return file;
+            }
+        }
+
+        private static IEnumerable<string> GetContentRoots(string basePath)
+        {
+            yield return basePath;
+
+            var current = new DirectoryInfo(basePath);
+            while (current != null)
+            {
+                if (File.Exists(Path.Combine(current.FullName, "BossArenaRandomizer.csproj")))
+                {
+                    yield return current.FullName;
+                    yield break;
+                }
+
+                current = current.Parent;
+            }
         }
     }
 }

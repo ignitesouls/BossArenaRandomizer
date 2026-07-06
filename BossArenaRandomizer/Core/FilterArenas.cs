@@ -55,66 +55,44 @@ namespace BossArenaRandomizer.Core
         public int SelectedCount =>
             RegionGroups?.Sum(r => r.Arenas.Count(a => a.IsSelected)) ?? 0;
 
-        private readonly string basePath = AppDomain.CurrentDomain.BaseDirectory;
-
         public FilterArenas(Dictionary<string, ArenaInfo> arenasJson)
         {
             ArenaSelections = new ObservableCollection<ArenaSelection>();
             RegionGroups = new ObservableCollection<RegionGroup>();
 
-            // Load base list from CSV
-            if (File.Exists("ArenaBossData.csv"))
+            foreach (var arenaEntry in arenasJson)
             {
-                var lines = File.ReadAllLines(Path.Combine(basePath, "ArenaBossData.csv")).Skip(1); // Skip header
-                foreach (var line in lines)
+                var arenaJson = arenaEntry.Value;
+                var arena = new ArenaSelection
                 {
-                    var parts = line.Split(',');
-                    if (parts.Length >= 2)
-                    {
-                        string name = parts[0];
-                        string id = parts[1];
+                    Name = arenaEntry.Key,
+                    Id = arenaJson.id,
+                    RegionId = arenaJson.region,
+                    RegionName = HCData.RegionNames.ContainsKey(arenaJson.region)
+                        ? HCData.RegionNames[arenaJson.region]
+                        : $"Region {arenaJson.region}",
+                    IsSelected = HCFilterIds.BaseGameArenaIds.Contains(arenaJson.id)
+                        || HCFilterIds.DLCArenaIds.Contains(arenaJson.id)
+                };
 
-                        var arena = new ArenaSelection
-                        {
-                            Name = name,
-                            Id = id,
-                            IsSelected = !HCFilterIds.UncheckArenaBossIds.Contains(id)
-                        };
-
-                        // Subscribe to checkbox changes
-                        arena.PropertyChanged += (s, e) =>
-                        {
-                            if (e.PropertyName == nameof(ArenaSelection.IsSelected))
-                            {
-                                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCount)));
-                            }
-                        };
-
-                        ArenaSelections.Add(arena);
-                    }
-                }
-            }
-
-            // Enrich with region info from JSON + group
-            foreach (var arena in ArenaSelections)
-            {
-                if (arenasJson.TryGetValue(arena.Name, out var arenaJson))
+                arena.PropertyChanged += (s, e) =>
                 {
-                    arena.RegionId = arenaJson.region;
-                    arena.RegionName = HCData.RegionNames.ContainsKey(arena.RegionId)
-                        ? HCData.RegionNames[arena.RegionId]
-                        : $"Region {arena.RegionId}";
-
-                    // Find or create region group
-                    var regionGroup = RegionGroups.FirstOrDefault(r => r.RegionName == arena.RegionName);
-                    if (regionGroup == null)
+                    if (e.PropertyName == nameof(ArenaSelection.IsSelected))
                     {
-                        regionGroup = new RegionGroup(arena.RegionName);
-                        RegionGroups.Add(regionGroup);
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedCount)));
                     }
+                };
 
-                    regionGroup.Arenas.Add(arena);
+                ArenaSelections.Add(arena);
+
+                var regionGroup = RegionGroups.FirstOrDefault(r => r.RegionName == arena.RegionName);
+                if (regionGroup == null)
+                {
+                    regionGroup = new RegionGroup(arena.RegionName);
+                    RegionGroups.Add(regionGroup);
                 }
+
+                regionGroup.Arenas.Add(arena);
             }
         }
 

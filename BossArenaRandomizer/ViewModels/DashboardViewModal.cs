@@ -58,6 +58,7 @@ namespace BossArenaRandomizer.ViewModels
         public RelayCommand GoToArenasCommand { get; }
         public RelayCommand GoToBossesCommand { get; }
         public RelayCommand GoToAnalyzeCommand { get; }
+        public RelayCommand GoToPresetPairingsCommand { get; }
 
         public DashboardViewModel(
             Func<int> getSelectedArenaCount,
@@ -80,6 +81,7 @@ namespace BossArenaRandomizer.ViewModels
             GoToArenasCommand = new RelayCommand(_ => _navigate?.Invoke("Arenas"));
             GoToBossesCommand = new RelayCommand(_ => _navigate?.Invoke("Bosses"));
             GoToAnalyzeCommand = new RelayCommand(_ => _navigate?.Invoke("Analyze"));
+            GoToPresetPairingsCommand = new RelayCommand(_ => _navigate?.Invoke("Preset Pairings"));
         }
 
         public void Refresh()

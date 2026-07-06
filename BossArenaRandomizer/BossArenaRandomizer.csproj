@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <ApplicationIcon>Assets\BAR.ico</ApplicationIcon>
   </PropertyGroup>
 
@@ -14,20 +15,21 @@
 		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		<CopyToPublishDirectory>Always</CopyToPublishDirectory>
 	</Content>
+	<Content Include="Options\**\*.randomizeopt">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+	</Content>
+	<Content Include="Presets\**\*.json">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+	</Content>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\dependencies\UniversalReplacementRandomizer\UniversalReplacementRandomizer\UniversalReplacementRandomizer.csproj" />
+    <Resource Include="Assets\Ignite Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Ignite Logo.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Core\CsvTranslation.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
     <Compile Update="Core\FilterArenas.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
@@ -35,9 +37,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Core\FinalizeTextFile.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
-    <Compile Update="Core\HCFilterIds.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
     <Compile Update="Core\InitialDataRead.cs">

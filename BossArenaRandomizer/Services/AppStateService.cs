@@ -22,14 +22,18 @@ namespace BossArenaRandomizer.Services
 
         public void ReloadAll()
         {
-            Arenas = InitialDataRead.LoadArenas(Path.Combine(_basePath, "Data", "arenas.json"));
-            Bosses = InitialDataRead.LoadBosses(Path.Combine(_basePath, "Data", "bosses.json"));
-
-            CsvTranslation.WriteArenaBossCsv(
-                Arenas,
-                Bosses,
-                Path.Combine(_basePath, "ArenaBossData.csv"));
-
+            var allArenaBossesPath = Path.Combine(_basePath, "Data", "AllArenaBossesDatabase.json");
+            if (File.Exists(allArenaBossesPath))
+            {
+                var loaded = InitialDataRead.LoadAllArenaBosses(allArenaBossesPath);
+                Arenas = loaded.Arenas;
+                Bosses = loaded.Bosses;
+            }
+            else
+            {
+                Arenas = new Dictionary<string, ArenaInfo>();
+                Bosses = new Dictionary<string, BossInfo>();
+            }
             Modules = new Modules(Arenas, Bosses);
 
             StateReloaded?.Invoke(this, EventArgs.Empty);

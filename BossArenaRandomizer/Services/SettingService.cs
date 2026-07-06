@@ -53,11 +53,6 @@ namespace BossArenaRandomizer.Services
             return Properties.Settings.Default.UseClearArenas;
         }
 
-        public bool GetUseArenaSizeRestriction()
-        {
-            return Properties.Settings.Default.UseArenaSizeRestriction;
-        }
-
         public bool GetUseBossRushDifficultyCurve()
         {
             return Properties.Settings.Default.UseBossRushDifficultyCurve;
@@ -70,12 +65,10 @@ namespace BossArenaRandomizer.Services
 
         public void SaveGenerationFlags(
             bool useClearArenas,
-            bool useArenaSizeRestriction,
             bool useBossRushDifficultyCurve,
             bool useLooseDifficulty)
         {
             Properties.Settings.Default.UseClearArenas = useClearArenas;
-            Properties.Settings.Default.UseArenaSizeRestriction = useArenaSizeRestriction;
             Properties.Settings.Default.UseBossRushDifficultyCurve = useBossRushDifficultyCurve;
             Properties.Settings.Default.UseLooseDifficulty = useLooseDifficulty;
             Properties.Settings.Default.Save();

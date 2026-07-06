@@ -9,21 +9,33 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="{Binding Title}"
-                       FontSize="30"
-                       FontWeight="Bold"
-                       Foreground="White"/>
-            <TextBlock Text="{Binding Subtitle}"
-                       Margin="0,8,0,0"
-                       FontSize="14"
-                       Foreground="#A9A9B3"/>
-        </StackPanel>
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="/BossArenaRandomizer;component/Assets/Ignite Logo.png"
+                   Width="82"
+                   Height="82"
+                   Stretch="Uniform"
+                   Margin="0,0,18,0"/>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock Text="Boss Arena Randomizer"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="White"/>
+                <TextBlock Text="{Binding Subtitle}"
+                           Margin="0,8,0,0"
+                           FontSize="14"
+                           Foreground="#A9A9B3"/>
+            </StackPanel>
+        </Grid>
 
         <!-- Top stat cards -->
         <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,20">
-            <Border Background="#171720" CornerRadius="16" Padding="18" Margin="0,0,12,0">
+            <Border Background="#171720" CornerRadius="8" Padding="18" Margin="0,0,12,0">
                 <StackPanel>
                     <TextBlock Text="Selected Arenas" Foreground="#A9A9B3"/>
                     <TextBlock Text="{Binding SelectedArenaCount}"
@@ -34,7 +46,7 @@
                 </StackPanel>
             </Border>
 
-            <Border Background="#171720" CornerRadius="16" Padding="18" Margin="0,0,12,0">
+            <Border Background="#171720" CornerRadius="8" Padding="18" Margin="0,0,12,0">
                 <StackPanel>
                     <TextBlock Text="Selected Bosses" Foreground="#A9A9B3"/>
                     <TextBlock Text="{Binding SelectedBossCount}"
@@ -45,7 +57,7 @@
                 </StackPanel>
             </Border>
 
-            <Border Background="#171720" CornerRadius="16" Padding="18" Margin="0,0,12,0">
+            <Border Background="#171720" CornerRadius="8" Padding="18" Margin="0,0,12,0">
                 <StackPanel>
                     <TextBlock Text="Options Preset" Foreground="#A9A9B3"/>
                     <TextBlock Text="{Binding SelectedOptionsPreset}"
@@ -57,7 +69,7 @@
                 </StackPanel>
             </Border>
 
-            <Border Background="#171720" CornerRadius="16" Padding="18">
+            <Border Background="#171720" CornerRadius="8" Padding="18">
                 <StackPanel>
                     <TextBlock Text="Last Status" Foreground="#A9A9B3"/>
                     <TextBlock Text="{Binding LastStatusText}"
@@ -79,7 +91,7 @@
 
             <!-- Left content -->
             <StackPanel Grid.Column="0" Margin="0,0,16,0">
-                <Border Background="#171720" CornerRadius="16" Padding="18" Margin="0,0,0,16">
+                <Border Background="#171720" CornerRadius="8" Padding="18" Margin="0,0,0,16">
                     <StackPanel>
                         <TextBlock Text="Current Output File"
                                    FontSize="20"
@@ -92,7 +104,7 @@
                     </StackPanel>
                 </Border>
 
-                <Border Background="#171720" CornerRadius="16" Padding="18">
+                <Border Background="#171720" CornerRadius="8" Padding="18">
                     <StackPanel>
                         <TextBlock Text="Last Generation"
                                    FontSize="20"
@@ -111,7 +123,7 @@
             </StackPanel>
 
             <!-- Right content -->
-            <Border Grid.Column="1" Background="#171720" CornerRadius="16" Padding="18">
+            <Border Grid.Column="1" Background="#171720" CornerRadius="8" Padding="18">
                 <StackPanel>
                     <TextBlock Text="Quick Actions"
                                FontSize="20"
@@ -132,6 +144,12 @@
                             Command="{Binding GoToBossesCommand}"
                             Margin="0,10,0,0"
                             Height="40"/>
+
+                    <Button Content="Preset Pairings"
+                            Command="{Binding GoToPresetPairingsCommand}"
+                            Margin="0,10,0,0"
+                            Height="40"
+                            Background="#7B42FF"/>
 
                     <Button Content="Analyze Seed"
                             Command="{Binding GoToAnalyzeCommand}"

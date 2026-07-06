@@ -10,23 +10,23 @@ namespace BossArenaRandomizer.Core
     {
         public static readonly Dictionary<int, string> RegionNames = new()
         {
-            { 1, "Limgrave/Weeping" },
-            { 2, "Liurnia" },
-            { 3, "Caelid/Dragonbarrow" },
-            { 4, "Mt. Gelmir" },
-            { 5, "Altus" },
-            { 6, "Mountaintops" },
-            { 7, "Farum Azula" },
-            { 8, "Ashen Captial" },
-            { 9, "Siofra" },
-            { 10, "Nokron" },
-            { 11, "Ainsel" },
-            { 12, "Nokstella" },
-            { 13, "Deeproot Depths" },
-            { 14, "Moonlight Alter" },
-            { 15, "Mohgwyn Dynasty" },
-            { 16, "Consecrated Snowfields" },
-            { 17, "Haligtree" },
+            { 1, "Limgrave" },
+            { 2, "Weeping" },
+            { 3, "Liurnia" },
+            { 4, "Caelid" },
+            { 5, "Mt. Gelmir" },
+            { 6, "Altus" },
+            { 7, "Mountaintops" },
+            { 8, "Farum Azula" },
+            { 9, "Ashen Capital" },
+            { 10, "Consecrated Snowfield" },
+            { 11, "Haligtree" },
+            { 12, "Siofra" },
+            { 13, "Ainsel" },
+            { 14, "Nokron" },
+            { 15, "Deeproot Depths" },
+            { 16, "Moonlight Alter" },
+            { 17, "Mohgwyn Dynasty Mausoleum" },
             { 18, "Gravesite Plains" },
             { 19, "Cerulean Coast" },
             { 20, "Scadu Altus" },
@@ -34,13 +34,12 @@ namespace BossArenaRandomizer.Core
             { 22, "Jagged Peak" },
             { 23, "Abyssal Woods" },
             { 24, "Ancient Ruins of Rauh" },
-            { 25, "Enir Ilim" },
-            { 26, "Extras"}
+            { 25, "Enir-Ilim" }
         };
 
         public static readonly Dictionary<int, string> ArenaBossType = new()
         {
-            { 1, "Ruin/Mausoleum" },
+            { 1, "Ruin/Mausoleums" },
             { 2, "Achievement Bosses" },
             { 3, "Open World" },
             { 4, "Cave" },

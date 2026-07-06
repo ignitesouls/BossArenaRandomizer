@@ -1,0 +1,1818 @@
+﻿{
+    "Abductor Virgins":  {
+                             "id":  "16000860",
+                             "type":  4,
+                             "nightBoss":  0,
+                             "region":  5,
+                             "scaling":  9,
+                             "dlc":  false
+                         },
+    "Adan Thief of Fire":  {
+                               "id":  "1038410800",
+                               "type":  7,
+                               "nightBoss":  0,
+                               "region":  3,
+                               "scaling":  7,
+                               "dlc":  false
+                           },
+    "Alburanic Archer on Wolf":  {
+                                     "id":  "1048560352",
+                                     "type":  2,
+                                     "nightBoss":  0,
+                                     "region":  21,
+                                     "scaling":  33,
+                                     "dlc":  true
+                                 },
+    "Alecto Black Knife Ringleader":  {
+                                          "id":  "1033420800",
+                                          "type":  7,
+                                          "nightBoss":  0,
+                                          "region":  16,
+                                          "scaling":  17,
+                                          "dlc":  false
+                                      },
+    "Ancestor Spirit":  {
+                            "id":  "12080800",
+                            "type":  2,
+                            "nightBoss":  0,
+                            "region":  12,
+                            "scaling":  7,
+                            "dlc":  false
+                        },
+    "Ancient Dragon Lansseax":  {
+                                    "id":  "1041520800",
+                                    "type":  3,
+                                    "nightBoss":  0,
+                                    "region":  6,
+                                    "scaling":  13,
+                                    "dlc":  false
+                                },
+    "Ancient Dragon Senessax":  {
+                                    "id":  "2054390850",
+                                    "type":  3,
+                                    "nightBoss":  0,
+                                    "region":  22,
+                                    "scaling":  34,
+                                    "dlc":  true
+                                },
+    "Ancient Dragon-Man":  {
+                               "id":  "43010800",
+                               "type":  2,
+                               "nightBoss":  0,
+                               "region":  18,
+                               "scaling":  26,
+                               "dlc":  true
+                           },
+    "Ancient Hero of Zamor":  {
+                                  "id":  "30080800",
+                                  "type":  5,
+                                  "nightBoss":  0,
+                                  "region":  6,
+                                  "scaling":  9,
+                                  "dlc":  false
+                              },
+    "Ancient Hero of Zamor MT":  {
+                                     "id":  "30170800",
+                                     "type":  5,
+                                     "nightBoss":  0,
+                                     "region":  7,
+                                     "scaling":  13,
+                                     "dlc":  false
+                                 },
+    "Ancient Hero of Zamor Weeping":  {
+                                          "id":  "1042330800",
+                                          "type":  7,
+                                          "nightBoss":  0,
+                                          "region":  2,
+                                          "scaling":  5,
+                                          "dlc":  false
+                                      },
+    "Astel Naturalborn of the Void":  {
+                                          "id":  "12040800",
+                                          "type":  2,
+                                          "nightBoss":  0,
+                                          "region":  13,
+                                          "scaling":  12,
+                                          "dlc":  false
+                                      },
+    "Astel Stars of Darkness":  {
+                                    "id":  "32110800",
+                                    "type":  6,
+                                    "nightBoss":  0,
+                                    "region":  10,
+                                    "scaling":  18,
+                                    "dlc":  false
+                                },
+    "Base Serpent Messmer":  {
+                                 "id":  "21010800",
+                                 "type":  2,
+                                 "nightBoss":  0,
+                                 "region":  20,
+                                 "scaling":  31,
+                                 "dlc":  true
+                             },
+    "Battlemage Hugues":  {
+                              "id":  "1049390850",
+                              "type":  7,
+                              "nightBoss":  0,
+                              "region":  4,
+                              "scaling":  10,
+                              "dlc":  false
+                          },
+    "Bayle the Dread":  {
+                            "id":  "2054390800",
+                            "type":  2,
+                            "nightBoss":  0,
+                            "region":  22,
+                            "scaling":  35,
+                            "dlc":  true
+                        },
+    "Beast Clergyman":  {
+                            "id":  "13000801",
+                            "type":  2,
+                            "nightBoss":  0,
+                            "region":  8,
+                            "scaling":  16,
+                            "dlc":  false
+                        },
+    "Beastman of Farum Azula":  {
+                                    "id":  "31030800",
+                                    "type":  4,
+                                    "nightBoss":  0,
+                                    "region":  1,
+                                    "scaling":  2,
+                                    "dlc":  false
+                                },
+    "Beastman of Farum Azula Duo":  {
+                                        "id":  "31100800",
+                                        "type":  4,
+                                        "nightBoss":  0,
+                                        "region":  4,
+                                        "scaling":  15,
+                                        "dlc":  false
+                                    },
+    "Bell Bearing Hunter Altus":  {
+                                      "id":  "1043530800",
+                                      "type":  3,
+                                      "nightBoss":  1,
+                                      "region":  6,
+                                      "scaling":  12,
+                                      "dlc":  false
+                                  },
+    "Bell Bearing Hunter Dragonbarrow":  {
+                                             "id":  "1048410800",
+                                             "type":  3,
+                                             "nightBoss":  1,
+                                             "region":  4,
+                                             "scaling":  18,
+                                             "dlc":  false
+                                         },
+    "Bell Bearing Hunter Limgrave":  {
+                                         "id":  "1042380850",
+                                         "type":  3,
+                                         "nightBoss":  1,
+                                         "region":  1,
+                                         "scaling":  5,
+                                         "dlc":  false
+                                     },
+    "Bell Bearing Hunter Vows":  {
+                                     "id":  "1037460800",
+                                     "type":  3,
+                                     "nightBoss":  1,
+                                     "region":  3,
+                                     "scaling":  9,
+                                     "dlc":  false
+                                 },
+    "Black Blade Kindred Axe":  {
+                                    "id":  "1049520800",
+                                    "type":  3,
+                                    "nightBoss":  0,
+                                    "region":  7,
+                                    "scaling":  13,
+                                    "dlc":  false
+                                },
+    "Black Blade Kindred Sword":  {
+                                      "id":  "1051430800",
+                                      "type":  3,
+                                      "nightBoss":  0,
+                                      "region":  4,
+                                      "scaling":  18,
+                                      "dlc":  false
+                                  },
+    "Black Knife Assassin":  {
+                                 "id":  "30110800",
+                                 "type":  5,
+                                 "nightBoss":  0,
+                                 "region":  1,
+                                 "scaling":  2,
+                                 "dlc":  false
+                             },
+    "Black Knife Assassin Hero\u0027s Grave":  {
+                                                   "id":  "1040520800",
+                                                   "type":  3,
+                                                   "nightBoss":  0,
+                                                   "region":  6,
+                                                   "scaling":  11,
+                                                   "dlc":  false
+                                               },
+    "Black Knife Assassin Liurnia":  {
+                                         "id":  "30050850",
+                                         "type":  5,
+                                         "nightBoss":  0,
+                                         "region":  3,
+                                         "scaling":  7,
+                                         "dlc":  false
+                                     },
+    "Black Knight Edredd":  {
+                                "id":  "2049430850",
+                                "type":  3,
+                                "nightBoss":  0,
+                                "region":  20,
+                                "scaling":  26,
+                                "dlc":  true
+                            },
+    "Black Knight Garrew":  {
+                                "id":  "2047450800",
+                                "type":  3,
+                                "nightBoss":  0,
+                                "region":  20,
+                                "scaling":  27,
+                                "dlc":  true
+                            },
+    "Bloodhound Knight Boss":  {
+                                   "id":  "31050800",
+                                   "type":  4,
+                                   "nightBoss":  0,
+                                   "region":  3,
+                                   "scaling":  7,
+                                   "dlc":  false
+                               },
+    "Bloodhound Knight Darriwil":  {
+                                       "id":  "1044350800",
+                                       "type":  7,
+                                       "nightBoss":  0,
+                                       "region":  1,
+                                       "scaling":  4,
+                                       "dlc":  false
+                                   },
+    "Bols Carian Knight":  {
+                               "id":  "1033450800",
+                               "type":  7,
+                               "nightBoss":  0,
+                               "region":  3,
+                               "scaling":  9,
+                               "dlc":  false
+                           },
+    "Borealis the Freezing Fog":  {
+                                      "id":  "1054560800",
+                                      "type":  3,
+                                      "nightBoss":  0,
+                                      "region":  7,
+                                      "scaling":  17,
+                                      "dlc":  false
+                                  },
+    "Castle Sol Banished Knight":  {
+                                       "id":  "1051570271",
+                                       "type":  2,
+                                       "nightBoss":  0,
+                                       "region":  7,
+                                       "scaling":  14,
+                                       "dlc":  false
+                                   },
+    "Cemetery Shade and Skeletons":  {
+                                         "id":  "30050800",
+                                         "type":  5,
+                                         "nightBoss":  0,
+                                         "region":  3,
+                                         "scaling":  7,
+                                         "dlc":  false
+                                     },
+    "Cemetery Shade Boss":  {
+                                "id":  "30000800",
+                                "type":  5,
+                                "nightBoss":  0,
+                                "region":  2,
+                                "scaling":  3,
+                                "dlc":  false
+                            },
+    "Cemetery Shade Caelid":  {
+                                  "id":  "30150800",
+                                  "type":  5,
+                                  "nightBoss":  0,
+                                  "region":  4,
+                                  "scaling":  8,
+                                  "dlc":  false
+                              },
+    "Chief Bloodfiend":  {
+                             "id":  "43000800",
+                             "type":  4,
+                             "nightBoss":  0,
+                             "region":  18,
+                             "scaling":  24,
+                             "dlc":  true
+                         },
+    "Cleanrot Knight Boss":  {
+                                 "id":  "31040800",
+                                 "type":  4,
+                                 "nightBoss":  0,
+                                 "region":  3,
+                                 "scaling":  7,
+                                 "dlc":  false
+                             },
+    "Cleanrot Knight Duo":  {
+                                "id":  "31200800",
+                                "type":  4,
+                                "nightBoss":  0,
+                                "region":  4,
+                                "scaling":  8,
+                                "dlc":  false
+                            },
+    "Commander Gaius":  {
+                            "id":  "2049480800",
+                            "type":  2,
+                            "nightBoss":  0,
+                            "region":  20,
+                            "scaling":  31,
+                            "dlc":  true
+                        },
+    "Commander Niall":  {
+                            "id":  "1051570800",
+                            "type":  2,
+                            "nightBoss":  0,
+                            "region":  7,
+                            "scaling":  14,
+                            "dlc":  false
+                        },
+    "Commander O\u0027Neil":  {
+                                  "id":  "1049380800",
+                                  "type":  3,
+                                  "nightBoss":  0,
+                                  "region":  4,
+                                  "scaling":  10,
+                                  "dlc":  false
+                              },
+    "Crucible Knight Duo":  {
+                                "id":  "30100800",
+                                "type":  5,
+                                "nightBoss":  0,
+                                "region":  6,
+                                "scaling":  10,
+                                "dlc":  false
+                            },
+    "Crucible Knight Evergaol":  {
+                                     "id":  "1042370800",
+                                     "type":  7,
+                                     "nightBoss":  0,
+                                     "region":  1,
+                                     "scaling":  4,
+                                     "dlc":  false
+                                 },
+    "Crucible Knight Siluria":  {
+                                    "id":  "12030390",
+                                    "type":  3,
+                                    "nightBoss":  0,
+                                    "region":  15,
+                                    "scaling":  14,
+                                    "dlc":  false
+                                },
+    "Crucible Misbegotten Duo":  {
+                                     "id":  "1051360800",
+                                     "type":  3,
+                                     "nightBoss":  0,
+                                     "region":  4,
+                                     "scaling":  9,
+                                     "dlc":  false
+                                 },
+    "Crucible Spiritcaller Snail":  {
+                                        "id":  "30030800",
+                                        "type":  5,
+                                        "nightBoss":  0,
+                                        "region":  3,
+                                        "scaling":  7,
+                                        "dlc":  false
+                                    },
+    "Crystalian Ringblade Spear Duo":  {
+                                           "id":  "32050800",
+                                           "type":  6,
+                                           "nightBoss":  0,
+                                           "region":  6,
+                                           "scaling":  9,
+                                           "dlc":  false
+                                       },
+    "Crystalian Staff Spear Duo":  {
+                                       "id":  "31060800",
+                                       "type":  4,
+                                       "nightBoss":  0,
+                                       "region":  3,
+                                       "scaling":  8,
+                                       "dlc":  false
+                                   },
+    "Curseblade Labirith":  {
+                                "id":  "41010800",
+                                "type":  8,
+                                "nightBoss":  0,
+                                "region":  20,
+                                "scaling":  22,
+                                "dlc":  true
+                            },
+    "Dancer of Ranah":  {
+                            "id":  "2046380800",
+                            "type":  1,
+                            "nightBoss":  0,
+                            "region":  19,
+                            "scaling":  25,
+                            "dlc":  true
+                        },
+    "Death Rite Bird":  {
+                            "id":  "1049370850",
+                            "type":  3,
+                            "nightBoss":  1,
+                            "region":  4,
+                            "scaling":  10,
+                            "dlc":  false
+                        },
+    "Death Rite Bird Charos":  {
+                                   "id":  "2047390800",
+                                   "type":  3,
+                                   "nightBoss":  0,
+                                   "region":  22,
+                                   "scaling":  29,
+                                   "dlc":  true
+                               },
+    "Death Rite Bird Consecrated":  {
+                                        "id":  "1048570800",
+                                        "type":  3,
+                                        "nightBoss":  1,
+                                        "region":  10,
+                                        "scaling":  19,
+                                        "dlc":  false
+                                    },
+    "Death Rite Bird Gate Town":  {
+                                      "id":  "1036450340",
+                                      "type":  3,
+                                      "nightBoss":  1,
+                                      "region":  3,
+                                      "scaling":  9,
+                                      "dlc":  false
+                                  },
+    "Death Rite Bird Sol":  {
+                                "id":  "1050570800",
+                                "type":  3,
+                                "nightBoss":  0,
+                                "region":  7,
+                                "scaling":  15,
+                                "dlc":  false
+                            },
+    "Deathbird Altus":  {
+                            "id":  "1044530800",
+                            "type":  3,
+                            "nightBoss":  1,
+                            "region":  6,
+                            "scaling":  12,
+                            "dlc":  false
+                        },
+    "Deathbird Limgrave":  {
+                               "id":  "1042380800",
+                               "type":  3,
+                               "nightBoss":  1,
+                               "region":  1,
+                               "scaling":  4,
+                               "dlc":  false
+                           },
+    "Deathbird Scenic Isle":  {
+                                  "id":  "1037420340",
+                                  "type":  3,
+                                  "nightBoss":  1,
+                                  "region":  3,
+                                  "scaling":  9,
+                                  "dlc":  false
+                              },
+    "Deathbird Weeping":  {
+                              "id":  "1044320340",
+                              "type":  3,
+                              "nightBoss":  1,
+                              "region":  2,
+                              "scaling":  5,
+                              "dlc":  false
+                          },
+    "Deathblight Beast Dancing Lion":  {
+                                           "id":  "2046460800",
+                                           "type":  3,
+                                           "nightBoss":  0,
+                                           "region":  24,
+                                           "scaling":  33,
+                                           "dlc":  true
+                                       },
+    "Decaying Ekzykes":  {
+                             "id":  "1048370800",
+                             "type":  3,
+                             "nightBoss":  0,
+                             "region":  4,
+                             "scaling":  12,
+                             "dlc":  false
+                         },
+    "Demi-Human Chief Duo":  {
+                                 "id":  "31150800",
+                                 "type":  4,
+                                 "nightBoss":  0,
+                                 "region":  1,
+                                 "scaling":  2,
+                                 "dlc":  false
+                             },
+    "Demi-Human Queen Gilika":  {
+                                    "id":  "1038510800",
+                                    "type":  1,
+                                    "nightBoss":  0,
+                                    "region":  6,
+                                    "scaling":  9,
+                                    "dlc":  false
+                                },
+    "Demi-Human Queen Maggie":  {
+                                    "id":  "1037530800",
+                                    "type":  3,
+                                    "nightBoss":  0,
+                                    "region":  5,
+                                    "scaling":  12,
+                                    "dlc":  false
+                                },
+    "Demi-Human Queen Margot":  {
+                                    "id":  "31090800",
+                                    "type":  4,
+                                    "nightBoss":  0,
+                                    "region":  5,
+                                    "scaling":  10,
+                                    "dlc":  false
+                                },
+    "Demi-Human Queen Marigga":  {
+                                     "id":  "2046400800",
+                                     "type":  3,
+                                     "nightBoss":  0,
+                                     "region":  19,
+                                     "scaling":  27,
+                                     "dlc":  true
+                                 },
+    "Demi-Human Swordmaster Onze":  {
+                                        "id":  "41000800",
+                                        "type":  8,
+                                        "nightBoss":  0,
+                                        "region":  18,
+                                        "scaling":  22,
+                                        "dlc":  true
+                                    },
+    "Devonia":  {
+                    "id":  "2045470200",
+                    "type":  2,
+                    "nightBoss":  0,
+                    "region":  24,
+                    "scaling":  33,
+                    "dlc":  true
+                },
+    "Divine Beast Dancing Lion":  {
+                                      "id":  "20000800",
+                                      "type":  2,
+                                      "nightBoss":  0,
+                                      "region":  18,
+                                      "scaling":  25,
+                                      "dlc":  true
+                                  },
+    "Draconic Tree Sentinel":  {
+                                   "id":  "1045520800",
+                                   "type":  3,
+                                   "nightBoss":  0,
+                                   "region":  6,
+                                   "scaling":  12,
+                                   "dlc":  false
+                               },
+    "Dragonkin Soldier Lake of Rot":  {
+                                          "id":  "12010850",
+                                          "type":  3,
+                                          "nightBoss":  0,
+                                          "region":  13,
+                                          "scaling":  14,
+                                          "dlc":  false
+                                      },
+    "Dragonkin Soldier of Nokstella":  {
+                                           "id":  "12010800",
+                                           "type":  2,
+                                           "nightBoss":  0,
+                                           "region":  13,
+                                           "scaling":  6,
+                                           "dlc":  false
+                                       },
+    "Dragonkin Soldier Siofra":  {
+                                     "id":  "12020830",
+                                     "type":  3,
+                                     "nightBoss":  0,
+                                     "region":  12,
+                                     "scaling":  12,
+                                     "dlc":  false
+                                 },
+    "Dragonlord Placidusax":  {
+                                  "id":  "13000830",
+                                  "type":  2,
+                                  "nightBoss":  0,
+                                  "region":  8,
+                                  "scaling":  18,
+                                  "dlc":  false
+                              },
+    "Dryleaf Dane":  {
+                         "id":  "2049440710",
+                         "type":  3,
+                         "nightBoss":  0,
+                         "region":  20,
+                         "scaling":  27,
+                         "dlc":  true
+                     },
+    "Dryleaf Dane (Leda Fight)":  {
+                                      "id":  "20010724",
+                                      "type":  2,
+                                      "nightBoss":  0,
+                                      "region":  25,
+                                      "scaling":  33,
+                                      "dlc":  true
+                                  },
+    "Elden Beast":  {
+                        "id":  "19000800",
+                        "type":  2,
+                        "nightBoss":  0,
+                        "region":  9,
+                        "scaling":  18,
+                        "dlc":  false
+                    },
+    "Elemer of the Briar":  {
+                                "id":  "1039540800",
+                                "type":  2,
+                                "nightBoss":  0,
+                                "region":  6,
+                                "scaling":  10,
+                                "dlc":  false
+                            },
+    "Erdtree Avatar Bellum":  {
+                                  "id":  "1038480800",
+                                  "type":  3,
+                                  "nightBoss":  0,
+                                  "region":  3,
+                                  "scaling":  9,
+                                  "dlc":  false
+                              },
+    "Erdtree Avatar Converted Tower":  {
+                                           "id":  "1033430800",
+                                           "type":  3,
+                                           "nightBoss":  0,
+                                           "region":  3,
+                                           "scaling":  9,
+                                           "dlc":  false
+                                       },
+    "Erdtree Avatar Duo":  {
+                               "id":  "1052560800",
+                               "type":  3,
+                               "nightBoss":  0,
+                               "region":  7,
+                               "scaling":  15,
+                               "dlc":  false
+                           },
+    "Erdtree Avatar Weeping":  {
+                                   "id":  "1043330800",
+                                   "type":  3,
+                                   "nightBoss":  0,
+                                   "region":  2,
+                                   "scaling":  5,
+                                   "dlc":  false
+                               },
+    "Erdtree Burial Watchdog and Imps":  {
+                                             "id":  "30010800",
+                                             "type":  5,
+                                             "nightBoss":  0,
+                                             "region":  2,
+                                             "scaling":  3,
+                                             "dlc":  false
+                                         },
+    "Erdtree Burial Watchdog Duo":  {
+                                        "id":  "30140800",
+                                        "type":  5,
+                                        "nightBoss":  0,
+                                        "region":  4,
+                                        "scaling":  8,
+                                        "dlc":  false
+                                    },
+    "Esgar Priest of Blood":  {
+                                  "id":  "35000850",
+                                  "type":  5,
+                                  "nightBoss":  0,
+                                  "region":  6,
+                                  "scaling":  11,
+                                  "dlc":  false
+                              },
+    "Fallingstar Beast":  {
+                              "id":  "1041500800",
+                              "type":  3,
+                              "nightBoss":  0,
+                              "region":  6,
+                              "scaling":  11,
+                              "dlc":  false
+                          },
+    "Fallingstar Beast Hinterlands":  {
+                                          "id":  "2052480800",
+                                          "type":  3,
+                                          "nightBoss":  0,
+                                          "region":  21,
+                                          "scaling":  33,
+                                          "dlc":  true
+                                      },
+    "Fallingstar Beast Sellia":  {
+                                     "id":  "32080800",
+                                     "type":  6,
+                                     "nightBoss":  0,
+                                     "region":  4,
+                                     "scaling":  8,
+                                     "dlc":  false
+                                 },
+    "Fell Twins":  {
+                       "id":  "34140850",
+                       "type":  3,
+                       "nightBoss":  0,
+                       "region":  6,
+                       "scaling":  13,
+                       "dlc":  false
+                   },
+    "Fia\u0027s Champions":  {
+                                 "id":  "12030800",
+                                 "type":  3,
+                                 "nightBoss":  0,
+                                 "region":  15,
+                                 "scaling":  12,
+                                 "dlc":  false
+                             },
+    "Fire Erdtree Burial Watchdog":  {
+                                         "id":  "30020800",
+                                         "type":  5,
+                                         "nightBoss":  0,
+                                         "region":  1,
+                                         "scaling":  2,
+                                         "dlc":  false
+                                     },
+    "Fire Giant 1":  {
+                         "id":  "1052520801",
+                         "type":  2,
+                         "nightBoss":  0,
+                         "region":  7,
+                         "scaling":  15,
+                         "dlc":  false
+                     },
+    "Fire Giant 2":  {
+                         "id":  "1052520800",
+                         "type":  2,
+                         "nightBoss":  0,
+                         "region":  7,
+                         "scaling":  15,
+                         "dlc":  false
+                     },
+    "Flying Dragon Agheel":  {
+                                 "id":  "1043360800",
+                                 "type":  3,
+                                 "nightBoss":  0,
+                                 "region":  1,
+                                 "scaling":  6,
+                                 "dlc":  false
+                             },
+    "Flying Dragon Greyll":  {
+                                 "id":  "1052410800",
+                                 "type":  3,
+                                 "nightBoss":  0,
+                                 "region":  4,
+                                 "scaling":  18,
+                                 "dlc":  false
+                             },
+    "Frenzied Duelist":  {
+                             "id":  "31210800",
+                             "type":  4,
+                             "nightBoss":  0,
+                             "region":  4,
+                             "scaling":  8,
+                             "dlc":  false
+                         },
+    "Frost Lion Guardian":  {
+                                "id":  "1051570310",
+                                "type":  2,
+                                "nightBoss":  0,
+                                "region":  7,
+                                "scaling":  14,
+                                "dlc":  false
+                            },
+    "Full-Grown Fallingstar Beast":  {
+                                         "id":  "1036540800",
+                                         "type":  3,
+                                         "nightBoss":  0,
+                                         "region":  5,
+                                         "scaling":  12,
+                                         "dlc":  false
+                                     },
+    "Ghostflame Dragon and Skeletons":  {
+                                            "id":  "2048380850",
+                                            "type":  3,
+                                            "nightBoss":  0,
+                                            "region":  19,
+                                            "scaling":  27,
+                                            "dlc":  true
+                                        },
+    "Ghostflame Dragon Gravesite":  {
+                                        "id":  "2045440800",
+                                        "type":  3,
+                                        "nightBoss":  0,
+                                        "region":  18,
+                                        "scaling":  24,
+                                        "dlc":  true
+                                    },
+    "Ghostflame Dragon Reprimand":  {
+                                        "id":  "2049430800",
+                                        "type":  3,
+                                        "nightBoss":  0,
+                                        "region":  20,
+                                        "scaling":  28,
+                                        "dlc":  true
+                                    },
+    "Glintstone Dragon Adula":  {
+                                    "id":  "1034420800",
+                                    "type":  3,
+                                    "nightBoss":  0,
+                                    "region":  16,
+                                    "scaling":  18,
+                                    "dlc":  false
+                                },
+    "Glintstone Dragon Smarag":  {
+                                     "id":  "1034450800",
+                                     "type":  3,
+                                     "nightBoss":  0,
+                                     "region":  3,
+                                     "scaling":  11,
+                                     "dlc":  false
+                                 },
+    "Godefroy the Grafted":  {
+                                 "id":  "1039500800",
+                                 "type":  7,
+                                 "nightBoss":  0,
+                                 "region":  6,
+                                 "scaling":  11,
+                                 "dlc":  false
+                             },
+    "Godfrey First Elden Lord":  {
+                                     "id":  "11050801",
+                                     "type":  2,
+                                     "nightBoss":  0,
+                                     "region":  9,
+                                     "scaling":  17,
+                                     "dlc":  false
+                                 },
+    "Godrick the Grafted":  {
+                                "id":  "10000800",
+                                "type":  2,
+                                "nightBoss":  0,
+                                "region":  1,
+                                "scaling":  5,
+                                "dlc":  false
+                            },
+    "Godskin Apostle":  {
+                            "id":  "1042550800",
+                            "type":  3,
+                            "nightBoss":  0,
+                            "region":  6,
+                            "scaling":  11,
+                            "dlc":  false
+                        },
+    "Godskin Apostle Divine Tower":  {
+                                         "id":  "34130800",
+                                         "type":  3,
+                                         "nightBoss":  0,
+                                         "region":  4,
+                                         "scaling":  16,
+                                         "dlc":  false
+                                     },
+    "Godskin Duo":  {
+                        "id":  "13000850",
+                        "type":  2,
+                        "nightBoss":  0,
+                        "region":  8,
+                        "scaling":  15,
+                        "dlc":  false
+                    },
+    "Godskin Noble":  {
+                          "id":  "16000850",
+                          "type":  2,
+                          "nightBoss":  0,
+                          "region":  5,
+                          "scaling":  12,
+                          "dlc":  false
+                      },
+    "Godskin Spiritcaller Snail":  {
+                                       "id":  "31220800",
+                                       "type":  4,
+                                       "nightBoss":  0,
+                                       "region":  7,
+                                       "scaling":  13,
+                                       "dlc":  false
+                                   },
+    "Golden Hippopotamus":  {
+                                "id":  "21000850",
+                                "type":  2,
+                                "nightBoss":  0,
+                                "region":  20,
+                                "scaling":  28,
+                                "dlc":  true
+                            },
+    "Goldfrey First Elden Lord":  {
+                                      "id":  "11000850",
+                                      "type":  2,
+                                      "nightBoss":  0,
+                                      "region":  6,
+                                      "scaling":  12,
+                                      "dlc":  false
+                                  },
+    "Grafted Scion Boss":  {
+                               "id":  "10010800",
+                               "type":  3,
+                               "nightBoss":  0,
+                               "region":  3,
+                               "scaling":  7,
+                               "dlc":  false
+                           },
+    "Grave Warden Duelist":  {
+                                 "id":  "30130800",
+                                 "type":  5,
+                                 "nightBoss":  0,
+                                 "region":  6,
+                                 "scaling":  10,
+                                 "dlc":  false
+                             },
+    "Grave Warden Duelist Boss":  {
+                                      "id":  "30040800",
+                                      "type":  5,
+                                      "nightBoss":  0,
+                                      "region":  1,
+                                      "scaling":  2,
+                                      "dlc":  false
+                                  },
+    "Great Wyrm Theodorix":  {
+                                 "id":  "1050560800",
+                                 "type":  3,
+                                 "nightBoss":  0,
+                                 "region":  10,
+                                 "scaling":  19,
+                                 "dlc":  false
+                             },
+    "Guardian Golem Boss":  {
+                                "id":  "31170800",
+                                "type":  4,
+                                "nightBoss":  0,
+                                "region":  1,
+                                "scaling":  2,
+                                "dlc":  false
+                            },
+    "Hinterlands Colossal Hand":  {
+                                      "id":  "2053480290",
+                                      "type":  2,
+                                      "nightBoss":  0,
+                                      "region":  21,
+                                      "scaling":  33,
+                                      "dlc":  true
+                                  },
+    "Hoarah Loux":  {
+                        "id":  "11050800",
+                        "type":  2,
+                        "nightBoss":  0,
+                        "region":  9,
+                        "scaling":  17,
+                        "dlc":  false
+                    },
+    "Hornsent (Leda Fight)":  {
+                                  "id":  "20010722",
+                                  "type":  2,
+                                  "nightBoss":  0,
+                                  "region":  25,
+                                  "scaling":  33,
+                                  "dlc":  true
+                              },
+    "Ice Divine Warrior":  {
+                               "id":  "20010453",
+                               "type":  2,
+                               "nightBoss":  0,
+                               "region":  25,
+                               "scaling":  33,
+                               "dlc":  true
+                           },
+    "Invisible Black Knife Assassin":  {
+                                           "id":  "31190800",
+                                           "type":  4,
+                                           "nightBoss":  0,
+                                           "region":  6,
+                                           "scaling":  9,
+                                           "dlc":  false
+                                       },
+    "Jagged Peak Drake 1":  {
+                                "id":  "2049410800",
+                                "type":  3,
+                                "nightBoss":  0,
+                                "region":  22,
+                                "scaling":  29,
+                                "dlc":  true
+                            },
+    "Jagged Peak Drake 2":  {
+                                "id":  "2052400800",
+                                "type":  3,
+                                "nightBoss":  0,
+                                "region":  22,
+                                "scaling":  33,
+                                "dlc":  true
+                            },
+    "Jori Elder Inquisitor":  {
+                                  "id":  "2052430800",
+                                  "type":  2,
+                                  "nightBoss":  0,
+                                  "region":  23,
+                                  "scaling":  32,
+                                  "dlc":  true
+                              },
+    "Kindred of Rot Duo":  {
+                               "id":  "31070800",
+                               "type":  4,
+                               "nightBoss":  0,
+                               "region":  5,
+                               "scaling":  10,
+                               "dlc":  false
+                           },
+    "Knight of the Solitary Gaol":  {
+                                        "id":  "2046410800",
+                                        "type":  1,
+                                        "nightBoss":  0,
+                                        "region":  18,
+                                        "scaling":  22,
+                                        "dlc":  true
+                                    },
+    "Lamenter":  {
+                     "id":  "41020800",
+                     "type":  8,
+                     "nightBoss":  0,
+                     "region":  22,
+                     "scaling":  29,
+                     "dlc":  true
+                 },
+    "Leda (Leda Fight)":  {
+                              "id":  "20010720",
+                              "type":  2,
+                              "nightBoss":  0,
+                              "region":  25,
+                              "scaling":  33,
+                              "dlc":  true
+                          },
+    "Leonine Misbegotten":  {
+                                "id":  "1043300800",
+                                "type":  2,
+                                "nightBoss":  0,
+                                "region":  2,
+                                "scaling":  4,
+                                "dlc":  false
+                            },
+    "Lichdragon Fortissax":  {
+                                 "id":  "12030850",
+                                 "type":  2,
+                                 "nightBoss":  0,
+                                 "region":  15,
+                                 "scaling":  12,
+                                 "dlc":  false
+                             },
+    "Lightning Divine Warrior":  {
+                                     "id":  "20010451",
+                                     "type":  2,
+                                     "nightBoss":  0,
+                                     "region":  25,
+                                     "scaling":  33,
+                                     "dlc":  true
+                                 },
+    "Lightning Erdtree Burial Watchdog":  {
+                                              "id":  "30070800",
+                                              "type":  5,
+                                              "nightBoss":  0,
+                                              "region":  6,
+                                              "scaling":  10,
+                                              "dlc":  false
+                                          },
+    "Longhaft Death Knight":  {
+                                  "id":  "40010800",
+                                  "type":  5,
+                                  "nightBoss":  0,
+                                  "region":  20,
+                                  "scaling":  27,
+                                  "dlc":  true
+                              },
+    "Loretta Knight of the Haligtree":  {
+                                            "id":  "15000850",
+                                            "type":  2,
+                                            "nightBoss":  0,
+                                            "region":  11,
+                                            "scaling":  19,
+                                            "dlc":  false
+                                        },
+    "Mad Pumpkin Head Boss":  {
+                                  "id":  "1044360800",
+                                  "type":  1,
+                                  "nightBoss":  0,
+                                  "region":  1,
+                                  "scaling":  2,
+                                  "dlc":  false
+                              },
+    "Mad Pumpkin Head Duo":  {
+                                 "id":  "1048400800",
+                                 "type":  1,
+                                 "nightBoss":  0,
+                                 "region":  4,
+                                 "scaling":  8,
+                                 "dlc":  false
+                             },
+    "Magma Wyrm Gael Tunnel":  {
+                                   "id":  "32070800",
+                                   "type":  6,
+                                   "nightBoss":  0,
+                                   "region":  4,
+                                   "scaling":  8,
+                                   "dlc":  false
+                               },
+    "Magma Wyrm Gelmir":  {
+                              "id":  "1035530800",
+                              "type":  3,
+                              "nightBoss":  0,
+                              "region":  5,
+                              "scaling":  12,
+                              "dlc":  false
+                          },
+    "Magma Wyrm Makar":  {
+                             "id":  "39200800",
+                             "type":  2,
+                             "nightBoss":  0,
+                             "region":  3,
+                             "scaling":  8,
+                             "dlc":  false
+                         },
+    "Malenia Blade of Miquella":  {
+                                      "id":  "15000800",
+                                      "type":  2,
+                                      "nightBoss":  0,
+                                      "region":  11,
+                                      "scaling":  21,
+                                      "dlc":  false
+                                  },
+    "Maliketh the Black Blade":  {
+                                     "id":  "13000800",
+                                     "type":  2,
+                                     "nightBoss":  0,
+                                     "region":  8,
+                                     "scaling":  15,
+                                     "dlc":  false
+                                 },
+    "Margit The Fell Omen":  {
+                                 "id":  "10000850",
+                                 "type":  2,
+                                 "nightBoss":  0,
+                                 "region":  1,
+                                 "scaling":  4,
+                                 "dlc":  false
+                             },
+    "Messmer the Impaler":  {
+                                "id":  "21010801",
+                                "type":  2,
+                                "nightBoss":  0,
+                                "region":  20,
+                                "scaling":  31,
+                                "dlc":  true
+                            },
+    "Metyr Mother of Fingers":  {
+                                    "id":  "25000800",
+                                    "type":  2,
+                                    "nightBoss":  0,
+                                    "region":  21,
+                                    "scaling":  33,
+                                    "dlc":  true
+                                },
+    "Midra Lord of Frenzied Flame":  {
+                                         "id":  "28000800",
+                                         "type":  2,
+                                         "nightBoss":  0,
+                                         "region":  23,
+                                         "scaling":  33,
+                                         "dlc":  true
+                                     },
+    "Mimic Tear":  {
+                       "id":  "12020850",
+                       "type":  2,
+                       "nightBoss":  0,
+                       "region":  14,
+                       "scaling":  10,
+                       "dlc":  false
+                   },
+    "Miranda Blossom and Sprouts":  {
+                                        "id":  "31020800",
+                                        "type":  4,
+                                        "nightBoss":  0,
+                                        "region":  2,
+                                        "scaling":  3,
+                                        "dlc":  false
+                                    },
+    "Miranda Omenkiller Duo":  {
+                                   "id":  "31180800",
+                                   "type":  4,
+                                   "nightBoss":  0,
+                                   "region":  6,
+                                   "scaling":  9,
+                                   "dlc":  false
+                               },
+    "Misbegotten Crusader":  {
+                                 "id":  "31120800",
+                                 "type":  4,
+                                 "nightBoss":  0,
+                                 "region":  10,
+                                 "scaling":  19,
+                                 "dlc":  false
+                             },
+    "Misbegotten Perfumer Duo":  {
+                                     "id":  "30120800",
+                                     "type":  5,
+                                     "nightBoss":  0,
+                                     "region":  6,
+                                     "scaling":  9,
+                                     "dlc":  false
+                                 },
+    "Mohg Lord of Blood":  {
+                               "id":  "12050800",
+                               "type":  2,
+                               "nightBoss":  0,
+                               "region":  17,
+                               "scaling":  19,
+                               "dlc":  false
+                           },
+    "Mohg The Omen":  {
+                          "id":  "35000800",
+                          "type":  2,
+                          "nightBoss":  0,
+                          "region":  6,
+                          "scaling":  14,
+                          "dlc":  false
+                      },
+    "Morgott the Omen King":  {
+                                  "id":  "11000800",
+                                  "type":  2,
+                                  "nightBoss":  0,
+                                  "region":  6,
+                                  "scaling":  12,
+                                  "dlc":  false
+                              },
+    "Necromancer Garris":  {
+                               "id":  "31190850",
+                               "type":  4,
+                               "nightBoss":  0,
+                               "region":  6,
+                               "scaling":  9,
+                               "dlc":  false
+                           },
+    "Night\u0027s Cavalry Altus":  {
+                                       "id":  "1039510800",
+                                       "type":  3,
+                                       "nightBoss":  1,
+                                       "region":  6,
+                                       "scaling":  11,
+                                       "dlc":  false
+                                   },
+    "Night\u0027s Cavalry Bellum":  {
+                                        "id":  "1036480340",
+                                        "type":  3,
+                                        "nightBoss":  1,
+                                        "region":  3,
+                                        "scaling":  9,
+                                        "dlc":  false
+                                    },
+    "Night\u0027s Cavalry Caelid":  {
+                                        "id":  "1049370800",
+                                        "type":  3,
+                                        "nightBoss":  1,
+                                        "region":  4,
+                                        "scaling":  10,
+                                        "dlc":  false
+                                    },
+    "Night\u0027s Cavalry Dragonbarrow":  {
+                                              "id":  "1052410850",
+                                              "type":  3,
+                                              "nightBoss":  1,
+                                              "region":  4,
+                                              "scaling":  18,
+                                              "dlc":  false
+                                          },
+    "Night\u0027s Cavalry Duo 1":  {
+                                       "id":  "1248550801",
+                                       "type":  3,
+                                       "nightBoss":  1,
+                                       "region":  10,
+                                       "scaling":  17,
+                                       "dlc":  false
+                                   },
+    "Night\u0027s Cavalry Duo 2":  {
+                                       "id":  "1248550800",
+                                       "type":  3,
+                                       "nightBoss":  1,
+                                       "region":  10,
+                                       "scaling":  17,
+                                       "dlc":  false
+                                   },
+    "Night\u0027s Cavalry Forbbiden":  {
+                                           "id":  "1048510800",
+                                           "type":  3,
+                                           "nightBoss":  1,
+                                           "region":  7,
+                                           "scaling":  15,
+                                           "dlc":  false
+                                       },
+    "Night\u0027s Cavalry Limgrave":  {
+                                          "id":  "1043370340",
+                                          "type":  3,
+                                          "nightBoss":  1,
+                                          "region":  1,
+                                          "scaling":  4,
+                                          "dlc":  false
+                                      },
+    "Night\u0027s Cavalry Liurnia Highway":  {
+                                                 "id":  "1039430340",
+                                                 "type":  3,
+                                                 "nightBoss":  1,
+                                                 "region":  3,
+                                                 "scaling":  9,
+                                                 "dlc":  false
+                                             },
+    "Night\u0027s Cavalry Weeping":  {
+                                         "id":  "1044320342",
+                                         "type":  3,
+                                         "nightBoss":  1,
+                                         "region":  2,
+                                         "scaling":  5,
+                                         "dlc":  false
+                                     },
+    "Nox Duo":  {
+                    "id":  "1049390800",
+                    "type":  3,
+                    "nightBoss":  0,
+                    "region":  4,
+                    "scaling":  8,
+                    "dlc":  false
+                },
+    "Omenkiller Boss":  {
+                            "id":  "1035420800",
+                            "type":  3,
+                            "nightBoss":  0,
+                            "region":  3,
+                            "scaling":  9,
+                            "dlc":  false
+                        },
+    "Onyx Lord Evergaol":  {
+                               "id":  "1036500800",
+                               "type":  7,
+                               "nightBoss":  0,
+                               "region":  3,
+                               "scaling":  9,
+                               "dlc":  false
+                           },
+    "Onyx Lord Tunnel":  {
+                             "id":  "34120800",
+                             "type":  6,
+                             "nightBoss":  0,
+                             "region":  6,
+                             "scaling":  10,
+                             "dlc":  false
+                         },
+    "PCR 1":  {
+                  "id":  "20010801",
+                  "type":  2,
+                  "nightBoss":  0,
+                  "region":  25,
+                  "scaling":  33,
+                  "dlc":  true
+              },
+    "PCR 2":  {
+                  "id":  "20010800",
+                  "type":  2,
+                  "nightBoss":  0,
+                  "region":  25,
+                  "scaling":  33,
+                  "dlc":  true
+              },
+    "Purtid Avatar Consecrated":  {
+                                      "id":  "1050570850",
+                                      "type":  3,
+                                      "nightBoss":  0,
+                                      "region":  10,
+                                      "scaling":  19,
+                                      "dlc":  false
+                                  },
+    "Putrescent Knight":  {
+                              "id":  "22000800",
+                              "type":  2,
+                              "nightBoss":  0,
+                              "region":  19,
+                              "scaling":  29,
+                              "dlc":  true
+                          },
+    "Putrid Avatar Caelid":  {
+                                 "id":  "1047400800",
+                                 "type":  3,
+                                 "nightBoss":  0,
+                                 "region":  4,
+                                 "scaling":  10,
+                                 "dlc":  false
+                             },
+    "Putrid Avatar Dragonbarrow":  {
+                                       "id":  "1051400800",
+                                       "type":  3,
+                                       "nightBoss":  0,
+                                       "region":  4,
+                                       "scaling":  18,
+                                       "dlc":  false
+                                   },
+    "Putrid Crystalian Trio":  {
+                                   "id":  "31110800",
+                                   "type":  4,
+                                   "nightBoss":  0,
+                                   "region":  4,
+                                   "scaling":  8,
+                                   "dlc":  false
+                               },
+    "Putrid Grave Warden Duelist":  {
+                                        "id":  "30190800",
+                                        "type":  5,
+                                        "nightBoss":  0,
+                                        "region":  10,
+                                        "scaling":  17,
+                                        "dlc":  false
+                                    },
+    "Putrid Tree Spirit":  {
+                               "id":  "30160800",
+                               "type":  5,
+                               "nightBoss":  0,
+                               "region":  4,
+                               "scaling":  16,
+                               "dlc":  false
+                           },
+    "Radagon of the Golden Order":  {
+                                        "id":  "19000810",
+                                        "type":  2,
+                                        "nightBoss":  0,
+                                        "region":  9,
+                                        "scaling":  18,
+                                        "dlc":  false
+                                    },
+    "Rakshasa":  {
+                     "id":  "2051440800",
+                     "type":  1,
+                     "nightBoss":  0,
+                     "region":  23,
+                     "scaling":  32,
+                     "dlc":  true
+                 },
+    "Ralva the Great Red Bear":  {
+                                     "id":  "2049450800",
+                                     "type":  3,
+                                     "nightBoss":  0,
+                                     "region":  20,
+                                     "scaling":  28,
+                                     "dlc":  true
+                                 },
+    "Red Bear Mausoleum":  {
+                               "id":  "2046450800",
+                               "type":  1,
+                               "nightBoss":  0,
+                               "region":  20,
+                               "scaling":  27,
+                               "dlc":  true
+                           },
+    "Red Wolf of Radagon":  {
+                                "id":  "14000850",
+                                "type":  2,
+                                "nightBoss":  0,
+                                "region":  3,
+                                "scaling":  7,
+                                "dlc":  false
+                            },
+    "Red Wolf of the Champion":  {
+                                     "id":  "30090800",
+                                     "type":  5,
+                                     "nightBoss":  0,
+                                     "region":  5,
+                                     "scaling":  10,
+                                     "dlc":  false
+                                 },
+    "Regal Ancestor Spirit":  {
+                                  "id":  "12090800",
+                                  "type":  2,
+                                  "nightBoss":  0,
+                                  "region":  14,
+                                  "scaling":  10,
+                                  "dlc":  false
+                              },
+    "Rellana Twin Moon Knight":  {
+                                     "id":  "2048440800",
+                                     "type":  2,
+                                     "nightBoss":  0,
+                                     "region":  18,
+                                     "scaling":  27,
+                                     "dlc":  true
+                                 },
+    "Rennala 1":  {
+                      "id":  "14000801",
+                      "type":  2,
+                      "nightBoss":  0,
+                      "region":  3,
+                      "scaling":  8,
+                      "dlc":  false
+                  },
+    "Rennala 2":  {
+                      "id":  "14000800",
+                      "type":  2,
+                      "nightBoss":  0,
+                      "region":  3,
+                      "scaling":  8,
+                      "dlc":  false
+                  },
+    "Ringblade Crystallian Boss":  {
+                                       "id":  "32020800",
+                                       "type":  6,
+                                       "nightBoss":  0,
+                                       "region":  3,
+                                       "scaling":  7,
+                                       "dlc":  false
+                                   },
+    "Romina Saint of the Bud":  {
+                                    "id":  "2044450800",
+                                    "type":  2,
+                                    "nightBoss":  0,
+                                    "region":  24,
+                                    "scaling":  33,
+                                    "dlc":  true
+                                },
+    "Roundtable Knight Vyke":  {
+                                   "id":  "1053560800",
+                                   "type":  7,
+                                   "nightBoss":  0,
+                                   "region":  7,
+                                   "scaling":  13,
+                                   "dlc":  false
+                               },
+    "Royal Knight Loretta":  {
+                                 "id":  "1035500800",
+                                 "type":  2,
+                                 "nightBoss":  0,
+                                 "region":  3,
+                                 "scaling":  7,
+                                 "dlc":  false
+                             },
+    "Royal Revenant Boss":  {
+                                "id":  "1034480800",
+                                "type":  1,
+                                "nightBoss":  0,
+                                "region":  3,
+                                "scaling":  7,
+                                "dlc":  false
+                            },
+    "Rugalea the Great Red Bear":  {
+                                       "id":  "2044470800",
+                                       "type":  3,
+                                       "nightBoss":  0,
+                                       "region":  20,
+                                       "scaling":  29,
+                                       "dlc":  true
+                                   },
+    "Runebear Boss":  {
+                          "id":  "31010800",
+                          "type":  4,
+                          "nightBoss":  0,
+                          "region":  2,
+                          "scaling":  3,
+                          "dlc":  false
+                      },
+    "Rykard 1":  {
+                     "id":  "16000801",
+                     "type":  2,
+                     "nightBoss":  0,
+                     "region":  5,
+                     "scaling":  13,
+                     "dlc":  false
+                 },
+    "Rykard 2":  {
+                     "id":  "16000800",
+                     "type":  2,
+                     "nightBoss":  0,
+                     "region":  5,
+                     "scaling":  13,
+                     "dlc":  false
+                 },
+    "Sanguine Noble":  {
+                           "id":  "1040530800",
+                           "type":  1,
+                           "nightBoss":  0,
+                           "region":  6,
+                           "scaling":  9,
+                           "dlc":  false
+                       },
+    "Scadutree Avatar":  {
+                             "id":  "2050480800",
+                             "type":  2,
+                             "nightBoss":  0,
+                             "region":  20,
+                             "scaling":  29,
+                             "dlc":  true
+                         },
+    "Scaly Misbegotten Boss":  {
+                                   "id":  "32000800",
+                                   "type":  6,
+                                   "nightBoss":  0,
+                                   "region":  2,
+                                   "scaling":  3,
+                                   "dlc":  false
+                               },
+    "Scepter Erdtree Burial Watchdog":  {
+                                            "id":  "30060800",
+                                            "type":  5,
+                                            "nightBoss":  0,
+                                            "region":  3,
+                                            "scaling":  7,
+                                            "dlc":  false
+                                        },
+    "Sir Gideon Ofnir the All-Knowing":  {
+                                             "id":  "11050850",
+                                             "type":  2,
+                                             "nightBoss":  0,
+                                             "region":  9,
+                                             "scaling":  16,
+                                             "dlc":  false
+                                         },
+    "Soldier of Godrick":  {
+                               "id":  "18000850",
+                               "type":  4,
+                               "nightBoss":  0,
+                               "region":  1,
+                               "scaling":  1,
+                               "dlc":  false
+                           },
+    "Starscourge Radahn":  {
+                               "id":  "1052380800",
+                               "type":  2,
+                               "nightBoss":  0,
+                               "region":  4,
+                               "scaling":  11,
+                               "dlc":  false
+                           },
+    "Stonedigger Troll":  {
+                              "id":  "32010800",
+                              "type":  6,
+                              "nightBoss":  0,
+                              "region":  1,
+                              "scaling":  2,
+                              "dlc":  false
+                          },
+    "Stonedigger Troll Altus":  {
+                                    "id":  "32040800",
+                                    "type":  6,
+                                    "nightBoss":  0,
+                                    "region":  6,
+                                    "scaling":  9,
+                                    "dlc":  false
+                                },
+    "Stray Mimic Tear":  {
+                             "id":  "30200800",
+                             "type":  5,
+                             "nightBoss":  0,
+                             "region":  10,
+                             "scaling":  17,
+                             "dlc":  false
+                         },
+    "Tibia Mariner Altus":  {
+                                "id":  "1038520340",
+                                "type":  3,
+                                "nightBoss":  0,
+                                "region":  6,
+                                "scaling":  12,
+                                "dlc":  false
+                            },
+    "Tibia Mariner Boss":  {
+                               "id":  "1045390800",
+                               "type":  3,
+                               "nightBoss":  0,
+                               "region":  1,
+                               "scaling":  4,
+                               "dlc":  false
+                           },
+    "Tibia Mariner Jarburg":  {
+                                  "id":  "1039440800",
+                                  "type":  3,
+                                  "nightBoss":  0,
+                                  "region":  3,
+                                  "scaling":  9,
+                                  "dlc":  false
+                              },
+    "Tree Sentinel":  {
+                          "id":  "1042360800",
+                          "type":  3,
+                          "nightBoss":  0,
+                          "region":  1,
+                          "scaling":  4,
+                          "dlc":  false
+                      },
+    "Tree Sentinel Hinterlands 1":  {
+                                        "id":  "2050480860",
+                                        "type":  3,
+                                        "nightBoss":  0,
+                                        "region":  21,
+                                        "scaling":  33,
+                                        "dlc":  true
+                                    },
+    "Tree Sentinel Hinterlands 2":  {
+                                        "id":  "2050470800",
+                                        "type":  3,
+                                        "nightBoss":  0,
+                                        "region":  21,
+                                        "scaling":  33,
+                                        "dlc":  true
+                                    },
+    "Tree Sentinel Duo 1":  {
+                                "id":  "1041510801",
+                                "type":  3,
+                                "nightBoss":  0,
+                                "region":  6,
+                                "scaling":  11,
+                                "dlc":  false
+                            },
+    "Tree Sentinel Duo 2":  {
+                                "id":  "1041510800",
+                                "type":  3,
+                                "nightBoss":  0,
+                                "region":  6,
+                                "scaling":  11,
+                                "dlc":  false
+                            },
+    "Twin Axe Death Knight":  {
+                                  "id":  "40000800",
+                                  "type":  5,
+                                  "nightBoss":  0,
+                                  "region":  18,
+                                  "scaling":  24,
+                                  "dlc":  true
+                              },
+    "Ulcerated Tree Spirit":  {
+                                  "id":  "18000800",
+                                  "type":  5,
+                                  "nightBoss":  0,
+                                  "region":  1,
+                                  "scaling":  7,
+                                  "dlc":  false
+                              },
+    "Ulcerated Tree Spirit Gelmir":  {
+                                         "id":  "1037540810",
+                                         "type":  3,
+                                         "nightBoss":  0,
+                                         "region":  5,
+                                         "scaling":  12,
+                                         "dlc":  false
+                                     },
+    "Ulcerated Tree Spirit MT":  {
+                                     "id":  "30180800",
+                                     "type":  5,
+                                     "nightBoss":  0,
+                                     "region":  7,
+                                     "scaling":  13,
+                                     "dlc":  false
+                                 },
+    "Valiant Gargoyles":  {
+                              "id":  "12020800",
+                              "type":  2,
+                              "nightBoss":  0,
+                              "region":  14,
+                              "scaling":  10,
+                              "dlc":  false
+                          },
+    "Wind Divine Warrior":  {
+                                "id":  "20010455",
+                                "type":  2,
+                                "nightBoss":  0,
+                                "region":  25,
+                                "scaling":  33,
+                                "dlc":  true
+                            },
+    "Wormface":  {
+                     "id":  "1041530800",
+                     "type":  3,
+                     "nightBoss":  0,
+                     "region":  6,
+                     "scaling":  11,
+                     "dlc":  false
+                 },
+    "Ymir Mother of Fingers":  {
+                                   "id":  "2051450720",
+                                   "type":  3,
+                                   "nightBoss":  0,
+                                   "region":  21,
+                                   "scaling":  25,
+                                   "dlc":  true
+                               }
+}

@@ -12,9 +12,40 @@ namespace BossArenaRandomizer.Core
     public static class FinalizeTextFile
     {
         public static void WriteFinalAssignments(
+            IReadOnlyCollection<AssignmentPair> finalAssignments,
+            string filePath,
+            string selectedOptionsFilePath,
+            int seed,
+            bool includeClearArenas = false)
+        {
+            WriteFinalAssignments(
+                finalAssignments.Select(assignment => (assignment.ArenaId.Value, assignment.BossId.Value)),
+                filePath,
+                selectedOptionsFilePath,
+                seed,
+                includeClearArenas);
+        }
+
+        public static void WriteFinalAssignments(
             Dictionary<string, string> finalAssignments,
             Dictionary<string, ArenaInfo> arenas,
             Dictionary<string, BossInfo> bosses,
+            string filePath,
+            string selectedOptionsFilePath,
+            int seed,
+            bool includeClearArenas = false)
+        {
+            var assignmentIds = finalAssignments.Select(kvp => (arenas[kvp.Key].id, bosses[kvp.Value].id));
+            WriteFinalAssignments(
+                assignmentIds,
+                filePath,
+                selectedOptionsFilePath,
+                seed,
+                includeClearArenas);
+        }
+
+        private static void WriteFinalAssignments(
+            IEnumerable<(string ArenaId, string BossId)> finalAssignments,
             string filePath,
             string selectedOptionsFilePath,
             int seed,
@@ -63,9 +94,7 @@ namespace BossArenaRandomizer.Core
 
             foreach (var kvp in finalAssignments)
             {
-                string arenaId = arenas[kvp.Key].id;
-                string bossId = bosses[kvp.Value].id;
-                enemiesBlock.AppendLine($"    {arenaId}: {bossId}");
+                enemiesBlock.AppendLine($"    {kvp.ArenaId}: {kvp.BossId}");
             }
 
             //  Locate key blocks 

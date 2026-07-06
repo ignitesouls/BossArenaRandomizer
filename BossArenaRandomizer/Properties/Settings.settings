@@ -11,12 +11,6 @@
     <Setting Name="UseClearArenas" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="UseArenaSizeRestriction" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="UseArenaDifficultyRestrict" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="LastUsedArenaPreset" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

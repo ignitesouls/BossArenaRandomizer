@@ -361,3 +361,11 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Local user presets/options. Keep folders present for clean checkouts.
+BossArenaRandomizer/Options/*
+!BossArenaRandomizer/Options/.gitkeep
+BossArenaRandomizer/Presets/Arenas/*
+!BossArenaRandomizer/Presets/Arenas/.gitkeep
+BossArenaRandomizer/Presets/Bosses/*
+!BossArenaRandomizer/Presets/Bosses/.gitkeep

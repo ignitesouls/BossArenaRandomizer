@@ -61,30 +61,6 @@ namespace BossArenaRandomizer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UseArenaSizeRestriction {
-            get {
-                return ((bool)(this["UseArenaSizeRestriction"]));
-            }
-            set {
-                this["UseArenaSizeRestriction"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UseArenaDifficultyRestrict {
-            get {
-                return ((bool)(this["UseArenaDifficultyRestrict"]));
-            }
-            set {
-                this["UseArenaDifficultyRestrict"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string LastUsedArenaPreset {
             get {

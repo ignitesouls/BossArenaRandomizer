@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BossArenaRandomizer.Core;
 using BossArenaRandomizer.Services;
 using Microsoft.Win32;
-using BossArenaRandomizer.Core;
 
 namespace BossArenaRandomizer.ViewModels
 {
@@ -36,8 +37,14 @@ namespace BossArenaRandomizer.ViewModels
         private readonly Func<FilterArenas> _getArenaFilter;
         private readonly Func<FilterBosses> _getBossFilter;
 
+        private string _lastDebugLog = string.Empty;
+
         public ObservableCollection<string> OptionsPresets { get; } = new();
+        public ObservableCollection<string> PairingPresets { get; } = new();
         public ObservableCollection<GenerationResultLine> ResultLines { get; } = new();
+        public ObservableCollection<GenerationResultLine> ValidationLines { get; } = new();
+        public ObservableCollection<GenerationResultLine> UniformityLines { get; } = new();
+        public ObservableCollection<GenerationResultLine> PairingFrequencyLines { get; } = new();
         public ObservableCollection<BatchSeedResultRow> BatchResults { get; } = new();
 
         private string _title = "Generate Seeds";
@@ -47,7 +54,7 @@ namespace BossArenaRandomizer.ViewModels
             set => SetProperty(ref _title, value);
         }
 
-        private string _subtitle = "Create one or many random assignments from your selected arenas, bosses, and options preset.";
+        private string _subtitle = "Create one or many random assignments from your selected arenas, bosses, options preset, and pairing preset.";
         public string Subtitle
         {
             get => _subtitle;
@@ -61,10 +68,15 @@ namespace BossArenaRandomizer.ViewModels
             set
             {
                 if (SetProperty(ref _selectedOptionsPreset, value))
-                {
                     OnPropertyChanged(nameof(DashboardSelectedOptionsPreset));
-                }
             }
+        }
+
+        private string _selectedPairingPreset = string.Empty;
+        public string SelectedPairingPreset
+        {
+            get => _selectedPairingPreset;
+            set => SetProperty(ref _selectedPairingPreset, value);
         }
 
         private string _outputPath = string.Empty;
@@ -74,9 +86,7 @@ namespace BossArenaRandomizer.ViewModels
             set
             {
                 if (SetProperty(ref _outputPath, value))
-                {
                     OnPropertyChanged(nameof(DashboardOutputPath));
-                }
             }
         }
 
@@ -85,6 +95,13 @@ namespace BossArenaRandomizer.ViewModels
         {
             get => _seedCount;
             set => SetProperty(ref _seedCount, value < 1 ? 1 : value);
+        }
+
+        private string _replaySeedText = string.Empty;
+        public string ReplaySeedText
+        {
+            get => _replaySeedText;
+            set => SetProperty(ref _replaySeedText, value);
         }
 
         private string _fileNamePattern = "BAR_{index}_{seed}.randomizeopt";
@@ -101,27 +118,6 @@ namespace BossArenaRandomizer.ViewModels
             set => SetProperty(ref _clearArenasEnabled, value);
         }
 
-        private bool _arenaSizeRestrictionEnabled;
-        public bool ArenaSizeRestrictionEnabled
-        {
-            get => _arenaSizeRestrictionEnabled;
-            set => SetProperty(ref _arenaSizeRestrictionEnabled, value);
-        }
-
-        private bool _bossRushDifficultyCurveEnabled;
-        public bool BossRushDifficultyCurveEnabled
-        {
-            get => _bossRushDifficultyCurveEnabled;
-            set => SetProperty(ref _bossRushDifficultyCurveEnabled, value);
-        }
-
-        private bool _looseDifficultyEnabled;
-        public bool LooseDifficultyEnabled
-        {
-            get => _looseDifficultyEnabled;
-            set => SetProperty(ref _looseDifficultyEnabled, value);
-        }
-
         private string _seedText = "Last Seed Used: --";
         public string SeedText
         {
@@ -129,9 +125,7 @@ namespace BossArenaRandomizer.ViewModels
             set
             {
                 if (SetProperty(ref _seedText, value))
-                {
                     OnPropertyChanged(nameof(DashboardLastSeedText));
-                }
             }
         }
 
@@ -142,9 +136,7 @@ namespace BossArenaRandomizer.ViewModels
             set
             {
                 if (SetProperty(ref _statusText, value))
-                {
                     OnPropertyChanged(nameof(DashboardLastStatusText));
-                }
             }
         }
 
@@ -172,7 +164,11 @@ namespace BossArenaRandomizer.ViewModels
 
         public RelayCommand BrowseOutputPathCommand { get; }
         public RelayCommand RefreshOptionsPresetsCommand { get; }
+        public RelayCommand RefreshPairingPresetsCommand { get; }
         public RelayCommand GenerateCommand { get; }
+        public RelayCommand ValidatePairingPresetCommand { get; }
+        public RelayCommand DryRunCommand { get; }
+        public RelayCommand ExportDebugLogCommand { get; }
         public RelayCommand ToggleSpoilerCommand { get; }
 
         public GenerateViewModel(
@@ -196,7 +192,11 @@ namespace BossArenaRandomizer.ViewModels
 
             BrowseOutputPathCommand = new RelayCommand(_ => BrowseOutputPath());
             RefreshOptionsPresetsCommand = new RelayCommand(_ => LoadOptionsPresets());
-            GenerateCommand = new RelayCommand(async _ => await GenerateAsync(), _ => !IsLoading);
+            RefreshPairingPresetsCommand = new RelayCommand(_ => LoadPairingPresets());
+            GenerateCommand = new RelayCommand(async _ => await RunGenerationAsync(writeOutputFiles: true), _ => !IsLoading);
+            ValidatePairingPresetCommand = new RelayCommand(async _ => await ValidatePairingPresetAsync(), _ => !IsLoading);
+            DryRunCommand = new RelayCommand(async _ => await RunGenerationAsync(writeOutputFiles: false), _ => !IsLoading);
+            ExportDebugLogCommand = new RelayCommand(_ => ExportDebugLog());
             ToggleSpoilerCommand = new RelayCommand(_ => IsSpoilerRevealed = !IsSpoilerRevealed);
 
             LoadState();
@@ -211,18 +211,14 @@ namespace BossArenaRandomizer.ViewModels
         private void LoadState()
         {
             LoadOptionsPresets();
+            LoadPairingPresets();
 
             OutputPath = _settingsService.GetOutputPath();
             ClearArenasEnabled = _settingsService.GetUseClearArenas();
-            ArenaSizeRestrictionEnabled = _settingsService.GetUseArenaSizeRestriction();
-            BossRushDifficultyCurveEnabled = _settingsService.GetUseBossRushDifficultyCurve();
-            LooseDifficultyEnabled = _settingsService.GetUseLooseDifficulty();
 
             var savedPreset = _settingsService.GetSelectedOptionsPreset();
             if (!string.IsNullOrWhiteSpace(savedPreset) && OptionsPresets.Contains(savedPreset))
-            {
                 SelectedOptionsPreset = savedPreset;
-            }
 
             RefreshSelectionSummary();
         }
@@ -232,20 +228,32 @@ namespace BossArenaRandomizer.ViewModels
             OptionsPresets.Clear();
 
             foreach (var preset in _presetService.GetOptionsPresetNames())
-            {
                 OptionsPresets.Add(preset);
-            }
 
             if (string.IsNullOrWhiteSpace(SelectedOptionsPreset) && OptionsPresets.Count > 0)
             {
                 var savedPreset = _settingsService.GetSelectedOptionsPreset();
-                if (!string.IsNullOrWhiteSpace(savedPreset) && OptionsPresets.Contains(savedPreset))
-                    SelectedOptionsPreset = savedPreset;
-                else
-                    SelectedOptionsPreset = OptionsPresets[0];
+                SelectedOptionsPreset = !string.IsNullOrWhiteSpace(savedPreset) && OptionsPresets.Contains(savedPreset)
+                    ? savedPreset
+                    : OptionsPresets[0];
             }
 
             OnPropertyChanged(nameof(DashboardSelectedOptionsPreset));
+        }
+
+        private void LoadPairingPresets()
+        {
+            PairingPresets.Clear();
+
+            foreach (var preset in _presetService.GetPairingPresetFiles())
+                PairingPresets.Add(preset);
+
+            if (string.IsNullOrWhiteSpace(SelectedPairingPreset) && PairingPresets.Count > 0)
+            {
+                SelectedPairingPreset = PairingPresets.Contains("everything.json")
+                    ? "everything.json"
+                    : PairingPresets[0];
+            }
         }
 
         private void BrowseOutputPath()
@@ -265,17 +273,124 @@ namespace BossArenaRandomizer.ViewModels
             }
         }
 
-        private async Task GenerateAsync()
+        private async Task ValidatePairingPresetAsync()
         {
             if (IsLoading)
                 return;
 
+            var request = BuildGenerationRequest(writeOutputFiles: false);
+            if (request == null)
+                return;
+
+            try
+            {
+                IsLoading = true;
+                StatusText = "Validating pairing preset...";
+                ClearRunOutput();
+
+                var result = await Task.Run(() => _seedGenerationService.Generate(request));
+                ApplyReportOutput(result);
+
+                StatusText = result.ValidationLines.Any(x => x.StartsWith("[Error]", StringComparison.OrdinalIgnoreCase))
+                    ? "Validation failed"
+                    : "Validation passed";
+
+                if (!result.Success && !string.IsNullOrWhiteSpace(result.ErrorMessage))
+                    System.Windows.MessageBox.Show(result.ErrorMessage);
+            }
+            catch (Exception ex)
+            {
+                StatusText = "Validation failed";
+                System.Windows.MessageBox.Show($"Validation failed: {ex.Message}");
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        private async Task RunGenerationAsync(bool writeOutputFiles)
+        {
+            if (IsLoading)
+                return;
+
+            var request = BuildGenerationRequest(writeOutputFiles);
+            if (request == null)
+                return;
+
+            try
+            {
+                IsLoading = true;
+                StatusText = writeOutputFiles ? "Generating batch..." : "Testing randomization...";
+                SeedText = "Last Seed Used: --";
+                IsSpoilerRevealed = false;
+                ClearRunOutput();
+
+                var result = await Task.Run(() => _seedGenerationService.Generate(request));
+                ApplyGenerationOutput(result);
+
+                if (!result.Success)
+                {
+                    StatusText = writeOutputFiles ? "Generation failed" : "Test failed";
+                    SeedText = "Last Seed Used: --";
+                    System.Windows.MessageBox.Show(result.ErrorMessage);
+                    RaiseDashboardProperties();
+                    return;
+                }
+
+                int successCount = result.BatchResults.Count(x => x.Success);
+                int failCount = result.BatchResults.Count(x => !x.Success);
+
+                SeedText = $"Last Seed Used: {result.LastSeed}";
+                StatusText = writeOutputFiles
+                    ? $"Complete - {successCount} succeeded, {failCount} failed"
+                    : $"Dry run complete - {successCount} passed, {failCount} failed";
+
+                if (writeOutputFiles)
+                {
+                    _settingsService.SaveSelectedOptionsPreset(SelectedOptionsPreset);
+                    _settingsService.SaveGenerationFlags(
+                        ClearArenasEnabled,
+                        false,
+                        false
+                    );
+                }
+
+                RaiseDashboardProperties();
+            }
+            catch (Exception ex)
+            {
+                StatusText = writeOutputFiles ? "Generation failed" : "Test failed";
+                SeedText = "Last Seed Used: --";
+                System.Windows.MessageBox.Show($"{(writeOutputFiles ? "Generation" : "Test")} failed: {ex.Message}");
+                RaiseDashboardProperties();
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        private GenerationRequest? BuildGenerationRequest(bool writeOutputFiles)
+        {
             RefreshSelectionSummary();
 
             if (string.IsNullOrWhiteSpace(SelectedOptionsPreset))
             {
                 System.Windows.MessageBox.Show("Please load an options preset.");
-                return;
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(SelectedPairingPreset))
+            {
+                System.Windows.MessageBox.Show("Please select a pairing preset.");
+                return null;
+            }
+
+            if (writeOutputFiles && string.IsNullOrWhiteSpace(OutputPath))
+            {
+                System.Windows.MessageBox.Show("Please select an output path first.");
+                return null;
             }
 
             var selectedArenaIds = _getArenaFilter().ArenaSelections
@@ -291,16 +406,28 @@ namespace BossArenaRandomizer.ViewModels
             if (selectedArenaIds.Count == 0)
             {
                 System.Windows.MessageBox.Show("Please select at least one arena.");
-                return;
+                return null;
             }
 
             if (selectedBossIds.Count == 0)
             {
                 System.Windows.MessageBox.Show("Please select at least one boss.");
-                return;
+                return null;
             }
 
-            var request = new GenerationRequest
+            int? replaySeed = null;
+            if (!string.IsNullOrWhiteSpace(ReplaySeedText))
+            {
+                if (!int.TryParse(ReplaySeedText.Trim(), out int parsedSeed) || parsedSeed < 1)
+                {
+                    System.Windows.MessageBox.Show("Replay seed must be a positive whole number.");
+                    return null;
+                }
+
+                replaySeed = parsedSeed;
+            }
+
+            return new GenerationRequest
             {
                 Arenas = _getArenas(),
                 Bosses = _getBosses(),
@@ -309,99 +436,105 @@ namespace BossArenaRandomizer.ViewModels
                 BasePath = _basePath,
                 OutputPath = OutputPath,
                 SelectedOptionsPreset = SelectedOptionsPreset,
+                SelectedPairingPreset = SelectedPairingPreset,
                 ClearArenasEnabled = ClearArenasEnabled,
-                ArenaSizeRestrictionEnabled = ArenaSizeRestrictionEnabled,
-                BossRushDifficultyCurveEnabled = BossRushDifficultyCurveEnabled,
-                LooseDifficultyEnabled = LooseDifficultyEnabled,
                 SeedCount = SeedCount,
-                FileNamePattern = FileNamePattern
+                ReplaySeed = replaySeed,
+                FileNamePattern = FileNamePattern,
+                WriteOutputFiles = writeOutputFiles
             };
+        }
 
-            try
+        private void ApplyGenerationOutput(GenerationResult result)
+        {
+            ApplyReportOutput(result);
+
+            foreach (var batch in result.BatchResults)
             {
-                IsLoading = true;
-                StatusText = "Generating batch...";
-                SeedText = "Last Seed Used: --";
-                IsSpoilerRevealed = false;
-
-                ResultLines.Clear();
-                BatchResults.Clear();
-
-                var result = await Task.Run(() => _seedGenerationService.Generate(request));
-
-                if (!result.Success)
+                BatchResults.Add(new BatchSeedResultRow
                 {
-                    StatusText = "Generation failed";
-                    SeedText = "Last Seed Used: --";
-                    System.Windows.MessageBox.Show(result.ErrorMessage);
+                    Index = batch.Index,
+                    Status = batch.Success ? "Success" : "Failed",
+                    Seed = batch.Seed,
+                    OutputPath = batch.OutputPath,
+                    Message = batch.Message
+                });
+            }
 
-                    OnPropertyChanged(nameof(DashboardLastSeedText));
-                    OnPropertyChanged(nameof(DashboardLastStatusText));
-                    return;
-                }
-
-                foreach (var batch in result.BatchResults)
+            foreach (var group in result.DisplayGroups)
+            {
+                ResultLines.Add(new GenerationResultLine
                 {
-                    BatchResults.Add(new BatchSeedResultRow
-                    {
-                        Index = batch.Index,
-                        Status = batch.Success ? "Success" : "Failed",
-                        Seed = batch.Seed,
-                        OutputPath = batch.OutputPath,
-                        Message = batch.Message
-                    });
-                }
+                    Text = $"{group.RegionName}:",
+                    IsHeader = true
+                });
 
-                foreach (var group in result.DisplayGroups)
+                foreach (var line in group.Lines)
                 {
                     ResultLines.Add(new GenerationResultLine
                     {
-                        Text = $"{group.RegionName}:",
-                        IsHeader = true
+                        Text = line,
+                        IsHeader = false
                     });
-
-                    foreach (var line in group.Lines)
-                    {
-                        ResultLines.Add(new GenerationResultLine
-                        {
-                            Text = line,
-                            IsHeader = false
-                        });
-                    }
                 }
-
-                int successCount = result.BatchResults.Count(x => x.Success);
-                int failCount = result.BatchResults.Count(x => !x.Success);
-
-                SeedText = $"Last Seed Used: {result.LastSeed}";
-                StatusText = $"Complete - {successCount} succeeded, {failCount} failed";
-
-                _settingsService.SaveSelectedOptionsPreset(SelectedOptionsPreset);
-                _settingsService.SaveGenerationFlags(
-                    ClearArenasEnabled,
-                    ArenaSizeRestrictionEnabled,
-                    BossRushDifficultyCurveEnabled,
-                    LooseDifficultyEnabled
-                );
-
-                OnPropertyChanged(nameof(DashboardSelectedOptionsPreset));
-                OnPropertyChanged(nameof(DashboardOutputPath));
-                OnPropertyChanged(nameof(DashboardLastSeedText));
-                OnPropertyChanged(nameof(DashboardLastStatusText));
             }
-            catch (Exception ex)
+        }
+
+        private void ApplyReportOutput(GenerationResult result)
+        {
+            _lastDebugLog = result.DebugLog;
+
+            ValidationLines.Clear();
+            foreach (var line in result.ValidationLines)
+                ValidationLines.Add(new GenerationResultLine { Text = line });
+
+            UniformityLines.Clear();
+            foreach (var line in result.UniformityLines)
+                UniformityLines.Add(new GenerationResultLine { Text = line });
+
+            PairingFrequencyLines.Clear();
+            foreach (var line in result.PairingFrequencyLines)
+                PairingFrequencyLines.Add(new GenerationResultLine { Text = line });
+        }
+
+        private void ClearRunOutput()
+        {
+            ResultLines.Clear();
+            BatchResults.Clear();
+            ValidationLines.Clear();
+            UniformityLines.Clear();
+            PairingFrequencyLines.Clear();
+            _lastDebugLog = string.Empty;
+        }
+
+        private void ExportDebugLog()
+        {
+            if (string.IsNullOrWhiteSpace(_lastDebugLog))
             {
-                StatusText = "Generation failed";
-                SeedText = "Last Seed Used: --";
-                System.Windows.MessageBox.Show($"Generation failed: {ex.Message}");
+                System.Windows.MessageBox.Show("No debug log is available yet.");
+                return;
+            }
 
-                OnPropertyChanged(nameof(DashboardLastSeedText));
-                OnPropertyChanged(nameof(DashboardLastStatusText));
-            }
-            finally
+            var dialog = new SaveFileDialog
             {
-                IsLoading = false;
-            }
+                FileName = $"BAR_Debug_{DateTime.Now:yyyyMMdd_HHmmss}.txt",
+                DefaultExt = ".txt",
+                Filter = "Text files (*.txt)|*.txt"
+            };
+
+            if (dialog.ShowDialog() != true)
+                return;
+
+            File.WriteAllText(dialog.FileName, _lastDebugLog);
+            StatusText = $"Exported debug log to {dialog.FileName}";
+        }
+
+        private void RaiseDashboardProperties()
+        {
+            OnPropertyChanged(nameof(DashboardSelectedOptionsPreset));
+            OnPropertyChanged(nameof(DashboardOutputPath));
+            OnPropertyChanged(nameof(DashboardLastSeedText));
+            OnPropertyChanged(nameof(DashboardLastStatusText));
         }
     }
 }

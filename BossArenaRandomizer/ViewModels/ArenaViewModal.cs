@@ -130,7 +130,8 @@ namespace BossArenaRandomizer.ViewModels
         private void ResetAll()
         {
             foreach (var arena in ArenaSelections)
-                arena.IsSelected = !HCFilterIds.UncheckArenaBossIds.Contains(arena.Id);
+                arena.IsSelected = HCFilterIds.BaseGameArenaIds.Contains(arena.Id)
+                    || HCFilterIds.DLCArenaIds.Contains(arena.Id);
 
             RaiseSelectionChanged();
         }
@@ -138,7 +139,7 @@ namespace BossArenaRandomizer.ViewModels
         private void ClearAll()
         {
             foreach (var arena in ArenaSelections)
-                arena.IsSelected = !HCFilterIds.AllBossArenas.Contains(arena.Id);
+                arena.IsSelected = false;
 
             RaiseSelectionChanged();
         }
