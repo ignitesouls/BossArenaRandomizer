@@ -46,7 +46,8 @@ namespace BossArenaRandomizer.Core
             { 5, "Catacomb" },
             { 6, "Tunnel" },
             { 7, "Evergaol" },
-            { 8, "Gaol" }
+            { 8, "Gaol" },
+            { 9, "Miscellaneous" }
         };
     }
 }

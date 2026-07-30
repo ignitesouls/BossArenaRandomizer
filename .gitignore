@@ -363,9 +363,11 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Local user presets/options. Keep folders present for clean checkouts.
-BossArenaRandomizer/Options/*
-!BossArenaRandomizer/Options/.gitkeep
-BossArenaRandomizer/Presets/Arenas/*
-!BossArenaRandomizer/Presets/Arenas/.gitkeep
-BossArenaRandomizer/Presets/Bosses/*
-!BossArenaRandomizer/Presets/Bosses/.gitkeep
+BossArenaRandomizer/Rando Options/*
+!BossArenaRandomizer/Rando Options/.gitkeep
+BossArenaRandomizer/BAR Presets/Arenas/*
+!BossArenaRandomizer/BAR Presets/Arenas/.gitkeep
+BossArenaRandomizer/BAR Presets/Bosses/*
+!BossArenaRandomizer/BAR Presets/Bosses/.gitkeep
+BossArenaRandomizer/BAR Configurations/*
+!BossArenaRandomizer/BAR Configurations/.gitkeep

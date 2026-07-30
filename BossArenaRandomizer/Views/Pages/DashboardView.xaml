@@ -59,8 +59,8 @@
 
             <Border Background="#171720" CornerRadius="8" Padding="18" Margin="0,0,12,0">
                 <StackPanel>
-                    <TextBlock Text="Options Preset" Foreground="#A9A9B3"/>
-                    <TextBlock Text="{Binding SelectedOptionsPreset}"
+                    <TextBlock Text="Configuration" Foreground="#A9A9B3"/>
+                    <TextBlock Text="{Binding SelectedConfiguration}"
                                FontSize="18"
                                FontWeight="Bold"
                                Foreground="White"
@@ -71,11 +71,11 @@
 
             <Border Background="#171720" CornerRadius="8" Padding="18">
                 <StackPanel>
-                    <TextBlock Text="Last Status" Foreground="#A9A9B3"/>
-                    <TextBlock Text="{Binding LastStatusText}"
+                    <TextBlock Text="Pairing Preset" Foreground="#A9A9B3"/>
+                    <TextBlock Text="{Binding SelectedPairingPreset}"
                                FontSize="18"
                                FontWeight="Bold"
-                               Foreground="#C9B4FF"
+                               Foreground="White"
                                Margin="0,8,0,0"
                                TextWrapping="Wrap"/>
                 </StackPanel>
@@ -91,9 +91,37 @@
 
             <!-- Left content -->
             <StackPanel Grid.Column="0" Margin="0,0,16,0">
-                <Border Background="#171720" CornerRadius="8" Padding="18" Margin="0,0,0,16">
+                <Border Background="#171720" CornerRadius="8" Padding="18" Margin="0,0,0,12">
                     <StackPanel>
-                        <TextBlock Text="Current Output File"
+                        <TextBlock Text="Current Presets"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="White"/>
+                        <Grid Margin="0,12,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="8"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="8"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Arena Preset" Foreground="#A9A9B3"/>
+                            <TextBlock Grid.Column="1" Text="{Binding SelectedArenaPreset}" Foreground="#E5E5EC" TextWrapping="Wrap"/>
+                            <TextBlock Grid.Row="2" Text="Boss Preset" Foreground="#A9A9B3"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedBossPreset}" Foreground="#E5E5EC" TextWrapping="Wrap"/>
+                            <TextBlock Grid.Row="4" Text="Rando Options" Foreground="#A9A9B3"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedOptionsPreset}" Foreground="#E5E5EC" TextWrapping="Wrap"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Background="#171720" CornerRadius="8" Padding="18" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="Current Output Folder"
                                    FontSize="20"
                                    FontWeight="Bold"
                                    Foreground="White"/>
@@ -101,6 +129,11 @@
                                    Margin="0,12,0,0"
                                    Foreground="#E5E5EC"
                                    TextWrapping="Wrap"/>
+                        <Button Content="Open Folder"
+                                Command="{Binding OpenOutputFolderCommand}"
+                                Margin="0,12,0,0"
+                                Width="110"
+                                HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Border>
 
@@ -118,6 +151,10 @@
                                    Margin="0,8,0,0"
                                    Foreground="#E5E5EC"
                                    TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding LastGeneratedOutputPath}"
+                                   Margin="0,8,0,0"
+                                   Foreground="#A9A9B3"
+                                   TextWrapping="Wrap"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -130,8 +167,8 @@
                                FontWeight="Bold"
                                Foreground="White"/>
 
-                    <Button Content="Go to Generate"
-                            Command="{Binding GoToGenerateCommand}"
+                    <Button Content="Quick Generate"
+                            Command="{Binding QuickGenerateCommand}"
                             Margin="0,16,0,0"
                             Height="40"/>
 

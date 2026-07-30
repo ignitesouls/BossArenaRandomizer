@@ -9,7 +9,7 @@ namespace BossArenaRandomizer.Services
     {
         string OptionsPresetPath(string presetName);
         string PairingPresetPath(string presetFileName);
-        string BuildBatchOutputPath(string baseOutputPath, string fileNamePattern, string selectedOptionsPreset, int index, int seed);
+        string BuildBatchOutputPath(string outputFolderPath, string fileNamePattern, string selectedOptionsPreset, int index, int seed);
     }
 
     public sealed class ProjectPaths : IProjectPaths
@@ -23,7 +23,7 @@ namespace BossArenaRandomizer.Services
 
         public string OptionsPresetPath(string presetName)
         {
-            return PresetService.ResolveContentPath(_basePath, "Options", presetName + ".randomizeopt");
+            return PresetService.ResolveContentPath(_basePath, "Rando Options", presetName + ".randomizeopt");
         }
 
         public string PairingPresetPath(string presetFileName)
@@ -32,24 +32,17 @@ namespace BossArenaRandomizer.Services
         }
 
         public string BuildBatchOutputPath(
-            string baseOutputPath,
+            string outputFolderPath,
             string fileNamePattern,
             string selectedOptionsPreset,
             int index,
             int seed)
         {
-            string directory = Path.GetDirectoryName(baseOutputPath) ?? "";
-            string originalName = Path.GetFileNameWithoutExtension(baseOutputPath);
-            string extension = Path.GetExtension(baseOutputPath);
-
-            if (string.IsNullOrWhiteSpace(extension))
-                extension = ".randomizeopt";
-
             string safePreset = string.Concat(
                 selectedOptionsPreset.SelectFileNameSafeCharacters());
 
             string safePattern = string.IsNullOrWhiteSpace(fileNamePattern)
-                ? $"{originalName}_{{index}}_{{seed}}{extension}"
+                ? "BAR_{index}_{seed}.randomizeopt"
                 : fileNamePattern;
 
             string fileName = safePattern
@@ -58,9 +51,9 @@ namespace BossArenaRandomizer.Services
                 .Replace("{preset}", safePreset);
 
             if (!fileName.EndsWith(".randomizeopt", StringComparison.OrdinalIgnoreCase))
-                fileName += extension;
+                fileName += ".randomizeopt";
 
-            return Path.Combine(directory, fileName);
+            return Path.Combine(outputFolderPath, fileName);
         }
     }
 

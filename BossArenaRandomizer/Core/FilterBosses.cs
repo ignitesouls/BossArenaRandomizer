@@ -1,11 +1,7 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace BossArenaRandomizer.Core
 {
@@ -13,10 +9,10 @@ namespace BossArenaRandomizer.Core
     {
         private bool isSelected;
 
-        public string Name { get; set; }
-        public string Id { get; set; }
-        public int RegionId { get; set; }    
-        public string RegionName { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
+        public int RegionId { get; set; }
+        public string RegionName { get; set; } = string.Empty;
 
         public bool IsSelected
         {
@@ -31,35 +27,30 @@ namespace BossArenaRandomizer.Core
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
-
 
     public class RegionGroupBoss
     {
-        public string RegionName { get; set; }
-        public ObservableCollection<BossSelection> Bosses { get; set; }
+        public string RegionName { get; }
+        public ObservableCollection<BossSelection> Bosses { get; } = new();
 
         public RegionGroupBoss(string name)
         {
             RegionName = name;
-            Bosses = new ObservableCollection<BossSelection>();
         }
     }
 
     public class FilterBosses : INotifyPropertyChanged
     {
-        public ObservableCollection<BossSelection> BossSelections { get; private set; }
-        public ObservableCollection<RegionGroupBoss> RegionGroups { get; private set; }
+        public ObservableCollection<BossSelection> BossSelections { get; } = new();
+        public ObservableCollection<RegionGroupBoss> RegionGroups { get; } = new();
 
         public int SelectedCount =>
-            RegionGroups?.Sum(r => r.Bosses.Count(a => a.IsSelected)) ?? 0;
+            RegionGroups.Sum(r => r.Bosses.Count(a => a.IsSelected));
 
         public FilterBosses(Dictionary<string, BossInfo> bossesJson)
         {
-            BossSelections = new ObservableCollection<BossSelection>();
-            RegionGroups = new ObservableCollection<RegionGroupBoss>();
-
             foreach (var bossEntry in bossesJson)
             {
                 var bossInfo = bossEntry.Value;
@@ -96,6 +87,6 @@ namespace BossArenaRandomizer.Core
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

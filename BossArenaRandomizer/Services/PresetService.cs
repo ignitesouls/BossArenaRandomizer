@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,9 +15,10 @@ namespace BossArenaRandomizer.Services
             _basePath = basePath ?? throw new ArgumentNullException(nameof(basePath));
         }
 
-        public string ArenaPresetDirectory => Path.Combine(_basePath, "Presets", "Arenas");
-        public string BossPresetDirectory => Path.Combine(_basePath, "Presets", "Bosses");
-        public string OptionsPresetDirectory => Path.Combine(_basePath, "Options");
+        public string ArenaPresetDirectory => Path.Combine(_basePath, "BAR Presets", "Arenas");
+        public string BossPresetDirectory => Path.Combine(_basePath, "BAR Presets", "Bosses");
+        public string OptionsPresetDirectory => Path.Combine(_basePath, "Rando Options");
+        public string ConfigurationDirectory => Path.Combine(_basePath, "BAR Configurations");
         public string DataDirectory => Path.Combine(_basePath, "Data");
         public string PairingPresetDirectory => Path.Combine(DataDirectory, "Pairings");
 
@@ -37,7 +38,7 @@ namespace BossArenaRandomizer.Services
         public List<string> GetArenaPresetFiles()
         {
             EnsureDirectory(ArenaPresetDirectory);
-            return GetFilesFromContentDirectories(Path.Combine("Presets", "Arenas"), "*.json")
+            return GetFilesFromContentDirectories(Path.Combine("BAR Presets", "Arenas"), "*.json")
                 .Select(Path.GetFileName)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -48,7 +49,7 @@ namespace BossArenaRandomizer.Services
         public List<string> GetBossPresetFiles()
         {
             EnsureDirectory(BossPresetDirectory);
-            return GetFilesFromContentDirectories(Path.Combine("Presets", "Bosses"), "*.json")
+            return GetFilesFromContentDirectories(Path.Combine("BAR Presets", "Bosses"), "*.json")
                 .Select(Path.GetFileName)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -59,8 +60,19 @@ namespace BossArenaRandomizer.Services
         public List<string> GetOptionsPresetNames()
         {
             EnsureDirectory(OptionsPresetDirectory);
-            return GetFilesFromContentDirectories("Options", "*.randomizeopt")
+            return GetFilesFromContentDirectories("Rando Options", "*.randomizeopt")
                 .Select(Path.GetFileNameWithoutExtension)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(x => x)
+                .ToList()!;
+        }
+
+        public List<string> GetConfigurationFiles()
+        {
+            EnsureDirectory(ConfigurationDirectory);
+            return GetFilesFromContentDirectories("BAR Configurations", "*.json")
+                .Select(Path.GetFileName)
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .OrderBy(x => x)
@@ -80,22 +92,96 @@ namespace BossArenaRandomizer.Services
 
         public string GetArenaPresetPath(string presetFileName)
         {
-            return ResolveContentPath(_basePath, "Presets", "Arenas", presetFileName);
+            return ResolveContentPath(_basePath, "BAR Presets", "Arenas", presetFileName);
         }
 
         public string GetBossPresetPath(string presetFileName)
         {
-            return ResolveContentPath(_basePath, "Presets", "Bosses", presetFileName);
+            return ResolveContentPath(_basePath, "BAR Presets", "Bosses", presetFileName);
         }
 
         public string GetOptionsPresetPath(string presetName)
         {
-            return ResolveContentPath(_basePath, "Options", presetName + ".randomizeopt");
+            return ResolveContentPath(_basePath, "Rando Options", presetName + ".randomizeopt");
         }
 
         public string GetPairingPresetPath(string presetFileName)
         {
             return ResolveContentPath(_basePath, "Data", "Pairings", presetFileName);
+        }
+
+        public string GetConfigurationPath(string configurationFileName)
+        {
+            return ResolveContentPath(_basePath, "BAR Configurations", NormalizeConfigurationFileName(configurationFileName));
+        }
+
+        public PresetConfiguration LoadConfiguration(string configurationFileName)
+        {
+            string path = GetConfigurationPath(configurationFileName);
+            if (!File.Exists(path))
+                throw new FileNotFoundException("Configuration file not found.", path);
+
+            string json = File.ReadAllText(path);
+            return JsonSerializer.Deserialize<PresetConfiguration>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            }) ?? throw new InvalidDataException("Configuration file is empty or invalid.");
+        }
+
+        public string SaveConfiguration(string configurationName, PresetConfiguration configuration)
+        {
+            ArgumentNullException.ThrowIfNull(configuration);
+            EnsureDirectory(ConfigurationDirectory);
+
+            string fileName = NormalizeConfigurationFileName(configurationName);
+            string path = Path.Combine(ConfigurationDirectory, fileName);
+            string json = JsonSerializer.Serialize(configuration, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
+            File.WriteAllText(path, json);
+            return fileName;
+        }
+
+        public bool ConfigurationExists(string configurationName)
+        {
+            return File.Exists(GetConfigurationPath(configurationName));
+        }
+
+        public string DuplicateConfiguration(string sourceFileName, string newConfigurationName)
+        {
+            PresetConfiguration configuration = LoadConfiguration(sourceFileName);
+            return SaveConfiguration(newConfigurationName, configuration);
+        }
+
+        public string RenameConfiguration(string sourceFileName, string newConfigurationName)
+        {
+            string sourcePath = GetConfigurationPath(sourceFileName);
+            if (!File.Exists(sourcePath))
+                throw new FileNotFoundException("Configuration file not found.", sourcePath);
+
+            EnsureDirectory(ConfigurationDirectory);
+            string destinationFileName = NormalizeConfigurationFileName(newConfigurationName);
+            string destinationPath = Path.Combine(ConfigurationDirectory, destinationFileName);
+
+            if (string.Equals(sourcePath, destinationPath, StringComparison.OrdinalIgnoreCase))
+                return destinationFileName;
+
+            if (File.Exists(destinationPath))
+                throw new IOException($"A configuration named '{Path.GetFileNameWithoutExtension(destinationFileName)}' already exists.");
+
+            File.Move(sourcePath, destinationPath);
+            return destinationFileName;
+        }
+
+        public void DeleteConfiguration(string configurationFileName)
+        {
+            string path = GetConfigurationPath(configurationFileName);
+            if (!File.Exists(path))
+                throw new FileNotFoundException("Configuration file not found.", path);
+
+            File.Delete(path);
         }
 
         public List<string> LoadArenaPresetIds(string presetFileName)
@@ -133,6 +219,27 @@ namespace BossArenaRandomizer.Services
         public bool OptionsPresetExists(string presetName)
         {
             return File.Exists(GetOptionsPresetPath(presetName));
+        }
+
+        public bool PairingPresetExists(string presetFileName)
+        {
+            return File.Exists(GetPairingPresetPath(presetFileName));
+        }
+
+        private static string NormalizeConfigurationFileName(string configurationName)
+        {
+            string name = (configurationName ?? string.Empty).Trim();
+            if (name.EndsWith(".json", StringComparison.OrdinalIgnoreCase))
+                name = name[..^5];
+
+            name = Path.GetFileName(name);
+            char[] invalidCharacters = Path.GetInvalidFileNameChars();
+            string safeName = string.Concat(name.Select(ch => invalidCharacters.Contains(ch) ? '_' : ch)).Trim();
+
+            if (string.IsNullOrWhiteSpace(safeName))
+                throw new ArgumentException("Configuration name is required.", nameof(configurationName));
+
+            return safeName + ".json";
         }
 
         private static List<string> LoadIdList(string path)

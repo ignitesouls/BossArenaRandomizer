@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using BossArenaRandomizer.Models;
@@ -10,7 +10,7 @@ namespace BossArenaRandomizer.ViewModels
     {
         private readonly AppStateService _appStateService;
 
-        public ObservableCollection<NavigationItem> NavigationItems { get; }
+        public ObservableCollection<NavigationItem> NavigationItems { get; } = new();
 
         private NavigationItem? _selectedNavigationItem;
         public NavigationItem? SelectedNavigationItem
@@ -70,15 +70,24 @@ namespace BossArenaRandomizer.ViewModels
                 () => _appStateService.Modules.ArenaFilter.SelectedCount,
                 () => _appStateService.Modules.BossesFilter.SelectedCount,
                 () => generateVm.DashboardSelectedOptionsPreset,
+                () => generateVm.DashboardSelectedConfiguration,
+                () => generateVm.DashboardSelectedArenaPreset,
+                () => generateVm.DashboardSelectedBossPreset,
+                () => generateVm.DashboardSelectedPairingPreset,
                 () => generateVm.DashboardOutputPath,
                 () => generateVm.DashboardLastSeedText,
                 () => generateVm.DashboardLastStatusText,
+                () => generateVm.DashboardLastGeneratedOutputPath,
+                () => generateVm.QuickGenerateAsync(),
+                generateVm.OpenOutputFolder,
                 NavigateTo
             );
 
+            generateVm.PropertyChanged += (_, _) => dashboardVm.Refresh();
+
             void RefreshSharedState()
             {
-                generateVm.RefreshSelectionSummary();
+                generateVm.NotifySelectionChanged();
                 dashboardVm.Refresh();
             }
 
@@ -109,16 +118,13 @@ namespace BossArenaRandomizer.ViewModels
                 _appStateService
             );
 
-            NavigationItems = new ObservableCollection<NavigationItem>
-            {
-                new NavigationItem { Title = "Dashboard", ViewModel = dashboardVm },
-                new NavigationItem { Title = "Generate", ViewModel = generateVm },
-                new NavigationItem { Title = "Arenas", ViewModel = arenaVm },
-                new NavigationItem { Title = "Bosses", ViewModel = bossVm },
-                new NavigationItem { Title = "Analyze", ViewModel = analyzeVm },
-                new NavigationItem { Title = "Preset Pairings", ViewModel = arenaEditorVm },
-                new NavigationItem { Title = "Main Database", ViewModel = databaseEditorVm },
-            };
+            NavigationItems.Add(new NavigationItem { Title = "Dashboard", ViewModel = dashboardVm });
+            NavigationItems.Add(new NavigationItem { Title = "Generate", ViewModel = generateVm });
+            NavigationItems.Add(new NavigationItem { Title = "Arenas", ViewModel = arenaVm });
+            NavigationItems.Add(new NavigationItem { Title = "Bosses", ViewModel = bossVm });
+            NavigationItems.Add(new NavigationItem { Title = "Analyze", ViewModel = analyzeVm });
+            NavigationItems.Add(new NavigationItem { Title = "Preset Pairings", ViewModel = arenaEditorVm });
+            NavigationItems.Add(new NavigationItem { Title = "Main Database", ViewModel = databaseEditorVm });
 
             _appStateService.StateReloaded += (_, _) =>
             {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -88,7 +88,7 @@ namespace BossArenaRandomizer.Core
             if (includeClearArenas)
             {
                 string clearArenaAnimal = "2822374"; // Springhare
-                foreach (var extraId in HCFilterIds.ClearArenasIds)
+                foreach (var extraId in ClearArenaIds.Load())
                     enemiesBlock.AppendLine($"    {extraId}: {clearArenaAnimal}");
             }
 
@@ -120,12 +120,12 @@ namespace BossArenaRandomizer.Core
             }
             else if (enemyPresetIndex != -1)
             {
-                // EnemyPreset: >+ exists but no Enemies block — insert after it 
+                // EnemyPreset: >+ exists but no Enemies block - insert after it 
                 optionsLines.InsertRange(enemyPresetIndex + 1, enemiesBlock.ToString().TrimEnd().Split('\n'));
             }
             else if (emptyEnemyPresetIndex != -1)
             {
-                // EnemyPreset: (empty) exists — replace with >+ and insert full section 
+                // EnemyPreset: (empty) exists - replace with >+ and insert full section 
                 optionsLines[emptyEnemyPresetIndex] = "EnemyPreset: >+";
 
                 var insertion = new List<string>();
@@ -157,7 +157,7 @@ namespace BossArenaRandomizer.Core
             }
             else
             {
-                // No EnemyPreset at all — insert full preset after seed line 
+                // No EnemyPreset at all - insert full preset after seed line 
                 int seedIndex = optionsLines.FindIndex(l => l.Contains("seed:"));
                 if (seedIndex == -1) seedIndex = optionsLines.Count - 1;
 

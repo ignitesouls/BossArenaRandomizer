@@ -135,26 +135,47 @@ namespace BossArenaRandomizer.Services
                 }
 
                 var finalAssignments = assignResult.AssignmentPairs;
-                successfulAssignments++;
-                pairingFrequencyReporter.Add(finalAssignments);
                 string outputPath = string.Empty;
 
                 if (request.WriteOutputFiles)
                 {
-                    outputPath = paths.BuildBatchOutputPath(
-                        request.OutputPath,
-                        request.FileNamePattern,
-                        request.SelectedOptionsPreset,
-                        i,
-                        seed);
+                    try
+                    {
+                        outputPath = paths.BuildBatchOutputPath(
+                            request.OutputFolderPath,
+                            request.FileNamePattern,
+                            request.SelectedOptionsPreset,
+                            i,
+                            seed);
 
-                    _assignmentWriter.Write(
-                        finalAssignments,
-                        outputPath,
-                        optionsFilePath,
-                        seed,
-                        request.ClearArenasEnabled);
+                        _assignmentWriter.Write(
+                            finalAssignments,
+                            outputPath,
+                            optionsFilePath,
+                            seed,
+                            request.ClearArenasEnabled);
+                    }
+                    catch (Exception ex)
+                    {
+                        string message = $"Output failed: {ex.Message}";
+                        debugLog.AppendLine($"Status: {message}");
+                        if (!string.IsNullOrWhiteSpace(outputPath))
+                            debugLog.AppendLine($"Output: {outputPath}");
+
+                        result.BatchResults.Add(new BatchSeedResult
+                        {
+                            Index = i,
+                            Success = false,
+                            Seed = seed,
+                            OutputPath = outputPath,
+                            Message = message
+                        });
+                        continue;
+                    }
                 }
+
+                successfulAssignments++;
+                pairingFrequencyReporter.Add(finalAssignments);
 
                 result.LastSeed = seed;
                 result.FinalAssignmentPairs = finalAssignments.ToList();
@@ -182,17 +203,14 @@ namespace BossArenaRandomizer.Services
 
                 debugLog.AppendUniformity(uniformityLines);
 
-                if (i == request.SeedCount)
-                {
-                    result.UniformityLines = uniformityLines;
-                    result.DisplayGroups = _displayBuilder.Build(finalAssignments);
-                }
+                result.UniformityLines = uniformityLines;
+                result.DisplayGroups = _displayBuilder.Build(finalAssignments);
             }
 
             if (result.BatchResults.All(x => !x.Success))
             {
                 result.Success = false;
-                result.ErrorMessage = "All batch generations failed due to constraints.";
+                result.ErrorMessage = "All batch generations failed. See the batch results or debug log for details.";
             }
 
             result.PairingFrequencyLines = pairingFrequencyReporter.BuildReport(successfulAssignments);
@@ -214,8 +232,8 @@ namespace BossArenaRandomizer.Services
             if (string.IsNullOrWhiteSpace(request.SelectedOptionsPreset))
                 return "Please load an options preset.";
 
-            if (request.WriteOutputFiles && string.IsNullOrWhiteSpace(request.OutputPath))
-                return "Please select an output path first.";
+            if (request.WriteOutputFiles && string.IsNullOrWhiteSpace(request.OutputFolderPath))
+                return "Please select an output folder first.";
 
             if (string.IsNullOrWhiteSpace(request.SelectedPairingPreset))
                 return "Please select a boss/arena pairing preset.";

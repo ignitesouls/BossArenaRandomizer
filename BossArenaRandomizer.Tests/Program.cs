@@ -1,4 +1,5 @@
 using BossArenaRandomizer.Core;
+using BossArenaRandomizer.Services;
 
 var tests = new (string Name, Action Run)[]
 {
@@ -6,7 +7,9 @@ var tests = new (string Name, Action Run)[]
     ("Unique assignment can solve required swap", UniqueAssignmentCanSolveRequiredSwap),
     ("Cached pairing assignment can solve required swap", CachedPairingAssignmentCanSolveRequiredSwap),
     ("Same seed replays same assignment", SameSeedReplaysSameAssignment),
-    ("Duplicates are balanced when required", DuplicatesAreBalancedWhenRequired)
+    ("Duplicates are balanced when required", DuplicatesAreBalancedWhenRequired),
+    ("Preset configuration saves and loads all references", PresetConfigurationRoundTrips),
+    ("Output failure does not stop the batch", OutputFailureDoesNotStopBatch)
 };
 
 var failures = new List<string>();
@@ -37,6 +40,94 @@ if (failures.Count > 0)
 }
 
 return 0;
+
+static void PresetConfigurationRoundTrips()
+{
+    string root = Path.Combine(Path.GetTempPath(), "BossArenaRandomizer.Tests", Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(root);
+
+    try
+    {
+        var service = new PresetService(root);
+        string fileName = service.SaveConfiguration("DLC Bananza", new PresetConfiguration
+        {
+            RandoOptionsPreset = "DLC Options",
+            ArenaPreset = "DLC Arenas.json",
+            BossPreset = "DLC Bosses.json",
+            PairingPreset = "DLC Pairings.json"
+        });
+
+        PresetConfiguration loaded = service.LoadConfiguration(fileName);
+        Assert(fileName == "DLC Bananza.json", "Configuration should use the requested name.");
+        Assert(loaded.RandoOptionsPreset == "DLC Options", "Rando Options reference should round-trip.");
+        Assert(loaded.ArenaPreset == "DLC Arenas.json", "Arena reference should round-trip.");
+        Assert(loaded.BossPreset == "DLC Bosses.json", "Boss reference should round-trip.");
+        Assert(loaded.PairingPreset == "DLC Pairings.json", "Pairing reference should round-trip.");
+
+        string duplicate = service.DuplicateConfiguration(fileName, "DLC Bananza Copy");
+        Assert(service.ConfigurationExists(duplicate), "Duplicated configuration should exist.");
+
+        string renamed = service.RenameConfiguration(duplicate, "DLC Bananza Renamed");
+        Assert(!service.ConfigurationExists(duplicate), "Original duplicate name should be removed after rename.");
+        Assert(service.ConfigurationExists(renamed), "Renamed configuration should exist.");
+
+        service.DeleteConfiguration(renamed);
+        Assert(!service.ConfigurationExists(renamed), "Deleted configuration should no longer exist.");
+    }
+    finally
+    {
+        if (Directory.Exists(root))
+            Directory.Delete(root, recursive: true);
+    }
+}
+
+static void OutputFailureDoesNotStopBatch()
+{
+    string root = Path.Combine(Path.GetTempPath(), "BossArenaRandomizer.Tests", Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(root);
+
+    try
+    {
+        string optionsPath = Path.Combine(root, "options.randomizeopt");
+        File.WriteAllText(optionsPath, string.Empty);
+
+        var data = BuildData(arenaCount: 2, bossCount: 2);
+        var validator = BuildEverythingValidator(data.Arenas, data.Bosses);
+        var writer = new FailFirstAssignmentWriter();
+        var service = new GenerationService(
+            _ => new TestProjectPaths(optionsPath),
+            new TestPairingPresetLoader(validator),
+            writer,
+            new UniformityReporter(),
+            new GenerationDisplayBuilder());
+
+        GenerationResult result = service.Generate(new GenerationRequest
+        {
+            Arenas = data.Arenas,
+            Bosses = data.Bosses,
+            SelectedArenaIds = data.Arenas.Values.Select(x => x.id).ToList(),
+            SelectedBossIds = data.Bosses.Values.Select(x => x.id).ToList(),
+            BasePath = root,
+            OutputFolderPath = root,
+            SelectedOptionsPreset = "options",
+            SelectedPairingPreset = "everything.json",
+            SeedCount = 2,
+            ReplaySeed = 100,
+            WriteOutputFiles = true
+        });
+
+        Assert(result.Success, "Batch should succeed when at least one output is written.");
+        Assert(result.BatchResults.Count == 2, "Both seeds should have a batch result.");
+        Assert(!result.BatchResults[0].Success, "First output should report its write failure.");
+        Assert(result.BatchResults[1].Success, "Second output should still be generated.");
+        Assert(writer.CallCount == 2, "Writer should be called for both seeds.");
+    }
+    finally
+    {
+        if (Directory.Exists(root))
+            Directory.Delete(root, recursive: true);
+    }
+}
 
 static void UniqueAssignmentWhenEnoughBossesAreAvailable()
 {
@@ -226,4 +317,53 @@ static void Assert(bool condition, string message)
 {
     if (!condition)
         throw new InvalidOperationException(message);
+}
+
+sealed class TestProjectPaths : IProjectPaths
+{
+    private readonly string _optionsPath;
+
+    public TestProjectPaths(string optionsPath)
+    {
+        _optionsPath = optionsPath;
+    }
+
+    public string OptionsPresetPath(string presetName) => _optionsPath;
+    public string PairingPresetPath(string presetFileName) => presetFileName;
+
+    public string BuildBatchOutputPath(
+        string outputFolderPath,
+        string fileNamePattern,
+        string selectedOptionsPreset,
+        int index,
+        int seed) => Path.Combine(outputFolderPath, $"output_{index}_{seed}.randomizeopt");
+}
+
+sealed class TestPairingPresetLoader : IPairingPresetLoader
+{
+    private readonly PairingPresetValidator _validator;
+
+    public TestPairingPresetLoader(PairingPresetValidator validator)
+    {
+        _validator = validator;
+    }
+
+    public PairingPresetValidator Load(string path) => _validator;
+}
+
+sealed class FailFirstAssignmentWriter : IAssignmentWriter
+{
+    public int CallCount { get; private set; }
+
+    public void Write(
+        IReadOnlyCollection<AssignmentPair> assignments,
+        string outputPath,
+        string optionsFilePath,
+        int seed,
+        bool includeClearArenas)
+    {
+        CallCount++;
+        if (CallCount == 1)
+            throw new IOException("Simulated write failure.");
+    }
 }
