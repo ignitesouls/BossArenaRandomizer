@@ -14,6 +14,12 @@
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="LineHeight" Value="21"/>
         </Style>
+        <Style x:Key="FolderName" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#C9B4FF"/>
+        </Style>
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -96,6 +102,69 @@
                     </StackPanel>
                 </Grid>
             </StackPanel>
+
+            <Border Background="#171720"
+                    BorderBrush="#2A2A36"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="20"
+                    Margin="0,26,0,0">
+                <StackPanel>
+                    <TextBlock Text="Folder Reference" Style="{StaticResource SectionHeading}"/>
+                    <TextBlock Text="These folders are stored beside the application. BAR reads presets and supporting data from them, then writes generated files only to the output folder you choose."
+                               Margin="0,7,0,0"
+                               Style="{StaticResource BodyCopy}"/>
+
+                    <Grid Margin="0,18,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="BAR Configurations" Style="{StaticResource FolderName}"/>
+                            <TextBlock Text="Stores complete setup files created with Save Current. Each configuration remembers the selected Rando Options, arena preset, boss preset, pairing preset, Clear Arenas state, and Clear Boss ID. It references those preset filenames, so renaming or deleting a referenced file can make the configuration incomplete."
+                                       Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+
+                            <TextBlock Text="BAR Presets\Arenas" Style="{StaticResource FolderName}" Margin="0,16,0,0"/>
+                            <TextBlock Text="Contains JSON lists of arena entity IDs. The Arenas editor loads and saves these files, and Generate uses the selected file to decide which arena locations receive assignments."
+                                       Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+
+                            <TextBlock Text="BAR Presets\Bosses" Style="{StaticResource FolderName}" Margin="0,16,0,0"/>
+                            <TextBlock Text="Contains JSON lists of boss entity IDs. The Bosses editor loads and saves these files, and Generate uses the selected file as the available boss pool."
+                                       Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+
+                            <TextBlock Text="Rando Options" Style="{StaticResource FolderName}" Margin="0,16,0,0"/>
+                            <TextBlock Text="Contains the source .randomizeopt templates shown in Generate. BAR reads the selected template, inserts the seed and arena-to-boss assignments, and writes a new file to the chosen output folder. The source template is not overwritten."
+                                       Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Data\Pairings" Style="{StaticResource FolderName}"/>
+                            <TextBlock Text="Contains pairing-rule JSON files. Each arena ID maps to the boss IDs allowed there. Preset Pairings reads and edits these files; validation uses the selected file before generation."
+                                       Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+
+                            <TextBlock Text="Data\AllArenaBossesDatabase.json" Style="{StaticResource FolderName}" Margin="0,16,0,0"/>
+                            <TextBlock Text="The main arena and boss catalog, including names, IDs, regions, types, scaling, and DLC information. The Main Database editor modifies this file, so keep its automatic backup when making large changes."
+                                       Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+
+                            <TextBlock Text="Data\ClearArenaIds.json" Style="{StaticResource FolderName}" Margin="0,16,0,0"/>
+                            <TextBlock Text="A JSON list of entity IDs cleared when Clear Arenas is enabled. Those entries receive the configuration's Clear Boss ID before normal arena assignments are added. Edit the list from Main Database > Clear Arena IDs."
+                                       Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+
+                            <TextBlock Text="Data\AnalyzeSeedLines.json" Style="{StaticResource FolderName}" Margin="0,16,0,0"/>
+                            <TextBlock Text="Stores the editable spoiler-log phrases used by the O Mother analysis. Reset Defaults restores the built-in phrase list."
+                                       Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+
+                            <TextBlock Text="Data\CustomSeedChecks.json" Style="{StaticResource FolderName}" Margin="0,16,0,0"/>
+                            <TextBlock Text="Stores user-created spoiler-log searches and whether each matching line should count as valid or invalid."
+                                       Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                        </StackPanel>
+                    </Grid>
+
+                </StackPanel>
+            </Border>
 
             <Grid Margin="0,26,0,0">
                 <Grid.ColumnDefinitions>
