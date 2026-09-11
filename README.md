@@ -127,12 +127,6 @@ O Mother search phrases are stored in `Data\AnalyzeSeedLines.json`, while custom
 | `Data\AnalyzeSeedLines.json` | Editable spoiler-log phrases used by O Mother analysis |
 | `Data\CustomSeedChecks.json` | Custom spoiler-log searches and expected outcomes |
 
-## Important Release Files
-
-Keep `BossArenaRandomizer.exe`, its companion native DLLs, and all included data and preset folders together.
-
-The `.pdb` file is optional and is only useful for debugging. It is not required to run BAR.
-
 ## Credits
 
 **Shura**  
