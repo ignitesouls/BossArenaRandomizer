@@ -1,7 +1,3 @@
-Boss Arena Randomizer
-
-Boss Arena Randomizer (BAR) creates Elden Ring boss and arena replacement presets for use with TheFifthMatt's Item and Enemy Randomizer.
-
 ## Requirements
 
 - .NET 8 SDK
