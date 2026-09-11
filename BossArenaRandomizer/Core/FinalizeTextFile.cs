@@ -1,24 +1,38 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using System.IO;
-using System.Windows;
 
 namespace BossArenaRandomizer.Core
 {
     public static class FinalizeTextFile
     {
         public static void WriteFinalAssignments(
-            Dictionary<string, string> finalAssignments,
-            Dictionary<string, ArenaInfo> arenas,
-            Dictionary<string, BossInfo> bosses,
+            IReadOnlyCollection<AssignmentPair> finalAssignments,
             string filePath,
             string selectedOptionsFilePath,
             int seed,
-            bool includeClearArenas = false)
+            bool includeClearArenas = false,
+            string clearArenaReplacementId = "2822374")
+        {
+            WriteFinalAssignments(
+                finalAssignments.Select(assignment => (assignment.ArenaId.Value, assignment.BossId.Value)),
+                filePath,
+                selectedOptionsFilePath,
+                seed,
+                includeClearArenas,
+                clearArenaReplacementId);
+        }
+
+        private static void WriteFinalAssignments(
+            IEnumerable<(string ArenaId, string BossId)> finalAssignments,
+            string filePath,
+            string selectedOptionsFilePath,
+            int seed,
+            bool includeClearArenas = false,
+            string clearArenaReplacementId = "2822374")
         {
             if (!File.Exists(selectedOptionsFilePath))
                 throw new FileNotFoundException("Options file not found", selectedOptionsFilePath);
@@ -56,16 +70,17 @@ namespace BossArenaRandomizer.Core
 
             if (includeClearArenas)
             {
-                string clearArenaAnimal = "2822374"; // Springhare
-                foreach (var extraId in HCFilterIds.ClearArenasIds)
+                string clearArenaAnimal = (clearArenaReplacementId ?? string.Empty).Trim();
+                if (!Regex.IsMatch(clearArenaAnimal, @"^\d+$"))
+                    throw new ArgumentException("Clear arena replacement ID must contain only numbers.", nameof(clearArenaReplacementId));
+
+                foreach (var extraId in ClearArenaIds.Load())
                     enemiesBlock.AppendLine($"    {extraId}: {clearArenaAnimal}");
             }
 
             foreach (var kvp in finalAssignments)
             {
-                string arenaId = arenas[kvp.Key].id;
-                string bossId = bosses[kvp.Value].id;
-                enemiesBlock.AppendLine($"    {arenaId}: {bossId}");
+                enemiesBlock.AppendLine($"    {kvp.ArenaId}: {kvp.BossId}");
             }
 
             //  Locate key blocks 
@@ -91,12 +106,12 @@ namespace BossArenaRandomizer.Core
             }
             else if (enemyPresetIndex != -1)
             {
-                // EnemyPreset: >+ exists but no Enemies block — insert after it 
+                // EnemyPreset: >+ exists but no Enemies block - insert after it 
                 optionsLines.InsertRange(enemyPresetIndex + 1, enemiesBlock.ToString().TrimEnd().Split('\n'));
             }
             else if (emptyEnemyPresetIndex != -1)
             {
-                // EnemyPreset: (empty) exists — replace with >+ and insert full section 
+                // EnemyPreset: (empty) exists - replace with >+ and insert full section 
                 optionsLines[emptyEnemyPresetIndex] = "EnemyPreset: >+";
 
                 var insertion = new List<string>();
@@ -128,7 +143,7 @@ namespace BossArenaRandomizer.Core
             }
             else
             {
-                // No EnemyPreset at all — insert full preset after seed line 
+                // No EnemyPreset at all - insert full preset after seed line 
                 int seedIndex = optionsLines.FindIndex(l => l.Contains("seed:"));
                 if (seedIndex == -1) seedIndex = optionsLines.Count - 1;
 

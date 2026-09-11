@@ -1,33 +1,42 @@
-Boss Arena Randomizer (Beta)
+Boss Arena Randomizer
 
-The Boss Arena Randomizer (BAR) lets you create custom boss and arena combinations with improved logic for randomization.
-It’s designed to work alongside TheFifthMatt’s Item and Enemy Randomizer, using the same boss and enemy IDs to ensure compatibility.
+Boss Arena Randomizer (BAR) creates Elden Ring boss and arena replacement presets for use with TheFifthMatt's Item and Enemy Randomizer.
 
-### Features
+## Requirements
 
-🎲 Custom Options Presets – Create or load your own configuration files for maximum flexibility.
+- .NET 8 SDK
+- Windows is required to run the WPF app.
+- The project can be restored/built on non-Windows machines because Windows targeting is enabled, but the app itself is Windows-only.
 
-🏟 Arena Selection – Choose specific arenas, use presets, or save your own custom arena sets.
+## Build
 
-⚖️ Boss Selection – Pick bosses manually, or rely on curated presets.
+From the repository root:
 
-⚙️ Advanced Options
+```powershell
+dotnet restore BossArenaRandomizer.sln
+dotnet build BossArenaRandomizer.sln
+```
 
-- Clear Arenas: Replace common arena enemies with Springhares to reduce RNG.
+No git submodules are required for the app to build.
 
-- Size Restrictions: Prevents oversized bosses from spawning in small arenas.
+## Required Data
 
-- Difficulty Curve: Ensures tougher fights appear only in later tiers.
+The app expects these files under `BossArenaRandomizer/Data/`:
 
+- `AllArenaBossesDatabase.json`
 
-### Getting Started
+Boss/arena pairing presets live under `BossArenaRandomizer/Data/Pairings/`:
 
-1. Load or create an Options Preset (place custom presets in the Options/ folder).
+- `everything.json`
 
-2. Set your Output Path for the generated options file.
+Additional boss/arena pairing presets can be placed in that same `Data/Pairings/` folder as `.json` files.
 
-3. Configure your Arena and Boss selections.
+## Usage
 
-4. Go to the Randomizer tab and click Randomize to generate an options file.
+1. Put Item and Enemy Randomizer option files in `BossArenaRandomizer/Options/`.
+2. Open the app and choose an options preset.
+3. Choose a boss/arena pairing preset such as `everything.json`.
+4. Select the arenas and bosses you want active.
+5. Generate the output `.randomizeopt` file.
 
-5. Use the generated file with TheFifthMatt’s Item and Enemy Randomizer.
+Use the `Preset Pairings` page to edit which boss IDs are allowed in each arena ID, then overwrite the selected preset or save it as a new one.

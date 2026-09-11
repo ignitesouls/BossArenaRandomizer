@@ -75,7 +75,7 @@ namespace BossArenaRandomizer.Core
                     "in Volcano Manor: Dropped by Rykard. Replaces Remembrance of the Blasphemous."
                 }
             ),
-            // Note: Morgott+Rold are combined like your python logic (both are Leyndell-related)
+            // Note: Morgott+Rold are combined
             new Rule(
                 Name: "Morgott (Leyndell)",
                 LocationToken: "in Leyndell",
@@ -106,14 +106,14 @@ namespace BossArenaRandomizer.Core
 
         public SeedCheckResult Run(string seedText)
         {
-            // Split once (handles Windows/Unix newlines)
+            
             var lines = seedText
                 .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(l => l.Trim())
                 .ToArray();
 
             // Count great runes per “group”
-            // We want Morgott+Rold combined result like your Python:
+            // We want Morgott+Rold combined
             // if (morgott + rold > 1) => flag
             var countsByRule = new Dictionary<string, (int Count, HashSet<string> RuneNames)>(StringComparer.OrdinalIgnoreCase);
 
@@ -188,8 +188,7 @@ namespace BossArenaRandomizer.Core
 
                 if (!matches) continue;
 
-                // Python does: item_name = line.split(location)[0].strip()
-                // We'll do the same: take substring before "in X"
+                
                 int idx = line.IndexOf(rule.LocationToken, StringComparison.OrdinalIgnoreCase);
                 if (idx <= 0) continue;
 

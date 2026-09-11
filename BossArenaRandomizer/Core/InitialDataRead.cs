@@ -1,87 +1,117 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
 using System.IO;
-using System.Security.Policy;
-using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 
 namespace BossArenaRandomizer.Core
 {
     public class ArenaInfo
     {
         public string id { get; set; } = string.Empty;
-        public int arenaSize { get; set; }
-        public int arenaType { get; set; }
-        public int twoPhaseNotAllowed { get; set; }
+        public int type { get; set; }
         public int nightBoss { get; set; }
-        public int dragonNotAllowed { get; set; }
-        public int npcNotAllowed { get; set; }
-        public int isEscapable { get; set; }
-        public int messmerNotAllowed { get; set; }
-        public int malikethNotAllowed { get; set; }
-        public int godskinduoNotAllowed {  get; set; }
-        public int firegiantNotAllowed { get; set; }
-        public int hardNotAllowed { get; set; }
-        public int difficultyPassThrough {  get; set; }
-        public int spawner { get; set; }
         public int region { get; set; }
         public int scaling { get; set; }
-        public int dlc { get; set; }
+        public bool dlc { get; set; }
     }
 
     public class BossInfo
     {
         public string id { get; set; } = string.Empty;
-        public int bossSize { get; set; }
-        public int bossType { get; set; }
-        public int isTwoPhase { get; set; }
+        public int type { get; set; }
         public int nightBoss { get; set; }
-        public int isDragon { get; set; }
-        public int isNPC { get; set; }
-        public int canEscape { get; set; }
-        public int isMessmer { get; set; }
-        public int isMaliketh { get; set; }
-        public int isEvergaolIncompatible { get; set; }
-        public int isGodskinDuo { get; set; }
-        public int isFiregiant { get; set; }
-        public int isOpenworldIncompatible { get; set; }
-        public int isHard { get; set; }
-        public int baseDifficulty { get; set; }
-        public int spawner { get; set; }
         public int region { get; set; }
         public int scaling { get; set; }
-        public int dlc { get; set; }
+        public bool dlc { get; set; }
     }
 
-    class InitialDataRead
+    internal static class InitialDataRead
     {
-        //Load up Arenas
-        public static Dictionary<string, ArenaInfo> LoadArenas(string filepath)
+        public static (Dictionary<string, ArenaInfo> Arenas, Dictionary<string, BossInfo> Bosses) LoadAllArenaBosses(string filepath)
         {
             string jsonString = File.ReadAllText(filepath);
+            using var document = JsonDocument.Parse(jsonString);
 
-            var options = new JsonSerializerOptions()
+            var arenas = new Dictionary<string, ArenaInfo>(StringComparer.OrdinalIgnoreCase);
+            var bosses = new Dictionary<string, BossInfo>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var entry in document.RootElement.EnumerateObject())
             {
-                PropertyNameCaseInsensitive = true
-            };
+                var element = entry.Value;
+                string id = GetStringValue(element, "id");
+                if (string.IsNullOrWhiteSpace(id))
+                    continue;
 
-            return JsonSerializer.Deserialize<Dictionary<string, ArenaInfo>>(jsonString, options) ?? new();
+                int type = GetIntValue(element, "type");
+                int nightBoss = GetIntValue(element, "nightBoss");
+                int region = GetIntValue(element, "region");
+                int scaling = GetIntValue(element, "scaling");
+                bool dlc = GetBoolValue(element, "dlc");
+
+                arenas[entry.Name] = new ArenaInfo
+                {
+                    id = id,
+                    type = type,
+                    nightBoss = nightBoss,
+                    region = region,
+                    scaling = scaling,
+                    dlc = dlc
+                };
+
+                bosses[entry.Name] = new BossInfo
+                {
+                    id = id,
+                    type = type,
+                    nightBoss = nightBoss,
+                    region = region,
+                    scaling = scaling,
+                    dlc = dlc
+                };
+            }
+
+            return (arenas, bosses);
         }
 
-        //Load up Bosses
-        public static Dictionary<string, BossInfo> LoadBosses(string filepath)
+        private static string GetStringValue(JsonElement element, string propertyName)
         {
-            string jsonString = File.ReadAllText(filepath);
+            if (!element.TryGetProperty(propertyName, out var property))
+                return string.Empty;
 
-            var options = new JsonSerializerOptions()
+            return property.ValueKind switch
             {
-                PropertyNameCaseInsensitive = true
+                JsonValueKind.String => property.GetString() ?? string.Empty,
+                JsonValueKind.Number => property.GetRawText(),
+                _ => string.Empty
             };
+        }
 
-            return JsonSerializer.Deserialize<Dictionary<string, BossInfo>>(jsonString, options) ?? new();
+        private static int GetIntValue(JsonElement element, string propertyName)
+        {
+            if (!element.TryGetProperty(propertyName, out var property))
+                return 0;
+
+            if (property.ValueKind == JsonValueKind.Number && property.TryGetInt32(out var number))
+                return number;
+
+            if (property.ValueKind == JsonValueKind.String && int.TryParse(property.GetString(), out number))
+                return number;
+
+            return 0;
+        }
+
+        private static bool GetBoolValue(JsonElement element, string propertyName)
+        {
+            if (!element.TryGetProperty(propertyName, out var property))
+                return false;
+
+            return property.ValueKind switch
+            {
+                JsonValueKind.True => true,
+                JsonValueKind.False => false,
+                JsonValueKind.Number => property.TryGetInt32(out var number) && number != 0,
+                JsonValueKind.String => bool.TryParse(property.GetString(), out var value) && value,
+                _ => false
+            };
         }
     }
 }

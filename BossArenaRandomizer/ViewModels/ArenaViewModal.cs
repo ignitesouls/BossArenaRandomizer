@@ -130,7 +130,8 @@ namespace BossArenaRandomizer.ViewModels
         private void ResetAll()
         {
             foreach (var arena in ArenaSelections)
-                arena.IsSelected = !HCFilterIds.UncheckArenaBossIds.Contains(arena.Id);
+                arena.IsSelected = HCFilterIds.BaseGameArenaIds.Contains(arena.Id)
+                    || HCFilterIds.DLCArenaIds.Contains(arena.Id);
 
             RaiseSelectionChanged();
         }
@@ -138,7 +139,7 @@ namespace BossArenaRandomizer.ViewModels
         private void ClearAll()
         {
             foreach (var arena in ArenaSelections)
-                arena.IsSelected = !HCFilterIds.AllBossArenas.Contains(arena.Id);
+                arena.IsSelected = false;
 
             RaiseSelectionChanged();
         }
@@ -201,11 +202,11 @@ namespace BossArenaRandomizer.ViewModels
                 return;
             }
 
-            var loadedIds = _presetService.LoadArenaPresetIds(SelectedArenaPreset);
-            HCFilterIds.CustomArenas = new System.Collections.Generic.HashSet<string>(loadedIds);
+            var selectedIds = new System.Collections.Generic.HashSet<string>(
+                _presetService.LoadArenaPresetIds(SelectedArenaPreset));
 
             foreach (var arena in ArenaSelections)
-                arena.IsSelected = HCFilterIds.CustomArenas.Contains(arena.Id);
+                arena.IsSelected = selectedIds.Contains(arena.Id);
 
             _settingsService.SaveLastUsedArenaPreset(SelectedArenaPreset);
             RaiseSelectionChanged();

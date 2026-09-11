@@ -70,16 +70,15 @@
 
             <Border Background="#171720" CornerRadius="16" Padding="16">
                 <StackPanel>
-                    <TextBlock Text="Current Flow" Foreground="#A9A9B3"/>
-                    <TextBlock Text="1. Import a generated seed file"
+                    <TextBlock Text="Custom Tests" Foreground="#A9A9B3"/>
+                    <TextBlock Text="{Binding CustomCheckCount, StringFormat={}{0} tests}"
                                Margin="0,10,0,0"
-                               Foreground="#E5E5EC"/>
-                    <TextBlock Text="2. Select one or more checks"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="White"/>
+                    <TextBlock Text="{Binding CustomCheckEditorStatus}"
                                Margin="0,6,0,0"
-                               Foreground="#E5E5EC"/>
-                    <TextBlock Text="3. Run checks and review the output"
-                               Margin="0,6,0,0"
-                               Foreground="#E5E5EC"/>
+                               Foreground="#A9A9B3"/>
                 </StackPanel>
             </Border>
         </UniformGrid>
@@ -87,53 +86,195 @@
         <!-- Main area -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="520"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Checks -->
             <Border Grid.Column="0"
                     Background="#171720"
                     CornerRadius="16"
-                    Padding="16"
+                    Padding="12"
                     Margin="0,0,16,0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <TabControl Background="Transparent" BorderThickness="0">
+                    <TabItem Header="Checks">
+                        <ScrollViewer Margin="4,14,4,4"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding CheckOptions}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#111118"
+                                                CornerRadius="8"
+                                                Padding="12"
+                                                Margin="0,0,0,10">
+                                            <StackPanel>
+                                                <CheckBox Content="{Binding Name}"
+                                                          IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                                                          Foreground="White"
+                                                          FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding Description}"
+                                                           Margin="24,6,0,0"
+                                                           TextWrapping="Wrap"
+                                                           Foreground="#B9B9C5"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </TabItem>
 
-                    <TextBlock Text="Available Checks"
-                               FontSize="20"
-                               FontWeight="Bold"
-                               Foreground="White"/>
+                    <TabItem Header="O Mother Lines">
+                        <Grid Margin="4,12,4,4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                    <ScrollViewer Grid.Row="1"
-                                  Margin="0,14,0,0"
-                                  VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding CheckOptions}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="#111118"
-                                            CornerRadius="12"
-                                            Padding="12"
-                                            Margin="0,0,0,10">
-                                        <StackPanel>
-                                            <CheckBox Content="{Binding Name}"
-                                                      IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                                                      Foreground="White"
-                                                      FontWeight="SemiBold"/>
-                                            <TextBlock Text="{Binding Description}"
-                                                       Margin="24,6,0,0"
-                                                       TextWrapping="Wrap"
-                                                       Foreground="#B9B9C5"/>
-                                        </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Phrases used by the built-in O Mother check"
+                                           Foreground="#A9A9B3"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding LineEditorStatus}"
+                                           Foreground="#C9B4FF"
+                                           Margin="12,0,0,0"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <DataGrid Grid.Row="1"
+                                      ItemsSource="{Binding AnalysisLines}"
+                                      SelectedItem="{Binding SelectedAnalysisLine, Mode=TwoWay}"
+                                      AutoGenerateColumns="False"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      HeadersVisibility="None"
+                                      SelectionUnit="FullRow"
+                                      RowHeight="58"
+                                      Margin="0,10,0,10">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         AcceptsReturn="True"
+                                                         TextWrapping="Wrap"
+                                                         MinHeight="42"
+                                                         Padding="8"
+                                                         VerticalContentAlignment="Center"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <WrapPanel>
+                                    <Button Content="Add" Command="{Binding AddAnalysisLineCommand}" Padding="12,6" Margin="0,0,7,0"/>
+                                    <Button Content="Delete" Command="{Binding DeleteAnalysisLineCommand}" Padding="12,6" Margin="0,0,7,0"/>
+                                    <Button Content="Up" Command="{Binding MoveAnalysisLineUpCommand}" Padding="12,6" Margin="0,0,7,0"/>
+                                    <Button Content="Down" Command="{Binding MoveAnalysisLineDownCommand}" Padding="12,6"/>
+                                </WrapPanel>
+                                <WrapPanel Grid.Column="1" Margin="12,0,0,0">
+                                    <Button Content="Restore Defaults" Command="{Binding RestoreDefaultAnalysisLinesCommand}" Padding="12,6" Margin="0,0,7,0"/>
+                                    <Button Content="Save Lines" Command="{Binding SaveAnalysisLinesCommand}" Padding="12,6"/>
+                                </WrapPanel>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+
+                    <TabItem Header="Custom Tests">
+                        <Grid Margin="4,12,4,4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Search spoiler-log lines and decide whether a match is valid"
+                                           Foreground="#A9A9B3"
+                                           TextWrapping="Wrap"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding CustomCheckEditorStatus}"
+                                           Foreground="#C9B4FF"
+                                           Margin="12,0,0,0"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <DataGrid Grid.Row="1"
+                                      ItemsSource="{Binding CustomChecks}"
+                                      SelectedItem="{Binding SelectedCustomCheck, Mode=TwoWay}"
+                                      AutoGenerateColumns="False"
+                                      CanUserAddRows="False"
+                                      CanUserDeleteRows="False"
+                                      HeadersVisibility="Column"
+                                      SelectionUnit="FullRow"
+                                      Margin="0,10,0,10">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Name" Width="125">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         Padding="6"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Search line" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         TextWrapping="Wrap"
+                                                         MinHeight="42"
+                                                         Padding="6"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Result" Width="145">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox ItemsSource="{Binding DataContext.CustomTestOutcomes, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                          SelectedItem="{Binding MatchOutcome, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Padding="4"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <WrapPanel>
+                                    <Button Content="Add" Command="{Binding AddCustomCheckCommand}" Padding="12,6" Margin="0,0,7,0"/>
+                                    <Button Content="Delete" Command="{Binding DeleteCustomCheckCommand}" Padding="12,6" Margin="0,0,7,0"/>
+                                    <Button Content="Up" Command="{Binding MoveCustomCheckUpCommand}" Padding="12,6" Margin="0,0,7,0"/>
+                                    <Button Content="Down" Command="{Binding MoveCustomCheckDownCommand}" Padding="12,6"/>
+                                </WrapPanel>
+                                <Button Grid.Column="1"
+                                        Content="Save Tests"
+                                        Command="{Binding SaveCustomChecksCommand}"
+                                        Padding="12,6"
+                                        Margin="12,0,0,0"/>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
             </Border>
 
             <!-- Results -->

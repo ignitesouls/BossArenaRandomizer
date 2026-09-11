@@ -1,0 +1,195 @@
+<UserControl x:Class="BossArenaRandomizer.Views.Pages.AboutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+    <UserControl.Resources>
+        <Style x:Key="SectionHeading" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style x:Key="BodyCopy" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#B9B9C5"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="LineHeight" Value="21"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel MaxWidth="1050" HorizontalAlignment="Stretch">
+            <Grid Margin="0,0,0,22">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Title}" FontSize="30" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock Text="{Binding Subtitle}"
+                               Margin="0,7,0,0"
+                               FontSize="14"
+                               Foreground="#A9A9B3"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+                <Image Grid.Column="1"
+                       Source="/BossArenaRandomizer;component/Assets/Ignite Logo BAR Dark.png"
+                       Width="68"
+                       Height="68"
+                       Margin="24,0,0,0"
+                       Stretch="Uniform"/>
+            </Grid>
+
+            <Border Background="#171720" BorderBrush="#2A2A36" BorderThickness="1" CornerRadius="8" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="What BAR Does" Style="{StaticResource SectionHeading}"/>
+                    <TextBlock Margin="0,9,0,0" Style="{StaticResource BodyCopy}">
+                        <Run Text="Boss Arena Randomizer creates Elden Ring arena-to-boss assignments and writes them into "/>
+                        <Run Text=".randomizeopt" FontFamily="Consolas" Foreground="#C9B4FF"/>
+                        <Run Text=" files for use with TheFifthMatt's Item and Enemy Randomizer. BAR keeps arena selections, boss selections, randomizer options, pairing restrictions, and Clear Arenas settings together through reusable configurations."/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="Recommended Workflow" Style="{StaticResource SectionHeading}" Margin="0,24,0,12"/>
+            <StackPanel>
+                <Grid Margin="0,0,0,14">
+                    <StackPanel>
+                        <TextBlock Text="Prepare the presets" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="Place randomizer option files in Rando Options. Arena and boss selection presets live under BAR Presets, while pairing restriction files live under Data\Pairings. Use Refresh Lists on Generate after adding files while BAR is open."
+                                   Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                    </StackPanel>
+                </Grid>
+                <Border Height="1" Background="#242430" Margin="0,0,0,14"/>
+
+                <Grid Margin="0,0,0,14">
+                    <StackPanel>
+                        <TextBlock Text="Choose arenas and bosses" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="Open Arenas and Bosses, load the desired presets, and click any row to include or exclude it. Search and the Base Game or DLC actions make large selection changes faster. Save a preset when the selection should be reusable."
+                                   Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                    </StackPanel>
+                </Grid>
+                <Border Height="1" Background="#242430" Margin="0,0,0,14"/>
+
+                <Grid Margin="0,0,0,14">
+                    <StackPanel>
+                        <TextBlock Text="Build a configuration" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="On Generate, select the Rando Options, Arena, Boss, and Pairing presets. Choose whether Clear Arenas is enabled and set its replacement boss ID. Enter a configuration name and use Save Current to store the entire setup together."
+                                   Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                    </StackPanel>
+                </Grid>
+                <Border Height="1" Background="#242430" Margin="0,0,0,14"/>
+
+                <Grid Margin="0,0,0,14">
+                    <StackPanel>
+                        <TextBlock Text="Validate before generating" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="Use Pairing Tools to validate the selected pairing preset. Validation runs one assignment regardless of batch size. Test Randomization performs a dry run, while Validation, Uniformity, and Pairing Frequency explain the result."
+                                   Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                    </StackPanel>
+                </Grid>
+                <Border Height="1" Background="#242430" Margin="0,0,0,14"/>
+
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="Generate and review" FontSize="16" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="Choose the output folder, seed count, optional replay seed, and filename pattern, then select Generate Batch. Batch Results reports every file, and Last Assignment can reveal the most recent arena-to-boss result. Quick Generate on the Dashboard loads the selected configuration and creates one seed."
+                                   Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+
+            <Grid Margin="0,26,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Background="#171720" BorderBrush="#2A2A36" BorderThickness="1" CornerRadius="8" Padding="18">
+                    <StackPanel>
+                        <TextBlock Text="Generation Reference" Style="{StaticResource SectionHeading}"/>
+                        <TextBlock Text="Replay Seed" Margin="0,13,0,0" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="Enter a positive seed to reproduce an assignment. For a batch, each following file increments that seed by one."
+                                   Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                        <TextBlock Text="Filename Tokens" Margin="0,13,0,0" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Margin="0,4,0,0" Style="{StaticResource BodyCopy}">
+                            <Run Text="{}{index}" FontFamily="Consolas" Foreground="#C9B4FF"/><Run Text=" batch number   "/>
+                            <Run Text="{}{seed}" FontFamily="Consolas" Foreground="#C9B4FF"/><Run Text=" generated seed   "/>
+                            <Run Text="{}{preset}" FontFamily="Consolas" Foreground="#C9B4FF"/><Run Text=" options preset"/>
+                        </TextBlock>
+                        <TextBlock Text="Clear Arenas" Margin="0,13,0,0" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="When enabled, every entity ID in Data\ClearArenaIds.json is replaced by the configured Clear Boss ID before BAR writes the selected arena assignments."
+                                   Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Background="#171720" BorderBrush="#2A2A36" BorderThickness="1" CornerRadius="8" Padding="18">
+                    <StackPanel>
+                        <TextBlock Text="Editors and Analysis" Style="{StaticResource SectionHeading}"/>
+                        <TextBlock Text="Preset Pairings" Margin="0,13,0,0" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="Controls which bosses are permitted in each arena. Save a new pairing preset when experimenting so an established preset remains available."
+                                   Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                        <TextBlock Text="Main Database" Margin="0,13,0,0" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="Edits arena and boss metadata. Its Clear Arena IDs tab edits the JSON list used by Clear Arenas. Save changes before leaving the editor."
+                                   Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                        <TextBlock Text="Analyze" Margin="0,13,0,0" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="Import a spoiler log and run the built-in Great Rune and O Mother checks. O Mother phrases and custom valid or invalid line tests can be edited and saved from their respective tabs."
+                                   Margin="0,4,0,0" Style="{StaticResource BodyCopy}"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Background="#171720"
+                    BorderBrush="#2A2A36"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="20"
+                    Margin="0,24,0,12">
+                <StackPanel>
+                    <TextBlock Text="Credits" Style="{StaticResource SectionHeading}"/>
+                    <TextBlock Text="Special thanks for their contributions, testing, knowledge, and support of BAR."
+                               Margin="0,7,0,0" Style="{StaticResource BodyCopy}"/>
+                    <Grid Margin="0,18,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                            <TextBlock Text="Shura"
+                                       FontSize="22"
+                                       FontWeight="Bold"
+                                       Foreground="#F0A43A"
+                                       TextAlignment="Center"/>
+                            <TextBlock Text="Primary developer of Boss Arena Randomizer"
+                                       Margin="0,5,0,0"
+                                       Foreground="White"
+                                       FontWeight="SemiBold"
+                                       TextAlignment="Center"/>
+                            <TextBlock Margin="0,7,0,0" TextAlignment="Center">
+                                <Hyperlink NavigateUri="https://ko-fi.com/shura125"
+                                           RequestNavigate="Hyperlink_RequestNavigate"
+                                           Foreground="#C9B4FF">ko-fi.com/shura125</Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <Border Grid.Row="1" Grid.ColumnSpan="2" Height="1" Background="#2A2A36" Margin="0,18,0,16"/>
+
+                        <StackPanel Grid.Row="2" HorizontalAlignment="Center">
+                            <TextBlock Text="Psiphicode" FontSize="18" FontWeight="Bold" Foreground="#C9B4FF" TextAlignment="Center"/>
+                            <TextBlock Text="Special thanks" Margin="0,4,0,0" Foreground="#A9A9B3" TextAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
+                            <TextBlock Text="Helios" FontSize="18" FontWeight="Bold" Foreground="#F0A43A" TextAlignment="Center"/>
+                            <TextBlock Text="Special thanks" Margin="0,4,0,0" Foreground="#A9A9B3" TextAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

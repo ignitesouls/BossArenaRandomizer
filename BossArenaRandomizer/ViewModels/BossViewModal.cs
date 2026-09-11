@@ -130,7 +130,8 @@ namespace BossArenaRandomizer.ViewModels
         private void ResetAll()
         {
             foreach (var boss in BossSelections)
-                boss.IsSelected = !HCFilterIds.UncheckArenaBossIds.Contains(boss.Id);
+                boss.IsSelected = HCFilterIds.BaseGameBossesIds.Contains(boss.Id)
+                    || HCFilterIds.DLCBossesIds.Contains(boss.Id);
 
             RaiseSelectionChanged();
         }
@@ -138,7 +139,7 @@ namespace BossArenaRandomizer.ViewModels
         private void ClearAll()
         {
             foreach (var boss in BossSelections)
-                boss.IsSelected = !HCFilterIds.AllBossArenas.Contains(boss.Id);
+                boss.IsSelected = false;
 
             RaiseSelectionChanged();
         }
@@ -201,11 +202,11 @@ namespace BossArenaRandomizer.ViewModels
                 return;
             }
 
-            var loadedIds = _presetService.LoadBossPresetIds(SelectedBossPreset);
-            HCFilterIds.CustomBosses = new System.Collections.Generic.HashSet<string>(loadedIds);
+            var selectedIds = new System.Collections.Generic.HashSet<string>(
+                _presetService.LoadBossPresetIds(SelectedBossPreset));
 
             foreach (var boss in BossSelections)
-                boss.IsSelected = HCFilterIds.CustomBosses.Contains(boss.Id);
+                boss.IsSelected = selectedIds.Contains(boss.Id);
 
             _settingsService.SaveLastUsedBossPreset(SelectedBossPreset);
             RaiseSelectionChanged();

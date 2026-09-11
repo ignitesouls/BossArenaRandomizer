@@ -5,8 +5,6 @@
              Background="Transparent">
 
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-
         <DataTemplate DataType="{x:Type vm:GenerationResultLine}">
             <TextBlock Text="{Binding Text}"
                        TextWrapping="Wrap"
@@ -27,6 +25,7 @@
                 </TextBlock.Style>
             </TextBlock>
         </DataTemplate>
+        <Style x:Key="ResultsTabStyle" TargetType="TabItem" BasedOn="{StaticResource AppTabItemStyle}"/>
     </UserControl.Resources>
 
     <Grid>
@@ -58,12 +57,9 @@
                     Height="46"
                     Margin="16,0,0,0"
                     Command="{Binding GenerateCommand}"
-                    Background="#7B42FF"
-                    Foreground="White"
-                    FontWeight="Bold"
-                    BorderThickness="0">
+                    FontWeight="Bold">
                 <Button.Style>
-                    <Style TargetType="Button">
+                    <Style TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
                         <Setter Property="Content" Value="Generate Batch"/>
                         <Setter Property="IsEnabled" Value="True"/>
                         <Style.Triggers>
@@ -78,157 +74,292 @@
             </Button>
         </Grid>
 
-        <UniformGrid Grid.Row="1" Columns="4" Margin="0,0,0,18">
-            <Border Background="#171720" CornerRadius="16" Padding="16" Margin="0,0,12,0">
-                <StackPanel>
-                    <TextBlock Text="Options Preset" Foreground="#A9A9B3"/>
-                    <ComboBox ItemsSource="{Binding OptionsPresets}"
-                              SelectedItem="{Binding SelectedOptionsPreset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Margin="0,10,0,0"/>
-                    <Button Content="Refresh"
-                            Command="{Binding RefreshOptionsPresetsCommand}"
-                            Margin="0,10,0,0"
-                            Height="30"/>
-                </StackPanel>
-            </Border>
-
-            <Border Background="#171720" CornerRadius="16" Padding="16" Margin="0,0,12,0">
-                <StackPanel>
-                    <TextBlock Text="Output Base File" Foreground="#A9A9B3"/>
-                    <TextBox Text="{Binding OutputPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Margin="0,10,0,0"
-                             IsReadOnly="True"/>
-                    <Button Content="Choose Output File"
-                            Command="{Binding BrowseOutputPathCommand}"
-                            Margin="0,10,0,0"
-                            Height="30"/>
-                </StackPanel>
-            </Border>
-
-            <Border Background="#171720" CornerRadius="16" Padding="16" Margin="0,0,12,0">
-                <StackPanel>
-                    <TextBlock Text="Batch Setup" Foreground="#A9A9B3"/>
-                    <TextBlock Text="Seed Count" Foreground="White" Margin="0,10,0,0"/>
-                    <TextBox Text="{Binding SeedCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,0"/>
-                    <TextBlock Text="File Name Pattern" Foreground="White" Margin="0,10,0,0"/>
-                    <TextBox Text="{Binding FileNamePattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,0"/>
-                </StackPanel>
-            </Border>
-
-            <Border Background="#171720" CornerRadius="16" Padding="16">
-                <StackPanel>
-                    <TextBlock Text="Status" Foreground="#A9A9B3"/>
-                    <TextBlock Text="{Binding StatusText}"
-                               Foreground="White"
-                               Margin="0,10,0,0"/>
-                    <TextBlock Text="{Binding SeedText}"
-                               Foreground="#C9B4FF"
-                               Margin="0,6,0,0"
-                               FontWeight="Bold"/>
-                    <TextBlock Text="{Binding SelectedArenaCount, StringFormat=Selected Arenas: {0}}"
-                               Foreground="#E5E5EC"
-                               Margin="0,10,0,0"/>
-                    <TextBlock Text="{Binding SelectedBossCount, StringFormat=Selected Bosses: {0}}"
-                               Foreground="#E5E5EC"
-                               Margin="0,6,0,0"/>
-                </StackPanel>
-            </Border>
-        </UniformGrid>
-
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="1" Margin="0,0,0,14">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="1.65*"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0"
-                    Background="#171720"
-                    CornerRadius="16"
-                    Padding="18"
-                    Margin="0,0,16,0">
+            <Border Grid.Column="0" Background="#171720" CornerRadius="8" Padding="14">
                 <StackPanel>
-                    <TextBlock Text="Restrictions"
-                               FontSize="20"
-                               FontWeight="Bold"
-                               Foreground="White"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Preset Configuration" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                        <Button Grid.Column="1" Content="Refresh Lists" Command="{Binding RefreshAllPresetsCommand}" Padding="12,5"/>
+                    </Grid>
 
-                    <CheckBox Content="Clear Arenas"
-                              IsChecked="{Binding ClearArenasEnabled, Mode=TwoWay}"
-                              Margin="0,16,0,0"
-                              Foreground="White"/>
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Configuration" Foreground="#A9A9B3" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Configurations}" SelectedItem="{Binding SelectedConfiguration, Mode=TwoWay}"/>
+                        <Button Grid.Column="2" Content="Load All" Command="{Binding LoadConfigurationCommand}" Padding="13,6" Margin="8,0,0,0"/>
+                    </Grid>
 
-                    <CheckBox Content="Arena Size Restriction"
-                              IsChecked="{Binding ArenaSizeRestrictionEnabled, Mode=TwoWay}"
-                              Margin="0,10,0,0"
-                              Foreground="White"/>
+                    <Grid Margin="0,7,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Save As" Foreground="#A9A9B3" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Text="{Binding ConfigurationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Grid.Column="2" Content="Save Current" Command="{Binding SaveConfigurationCommand}" Padding="13,6" Margin="8,0,0,0"/>
+                    </Grid>
 
-                    <CheckBox Content="Boss Rush Difficulty Curve"
-                              IsChecked="{Binding BossRushDifficultyCurveEnabled, Mode=TwoWay}"
-                              Margin="0,10,0,0"
-                              Foreground="White"/>
+                    <WrapPanel Margin="96,7,0,0">
+                        <Button Content="Rename" Command="{Binding RenameConfigurationCommand}" Padding="11,5" Margin="0,0,7,0"/>
+                        <Button Content="Duplicate" Command="{Binding DuplicateConfigurationCommand}" Padding="11,5" Margin="0,0,7,0"/>
+                        <Button Content="Delete" Command="{Binding DeleteConfigurationCommand}" Padding="11,5" Margin="0,0,7,0"/>
+                        <Button Content="Open Folder" Command="{Binding OpenConfigurationFolderCommand}" Padding="11,5"/>
+                    </WrapPanel>
 
-                    <TextBlock Text="Boss Rush Difficulty Curve keeps harder bosses out of easier areas."
-                              Margin="0,10,0,0"
-                              TextWrapping="Wrap"
-                              Foreground="#A9A9B3"/>
+                    <Border Height="1" Background="#2A2A36" Margin="0,11,0,5"/>
 
-                    <CheckBox Content="Loose Difficulty"
-                              IsChecked="{Binding LooseDifficultyEnabled, Mode=TwoWay}"
-                              Margin="0,10,0,0"
-                              Foreground="White"/>
+                    <Grid Margin="0,6,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Arena" Foreground="#A9A9B3" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding ArenaPresets}" SelectedItem="{Binding SelectedArenaPreset, Mode=TwoWay}"/>
+                        <Button Grid.Column="2" Content="Apply" Command="{Binding LoadArenaPresetCommand}" Width="70" Margin="8,0,0,0"/>
+                    </Grid>
 
-                    <TextBlock Text="Loose Difficulty allows some harder bosses to appear earlier based on pass-through tiers."
-                              Margin="0,6,0,0"
-                              TextWrapping="Wrap"
-                              Foreground="#A9A9B3"/>
+                    <Grid Margin="0,7,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Boss" Foreground="#A9A9B3" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding BossPresets}" SelectedItem="{Binding SelectedBossPreset, Mode=TwoWay}"/>
+                        <Button Grid.Column="2" Content="Apply" Command="{Binding LoadBossPresetCommand}" Width="70" Margin="8,0,0,0"/>
+                    </Grid>
 
-                    <Border Background="#111118"
-                            CornerRadius="12"
-                            Padding="14"
-                            Margin="0,22,0,0">
-                        <StackPanel>
-                            <TextBlock Text="Pattern Tokens"
-                                       Foreground="#C9B4FF"
-                                       FontWeight="Bold"/>
-                            <TextBlock Text="{}{index} = batch number"
-                                       Margin="0,10,0,0"
-                                       Foreground="#E5E5EC"/>
-                            <TextBlock Text="{}{seed} = generated seed"
-                                       Margin="0,6,0,0"
-                                       Foreground="#E5E5EC"/>
-                            <TextBlock Text="{}{preset} = options preset name"
-                                       Margin="0,6,0,0"
-                                       Foreground="#E5E5EC"/>
-                        </StackPanel>
-                    </Border>
+                    <Grid Margin="0,7,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Rando Options" Foreground="#A9A9B3" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding OptionsPresets}" SelectedItem="{Binding SelectedOptionsPreset, Mode=TwoWay}"/>
+                    </Grid>
+
+                    <Grid Margin="0,7,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Pairing" Foreground="#A9A9B3" VerticalAlignment="Center"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding PairingPresets}" SelectedItem="{Binding SelectedPairingPreset, Mode=TwoWay}"/>
+                    </Grid>
+
+                    <Grid Margin="0,9,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Clear Arenas" Foreground="#A9A9B3" VerticalAlignment="Center"/>
+                        <CheckBox Grid.Column="1"
+                                  Content="Enabled"
+                                  IsChecked="{Binding ClearArenasEnabled, Mode=TwoWay}"
+                                  Foreground="White"
+                                  VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Grid Margin="0,7,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="96"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Clear Boss ID" Foreground="#A9A9B3" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1"
+                                 Text="{Binding ClearArenaReplacementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
                 </StackPanel>
             </Border>
 
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="220"/>
-                    <RowDefinition Height="16"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <Border Grid.Column="2" Background="#171720" CornerRadius="8" Padding="14">
+                <StackPanel>
+                    <TextBlock Text="Output &amp; Batch" FontSize="18" FontWeight="Bold" Foreground="White"/>
 
-                <Border Grid.Row="0"
-                        Background="#171720"
-                        CornerRadius="16"
-                        Padding="18">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                    <TextBlock Text="Output Base Folder" Foreground="#A9A9B3" Margin="0,12,0,0"/>
+                    <Grid Margin="0,6,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Text="{Binding OutputFolderPath}" IsReadOnly="True"/>
+                        <Button Grid.Column="1" Content="Choose" Command="{Binding BrowseOutputPathCommand}" Padding="12,6" Margin="8,0,0,0"/>
+                        <Button Grid.Column="2" Content="Open" Command="{Binding OpenOutputFolderCommand}" Padding="12,6" Margin="8,0,0,0"/>
+                    </Grid>
 
-                        <TextBlock Text="Batch Results"
-                                   FontSize="20"
-                                   FontWeight="Bold"
-                                   Foreground="White"/>
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Seed Count" Foreground="#A9A9B3"/>
+                            <TextBox Text="{Binding SeedCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Replay Seed" Foreground="#A9A9B3"/>
+                            <TextBox Text="{Binding ReplaySeedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,0"/>
+                        </StackPanel>
+                    </Grid>
 
-                        <DataGrid Grid.Row="1"
-                                  Margin="0,14,0,0"
-                                  ItemsSource="{Binding BatchResults}"
+                    <TextBlock Text="File Name Pattern" Foreground="#A9A9B3" Margin="0,12,0,0"/>
+                    <TextBox Text="{Binding FileNamePattern, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,0"/>
+                    <WrapPanel Margin="0,7,0,0">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,16,4">
+                            <TextBlock Text="{}{index}" FontFamily="Consolas" Foreground="#C9B4FF" FontWeight="SemiBold"/>
+                            <TextBlock Text="  Batch number" Foreground="#A9A9B3"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,16,4">
+                            <TextBlock Text="{}{seed}" FontFamily="Consolas" Foreground="#C9B4FF" FontWeight="SemiBold"/>
+                            <TextBlock Text="  Generated seed" Foreground="#A9A9B3"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Text="{}{preset}" FontFamily="Consolas" Foreground="#C9B4FF" FontWeight="SemiBold"/>
+                            <TextBlock Text="  Rando Options preset" Foreground="#A9A9B3"/>
+                        </StackPanel>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="2">
+            <TabControl Background="Transparent" BorderThickness="0">
+                <TabItem Header="Pairing Tools" Style="{StaticResource ResultsTabStyle}">
+                    <Border Background="#171720" CornerRadius="8" Padding="16">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="1"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="Pairing Tools" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                                    <TextBlock Text="Validate the selected pairing preset and inspect assignment quality."
+                                               Margin="0,6,0,0"
+                                               Foreground="#A9A9B3"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Content="Validate Preset"
+                                            Command="{Binding ValidatePairingPresetCommand}"
+                                            Margin="0,0,8,0"/>
+                                    <Button Content="Test Randomization"
+                                            Command="{Binding DryRunCommand}"
+                                            Margin="0,0,8,0"
+                                            Style="{StaticResource PrimaryButtonStyle}"/>
+                                    <Button Content="Export Debug Log"
+                                            Command="{Binding ExportDebugLogCommand}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Grid.Row="1" Background="#2A2A36" Margin="0,14,0,0"/>
+
+                            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,15,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="24"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel>
+                                        <TextBlock Text="Run Status" FontSize="16" FontWeight="Bold" Foreground="#C9B4FF"/>
+                                        <Grid Margin="0,10,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding StatusText}" FontSize="15" FontWeight="SemiBold" Foreground="White"/>
+                                                <TextBlock Text="{Binding SeedText}" Margin="0,6,0,0" Foreground="#C9B4FF"/>
+                                                <TextBlock Text="{Binding LastGeneratedOutputPath}"
+                                                           Margin="0,6,0,0"
+                                                           Foreground="#A9A9B3"
+                                                           TextWrapping="Wrap"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1"
+                                                    Content="Open Output Folder"
+                                                    Command="{Binding OpenOutputFolderCommand}"
+                                                    Margin="12,0,0,0"
+                                                    VerticalAlignment="Top"/>
+                                        </Grid>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                            <TextBlock Text="{Binding SelectedArenaCount, StringFormat=Arenas: {0}}" Foreground="#E5E5EC"/>
+                                            <TextBlock Text="{Binding SelectedBossCount, StringFormat=Bosses: {0}}" Foreground="#E5E5EC" Margin="18,0,0,0"/>
+                                        </StackPanel>
+
+                                        <Border Height="1" Background="#2A2A36" Margin="0,16,0,14"/>
+                                        <TextBlock Text="Validation" FontSize="16" FontWeight="Bold" Foreground="#C9B4FF"/>
+                                        <ItemsControl ItemsSource="{Binding ValidationLines}" Margin="0,8,0,0">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Text}"
+                                                               TextWrapping="Wrap"
+                                                               Margin="0,4,0,4"
+                                                               Foreground="#E5E5EC"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Uniformity" FontSize="16" FontWeight="Bold" Foreground="#C9B4FF"/>
+                                        <ItemsControl ItemsSource="{Binding UniformityLines}" Margin="0,8,0,0">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Text}"
+                                                               TextWrapping="Wrap"
+                                                               Margin="0,4,0,4"
+                                                               Foreground="#E5E5EC"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                        <Border Height="1" Background="#2A2A36" Margin="0,16,0,14"/>
+                                        <TextBlock Text="Pairing Frequency" FontSize="16" FontWeight="Bold" Foreground="#C9B4FF"/>
+                                        <ItemsControl ItemsSource="{Binding PairingFrequencyLines}" Margin="0,8,0,0">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Text}"
+                                                               TextWrapping="Wrap"
+                                                               Margin="0,4,0,4"
+                                                               Foreground="#E5E5EC"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Grid>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+                </TabItem>
+
+                <TabItem Header="Batch Results" Style="{StaticResource ResultsTabStyle}">
+                    <Border Background="#171720" CornerRadius="8" Padding="16">
+                        <DataGrid ItemsSource="{Binding BatchResults}"
                                   AutoGenerateColumns="False"
                                   CanUserAddRows="False"
                                   IsReadOnly="True"
@@ -241,141 +372,73 @@
                                 <DataGridTextColumn Header="Output" Binding="{Binding OutputPath}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                    </Grid>
-                </Border>
+                    </Border>
+                </TabItem>
 
-                <Border Grid.Row="2"
-                        Background="#171720"
-                        CornerRadius="16"
-                        Padding="18">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
+                <TabItem Header="Last Assignment" Style="{StaticResource ResultsTabStyle}">
+                    <Border Background="#171720" CornerRadius="8" Padding="16">
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                            <TextBlock Text="Last Generated Assignment"
-                                       FontSize="20"
-                                       FontWeight="Bold"
-                                       Foreground="White"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Last Generated Assignment" FontSize="18" FontWeight="Bold" Foreground="White"/>
+                                <Button Grid.Column="1" Command="{Binding ToggleSpoilerCommand}" Padding="14,6" Background="#2A2A36" Foreground="White">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource AppButtonStyle}">
+                                            <Setter Property="Content" Value="Reveal Spoiler"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsSpoilerRevealed}" Value="True">
+                                                    <Setter Property="Content" Value="Hide Spoiler"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
 
-                            <Button Grid.Column="1"
-                                    Command="{Binding ToggleSpoilerCommand}"
-                                    Padding="14,6"
-                                    BorderThickness="0"
-                                    Background="#2A2A36"
-                                    Foreground="White">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Content" Value="Reveal Spoiler"/>
+                            <Border Grid.Row="1" Background="#111118" CornerRadius="8" Padding="18" Margin="0,12,0,0">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Visibility" Value="Visible"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsSpoilerRevealed}" Value="True">
-                                                <Setter Property="Content" Value="Hide Spoiler"/>
+                                                <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </Button.Style>
-                            </Button>
+                                </Border.Style>
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="Spoiler hidden" FontSize="18" FontWeight="Bold" Foreground="#C9B4FF" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Use Reveal Spoiler to view the last generated assignment." Margin="0,8,0,0" TextWrapping="Wrap" TextAlignment="Center" Foreground="#E5E5EC"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Row="1" Background="#111118" CornerRadius="8" Padding="14" Margin="0,12,0,0">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSpoilerRevealed}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl ItemsSource="{Binding ResultLines}"/>
+                                </ScrollViewer>
+                            </Border>
                         </Grid>
+                    </Border>
+                </TabItem>
+            </TabControl>        </Grid>
 
-                        <Border Grid.Row="1"
-                                Background="#111118"
-                                CornerRadius="12"
-                                Padding="18"
-                                Margin="0,14,0,0">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSpoilerRevealed}" Value="True">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="Spoiler hidden"
-                                           FontSize="18"
-                                           FontWeight="Bold"
-                                           Foreground="#C9B4FF"
-                                           HorizontalAlignment="Center"/>
-                                <TextBlock Text="Click &quot;Reveal Spoiler&quot; to view the last generated assignment."
-                                           Margin="0,10,0,0"
-                                           TextWrapping="Wrap"
-                                           TextAlignment="Center"
-                                           Foreground="#E5E5EC"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Grid.Row="2"
-                                Background="#111118"
-                                CornerRadius="12"
-                                Padding="14"
-                                Margin="0,14,0,0">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSpoilerRevealed}" Value="True">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <ItemsControl ItemsSource="{Binding ResultLines}"/>
-                            </ScrollViewer>
-                        </Border>
-                    </Grid>
-                </Border>
-            </Grid>
-        </Grid>
-
-        <Border Background="#B3000000"
-                Panel.ZIndex="999"
-                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Grid>
-                <Border Width="320"
-                        Padding="24"
-                        CornerRadius="18"
-                        Background="#171720"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                    <StackPanel>
-                        <TextBlock Text="Generating batch..."
-                                   FontSize="22"
-                                   FontWeight="Bold"
-                                   Foreground="White"
-                                   HorizontalAlignment="Center"/>
-
-                        <TextBlock Text="Please wait while the randomizer builds your output files."
-                                   Margin="0,10,0,0"
-                                   TextAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   Foreground="#A9A9B3"/>
-
-                        <ProgressBar Margin="0,18,0,0"
-                                     Height="18"
-                                     IsIndeterminate="True"/>
-
-                        <TextBlock Text="{Binding StatusText}"
-                                   Margin="0,14,0,0"
-                                   TextAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   Foreground="#C9B4FF"
-                                   FontWeight="SemiBold"/>
-                    </StackPanel>
-                </Border>
-            </Grid>
-        </Border>
     </Grid>
 </UserControl>
