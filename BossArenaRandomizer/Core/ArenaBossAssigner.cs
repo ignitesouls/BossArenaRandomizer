@@ -10,23 +10,14 @@ namespace BossArenaRandomizer.Core
         {
             public Dictionary<string, string> Assignments { get; }
             public IReadOnlyList<AssignmentPair> AssignmentPairs { get; }
-            public int AttemptsUsed { get; }
 
-            public AssignResult(IReadOnlyList<AssignmentPair> assignmentPairs, int attemptsUsed)
+            public AssignResult(IReadOnlyList<AssignmentPair> assignmentPairs)
             {
                 AssignmentPairs = assignmentPairs;
                 Assignments = assignmentPairs.ToDictionary(
                     assignment => assignment.ArenaName,
                     assignment => assignment.BossName,
                     StringComparer.OrdinalIgnoreCase);
-                AttemptsUsed = attemptsUsed;
-            }
-
-            public AssignResult(Dictionary<string, string> assignments, int attemptsUsed)
-            {
-                AssignmentPairs = Array.Empty<AssignmentPair>();
-                Assignments = assignments;
-                AttemptsUsed = attemptsUsed;
             }
         }
 
@@ -110,7 +101,7 @@ namespace BossArenaRandomizer.Core
                 if (TryBuildUniqueAssignment(candidates, rng, out var uniqueAssignments))
                 {
                     debugLog?.Invoke("Unique assignment solved with bipartite matching.");
-                    result = new AssignResult(uniqueAssignments, 1);
+                    result = new AssignResult(uniqueAssignments);
                     return true;
                 }
 
@@ -126,7 +117,7 @@ namespace BossArenaRandomizer.Core
                 if (TryBuildDuplicateAssignment(candidates, rng, out var duplicateAssignments))
                 {
                     debugLog?.Invoke($"Number of iterations before success: {attempt}");
-                    result = new AssignResult(duplicateAssignments, attempt);
+                    result = new AssignResult(duplicateAssignments);
                     return true;
                 }
             }

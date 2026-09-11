@@ -153,7 +153,8 @@ namespace BossArenaRandomizer.Services
                             outputPath,
                             optionsFilePath,
                             seed,
-                            request.ClearArenasEnabled);
+                            request.ClearArenasEnabled,
+                            request.ClearArenaReplacementId);
                     }
                     catch (Exception ex)
                     {
@@ -178,8 +179,6 @@ namespace BossArenaRandomizer.Services
                 pairingFrequencyReporter.Add(finalAssignments);
 
                 result.LastSeed = seed;
-                result.FinalAssignmentPairs = finalAssignments.ToList();
-                result.FinalAssignments = assignResult.Assignments;
 
                 result.BatchResults.Add(new BatchSeedResult
                 {

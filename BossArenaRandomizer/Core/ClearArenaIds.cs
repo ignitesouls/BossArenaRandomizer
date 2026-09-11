@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -8,11 +7,9 @@ namespace BossArenaRandomizer.Core
     public static class ClearArenaIds
     {
         private const string FileName = "ClearArenaIds.json";
-        private static readonly Lazy<IReadOnlyCollection<string>> CachedIds = new(LoadCore);
-
         public static IReadOnlyCollection<string> Load()
         {
-            return CachedIds.Value;
+            return LoadCore();
         }
 
         private static IReadOnlyCollection<string> LoadCore()

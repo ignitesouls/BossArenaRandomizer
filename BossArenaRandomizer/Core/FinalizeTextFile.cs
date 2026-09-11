@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using System.IO;
-using System.Windows;
 
 namespace BossArenaRandomizer.Core
 {
@@ -16,32 +14,16 @@ namespace BossArenaRandomizer.Core
             string filePath,
             string selectedOptionsFilePath,
             int seed,
-            bool includeClearArenas = false)
+            bool includeClearArenas = false,
+            string clearArenaReplacementId = "2822374")
         {
             WriteFinalAssignments(
                 finalAssignments.Select(assignment => (assignment.ArenaId.Value, assignment.BossId.Value)),
                 filePath,
                 selectedOptionsFilePath,
                 seed,
-                includeClearArenas);
-        }
-
-        public static void WriteFinalAssignments(
-            Dictionary<string, string> finalAssignments,
-            Dictionary<string, ArenaInfo> arenas,
-            Dictionary<string, BossInfo> bosses,
-            string filePath,
-            string selectedOptionsFilePath,
-            int seed,
-            bool includeClearArenas = false)
-        {
-            var assignmentIds = finalAssignments.Select(kvp => (arenas[kvp.Key].id, bosses[kvp.Value].id));
-            WriteFinalAssignments(
-                assignmentIds,
-                filePath,
-                selectedOptionsFilePath,
-                seed,
-                includeClearArenas);
+                includeClearArenas,
+                clearArenaReplacementId);
         }
 
         private static void WriteFinalAssignments(
@@ -49,7 +31,8 @@ namespace BossArenaRandomizer.Core
             string filePath,
             string selectedOptionsFilePath,
             int seed,
-            bool includeClearArenas = false)
+            bool includeClearArenas = false,
+            string clearArenaReplacementId = "2822374")
         {
             if (!File.Exists(selectedOptionsFilePath))
                 throw new FileNotFoundException("Options file not found", selectedOptionsFilePath);
@@ -87,7 +70,10 @@ namespace BossArenaRandomizer.Core
 
             if (includeClearArenas)
             {
-                string clearArenaAnimal = "2822374"; // Springhare
+                string clearArenaAnimal = (clearArenaReplacementId ?? string.Empty).Trim();
+                if (!Regex.IsMatch(clearArenaAnimal, @"^\d+$"))
+                    throw new ArgumentException("Clear arena replacement ID must contain only numbers.", nameof(clearArenaReplacementId));
+
                 foreach (var extraId in ClearArenaIds.Load())
                     enemiesBlock.AppendLine($"    {extraId}: {clearArenaAnimal}");
             }

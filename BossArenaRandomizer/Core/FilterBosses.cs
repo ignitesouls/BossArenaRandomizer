@@ -11,7 +11,6 @@ namespace BossArenaRandomizer.Core
 
         public string Name { get; set; } = string.Empty;
         public string Id { get; set; } = string.Empty;
-        public int RegionId { get; set; }
         public string RegionName { get; set; } = string.Empty;
 
         public bool IsSelected
@@ -30,24 +29,12 @@ namespace BossArenaRandomizer.Core
         public event PropertyChangedEventHandler? PropertyChanged;
     }
 
-    public class RegionGroupBoss
-    {
-        public string RegionName { get; }
-        public ObservableCollection<BossSelection> Bosses { get; } = new();
-
-        public RegionGroupBoss(string name)
-        {
-            RegionName = name;
-        }
-    }
-
     public class FilterBosses : INotifyPropertyChanged
     {
         public ObservableCollection<BossSelection> BossSelections { get; } = new();
-        public ObservableCollection<RegionGroupBoss> RegionGroups { get; } = new();
 
         public int SelectedCount =>
-            RegionGroups.Sum(r => r.Bosses.Count(a => a.IsSelected));
+            BossSelections.Count(boss => boss.IsSelected);
 
         public FilterBosses(Dictionary<string, BossInfo> bossesJson)
         {
@@ -58,7 +45,6 @@ namespace BossArenaRandomizer.Core
                 {
                     Name = bossEntry.Key,
                     Id = bossInfo.id,
-                    RegionId = bossInfo.region,
                     RegionName = HCData.RegionNames.ContainsKey(bossInfo.region)
                         ? HCData.RegionNames[bossInfo.region]
                         : $"Region {bossInfo.region}",
@@ -75,15 +61,6 @@ namespace BossArenaRandomizer.Core
                 };
 
                 BossSelections.Add(boss);
-
-                var regionGroup = RegionGroups.FirstOrDefault(r => r.RegionName == boss.RegionName);
-                if (regionGroup == null)
-                {
-                    regionGroup = new RegionGroupBoss(boss.RegionName);
-                    RegionGroups.Add(regionGroup);
-                }
-
-                regionGroup.Bosses.Add(boss);
             }
         }
 

@@ -10,58 +10,21 @@
         <SolidColorBrush x:Key="GoldBrush" Color="#F0A43A"/>
         <SolidColorBrush x:Key="TextSoftBrush" Color="#A9A9B3"/>
 
-        <Style x:Key="CompactButton" TargetType="Button">
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Padding" Value="12,0"/>
-            <Setter Property="Background" Value="#2A2A36"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="ButtonBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              RecognizesAccessKey="True"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#343445"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#252532"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.55"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        <Style x:Key="CompactButton" TargetType="Button" BasedOn="{StaticResource AppButtonStyle}">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="12,6"/>
         </Style>
 
-        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource CompactButton}">
-            <Setter Property="Background" Value="#7B42FF"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+            <Setter Property="Height" Value="34"/>
         </Style>
 
-        <Style TargetType="TextBox">
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Padding" Value="10,6"/>
-            <Setter Property="Background" Value="{StaticResource InputBrush}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#343445"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CaretBrush" Value="White"/>
+        <Style TargetType="TextBox" BasedOn="{StaticResource AppTextBoxStyle}">
+            <Setter Property="Height" Value="34"/>
         </Style>
 
         <Style TargetType="ComboBox">
-            <Setter Property="Height" Value="32"/>
+            <Setter Property="Height" Value="34"/>
             <Setter Property="Background" Value="{StaticResource InputBrush}"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderBrush" Value="#343445"/>
@@ -160,7 +123,7 @@
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#7B42FF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#343445"/>
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
@@ -178,6 +141,71 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="6"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        </Style>
+
+        <Style x:Key="ArenaListItemStyle" TargetType="ListBoxItem">
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="Padding" Value="11,8"/>
+            <Setter Property="Background" Value="#1D1D27"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="3,0,0,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="ArenaItemBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="4">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#282832"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#30303A"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource GoldBrush}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="#363640"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BossListItemStyle" TargetType="ListBoxItem">
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="Padding" Value="11,8"/>
+            <Setter Property="Background" Value="#1D1D27"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="4">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#282832"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
 
@@ -343,24 +371,24 @@
 
                     <ListBox Grid.Row="3"
                              ItemsSource="{Binding Arenas}"
-                             SelectedItem="{Binding SelectedArena, Mode=TwoWay}">
+                             SelectedItem="{Binding SelectedArena, Mode=TwoWay}"
+                             ItemContainerStyle="{StaticResource ArenaListItemStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Border Padding="8" Margin="0,0,0,6" Background="#1D1D27" CornerRadius="6">
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Name}"
-                                                   Foreground="White"
-                                                   FontWeight="SemiBold"
-                                                   TextTrimming="CharacterEllipsis"/>
-                                        <TextBlock Text="{Binding Info}"
-                                                   Foreground="{StaticResource TextSoftBrush}"
-                                                   FontSize="12"
-                                                   TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding AllowedCount, StringFormat=Allowed bosses: {0}}"
-                                                   Foreground="{StaticResource AccentBrush}"
-                                                   FontSize="12"/>
-                                    </StackPanel>
-                                </Border>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}"
+                                               Foreground="White"
+                                               FontSize="14"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Info}"
+                                               Foreground="{StaticResource TextSoftBrush}"
+                                               FontSize="12"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding AllowedCount, StringFormat=Allowed bosses: {0}}"
+                                               Foreground="{StaticResource AccentBrush}"
+                                               FontSize="12"/>
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -465,23 +493,25 @@
                     </Grid>
 
                     <ListBox Grid.Row="3"
-                             ItemsSource="{Binding Bosses}">
+                             ItemsSource="{Binding Bosses}"
+                             ItemContainerStyle="{StaticResource BossListItemStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding IsAllowed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Margin="0,4"
-                                          Foreground="White">
-                                    <Border Padding="8" Background="#1D1D27" CornerRadius="6">
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding Name}"
-                                                       Foreground="White"
-                                                       FontWeight="SemiBold"/>
-                                            <TextBlock Text="{Binding Info}"
-                                                       Foreground="{StaticResource TextSoftBrush}"
-                                                       FontSize="12"
-                                                       TextWrapping="Wrap"/>
-                                        </StackPanel>
-                                    </Border>
+                                          Foreground="White"
+                                          VerticalContentAlignment="Top"
+                                          HorizontalContentAlignment="Stretch">
+                                    <StackPanel Margin="5,-1,0,0">
+                                        <TextBlock Text="{Binding Name}"
+                                                   Foreground="White"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"
+                                                   TextWrapping="Wrap"/>
+                                        <TextBlock Text="{Binding Info}"
+                                                   Foreground="{StaticResource TextSoftBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
                                 </CheckBox>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

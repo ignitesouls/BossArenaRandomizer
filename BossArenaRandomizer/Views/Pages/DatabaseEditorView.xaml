@@ -10,58 +10,21 @@
         <SolidColorBrush x:Key="GoldBrush" Color="#F0A43A"/>
         <SolidColorBrush x:Key="TextSoftBrush" Color="#A9A9B3"/>
 
-        <Style x:Key="CompactButton" TargetType="Button">
+        <Style x:Key="CompactButton" TargetType="Button" BasedOn="{StaticResource AppButtonStyle}">
             <Setter Property="Height" Value="34"/>
-            <Setter Property="Padding" Value="12,0"/>
-            <Setter Property="Background" Value="#2A2A36"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="ButtonBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              RecognizesAccessKey="True"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#343445"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#252532"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.55"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="Padding" Value="12,6"/>
         </Style>
 
-        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource CompactButton}">
-            <Setter Property="Background" Value="#7B42FF"/>
+        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+            <Setter Property="Height" Value="34"/>
         </Style>
 
-        <Style TargetType="TextBox">
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Padding" Value="10,6"/>
-            <Setter Property="Background" Value="{StaticResource InputBrush}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#343445"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CaretBrush" Value="White"/>
+        <Style TargetType="TextBox" BasedOn="{StaticResource AppTextBoxStyle}">
+            <Setter Property="Height" Value="34"/>
         </Style>
 
         <Style TargetType="ComboBox">
-            <Setter Property="Height" Value="30"/>
+            <Setter Property="Height" Value="34"/>
             <Setter Property="Background" Value="{StaticResource InputBrush}"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderBrush" Value="#343445"/>
@@ -151,7 +114,7 @@
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#7B42FF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#343445"/>
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -161,7 +124,9 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid>
+    <TabControl Background="Transparent" BorderThickness="0">
+      <TabItem Header="Main Database">
+       <Grid Margin="4,12,4,4">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -277,25 +242,7 @@
                       CanUserDeleteRows="False"
                       HeadersVisibility="Column"
                       RowHeaderWidth="0"
-                      GridLinesVisibility="Horizontal"
-                      Background="{StaticResource PanelAltBrush}"
-                      Foreground="White"
-                      BorderBrush="#2A2A36"
-                      BorderThickness="1"
-                      RowBackground="#171720"
-                      AlternatingRowBackground="#1D1D27"
-                      HorizontalGridLinesBrush="#2A2A36"
-                      VerticalGridLinesBrush="#2A2A36">
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="#20202A"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="BorderBrush" Value="#343445"/>
-                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
-                        <Setter Property="Padding" Value="10,8"/>
-                        <Setter Property="FontWeight" Value="SemiBold"/>
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>
+                      GridLinesVisibility="Horizontal">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name"
                                         Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -346,5 +293,107 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
-    </Grid>
+       </Grid>
+      </TabItem>
+
+      <TabItem Header="Clear Arena IDs">
+        <Grid Margin="4,12,4,4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Margin="0,0,0,18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="360"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="Clear Arena IDs"
+                               FontSize="30"
+                               FontWeight="Bold"
+                               Foreground="White"/>
+                    <TextBlock Text="Arena entities replaced when Clear Arenas is enabled in a configuration."
+                               Margin="0,8,0,0"
+                               FontSize="14"
+                               Foreground="{StaticResource TextSoftBrush}"/>
+                </StackPanel>
+                <Border Grid.Column="1"
+                        Background="{StaticResource PanelBrush}"
+                        CornerRadius="8"
+                        Padding="14">
+                    <StackPanel>
+                        <TextBlock Text="{Binding ClearArenaIdCount, StringFormat=IDs: {0}}"
+                                   Foreground="{StaticResource GoldBrush}"
+                                   FontWeight="Bold"/>
+                        <TextBlock Text="{Binding ClearArenaStatusText}"
+                                   Margin="0,6,0,0"
+                                   Foreground="{StaticResource TextSoftBrush}"
+                                   TextWrapping="Wrap"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="1"
+                    Background="{StaticResource PanelBrush}"
+                    CornerRadius="8"
+                    Padding="14"
+                    Margin="0,0,0,16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="{Binding ClearArenaIdsPath}"
+                               Foreground="{StaticResource TextSoftBrush}"
+                               VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis"/>
+                    <Button Grid.Column="1"
+                            Content="Add"
+                            Command="{Binding AddClearArenaIdCommand}"
+                            Style="{StaticResource PrimaryButton}"
+                            Margin="8,0,0,0"/>
+                    <Button Grid.Column="2"
+                            Content="Delete"
+                            Command="{Binding DeleteClearArenaIdCommand}"
+                            Style="{StaticResource CompactButton}"
+                            Margin="8,0,0,0"/>
+                    <Button Grid.Column="3"
+                            Content="Reload"
+                            Command="{Binding ReloadClearArenaIdsCommand}"
+                            Style="{StaticResource CompactButton}"
+                            Margin="8,0,0,0"/>
+                    <Button Grid.Column="4"
+                            Content="Save IDs"
+                            Command="{Binding SaveClearArenaIdsCommand}"
+                            Style="{StaticResource PrimaryButton}"
+                            Margin="8,0,0,0"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="2"
+                    Background="{StaticResource PanelBrush}"
+                    CornerRadius="8"
+                    Padding="14">
+                <DataGrid ItemsSource="{Binding ClearArenaIds}"
+                          SelectedItem="{Binding SelectedClearArenaId, Mode=TwoWay}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          HeadersVisibility="Column"
+                          SelectionUnit="FullRow">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Arena Entity ID"
+                                            Binding="{Binding Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </Grid>
+      </TabItem>
+    </TabControl>
 </UserControl>

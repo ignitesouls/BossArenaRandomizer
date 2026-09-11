@@ -9,7 +9,9 @@ var tests = new (string Name, Action Run)[]
     ("Same seed replays same assignment", SameSeedReplaysSameAssignment),
     ("Duplicates are balanced when required", DuplicatesAreBalancedWhenRequired),
     ("Preset configuration saves and loads all references", PresetConfigurationRoundTrips),
-    ("Output failure does not stop the batch", OutputFailureDoesNotStopBatch)
+    ("Clear arena IDs save, reload, and reject duplicates", ClearArenaIdsRoundTrip),
+    ("Output failure does not stop the batch", OutputFailureDoesNotStopBatch),
+    ("Custom analyze lines save, reload, and match", CustomAnalyzeLinesRoundTrip)
 };
 
 var failures = new List<string>();
@@ -41,6 +43,114 @@ if (failures.Count > 0)
 
 return 0;
 
+static void ClearArenaIdsRoundTrip()
+{
+    string root = Path.Combine(Path.GetTempPath(), "BossArenaRandomizer.Tests", Guid.NewGuid().ToString("N"));
+
+    try
+    {
+        var repository = new DataRepository(root);
+        repository.SaveClearArenaIds(new[] { " 100 ", "200" });
+
+        List<string> loaded = repository.LoadClearArenaIds();
+        Assert(loaded.SequenceEqual(new[] { "100", "200" }), "Clear arena IDs should be trimmed and round-trip in order.");
+
+        bool duplicateRejected = false;
+        try
+        {
+            repository.SaveClearArenaIds(new[] { "100", "100" });
+        }
+        catch (InvalidDataException)
+        {
+            duplicateRejected = true;
+        }
+
+        Assert(duplicateRejected, "Duplicate clear arena IDs should be rejected.");
+    }
+    finally
+    {
+        if (Directory.Exists(root))
+            Directory.Delete(root, recursive: true);
+    }
+}
+
+static void CustomAnalyzeLinesRoundTrip()
+{
+    string root = Path.Combine(Path.GetTempPath(), "BossArenaRandomizer.Tests", Guid.NewGuid().ToString("N"));
+    Directory.CreateDirectory(root);
+
+    try
+    {
+        var service = new SeedAnalysisService(root);
+        Assert(service.GetAnalysisLines().Count == OMotherCheck.DefaultInvalidPhrases.Count,
+            "Missing custom data should load the built-in invalid lines.");
+
+        List<string> saved = service.SaveAnalysisLines(new[]
+        {
+            "  Custom forbidden placement  ",
+            "custom forbidden placement",
+            ""
+        });
+        Assert(saved.Count == 1, "Blank and duplicate invalid lines should be removed.");
+        Assert(saved[0] == "Custom forbidden placement", "Invalid lines should be trimmed.");
+
+        var reloaded = new SeedAnalysisService(root);
+        Assert(reloaded.GetAnalysisLines().SequenceEqual(saved), "Saved invalid lines should reload from JSON.");
+
+        List<SeedCheckResult> results = reloaded.RunSelectedChecks(
+            "Prefix CUSTOM FORBIDDEN PLACEMENT suffix",
+            new[] { "seed-validity" });
+        Assert(results.Count == 1 && !results[0].Passed,
+            "Custom invalid lines should match spoiler text case-insensitively.");
+
+        List<CustomSeedCheckDefinition> customChecks = reloaded.SaveCustomChecks(new[]
+        {
+            new CustomSeedCheckDefinition
+            {
+                Name = "Forbidden Boss Placement",
+                SearchText = "Forbidden boss line",
+                MatchOutcome = CustomSeedCheckOutcomes.Invalid
+            },
+            new CustomSeedCheckDefinition
+            {
+                Name = "Required Reward",
+                SearchText = "Required reward line",
+                MatchOutcome = CustomSeedCheckOutcomes.Valid
+            }
+        });
+        Assert(customChecks.Count == 2, "Complete custom tests should be saved.");
+
+        var customReloaded = new SeedAnalysisService(root);
+        List<CheckOption> options = customReloaded.GetAvailableCheckOptions();
+        Assert(options.Count == 4, "Two defaults and two custom tests should be available.");
+        Assert(options.Any(x => x.Name == "Double Great Runes"),
+            "Double Great Runes should remain a default check.");
+        Assert(options.Any(x => x.Name == "O Mother"),
+            "O Mother should remain a default check.");
+
+        string invalidId = options.Single(x => x.Name == "Forbidden Boss Placement").Id;
+        string validId = options.Single(x => x.Name == "Required Reward").Id;
+        List<SeedCheckResult> customResults = customReloaded.RunSelectedChecks(
+            "FORBIDDEN BOSS LINE\nRequired reward line",
+            new[] { invalidId, validId });
+        Assert(!customResults.Single(x => x.CheckId == invalidId).Passed,
+            "An invalid-if-found custom test should fail when its line is present.");
+        Assert(customResults.Single(x => x.CheckId == validId).Passed,
+            "A valid-only-if-found custom test should pass when its line is present.");
+
+        List<SeedCheckResult> missingRequired = customReloaded.RunSelectedChecks(
+            "No matching content",
+            new[] { validId });
+        Assert(!missingRequired[0].Passed,
+            "A valid-only-if-found custom test should fail when its line is absent.");
+    }
+    finally
+    {
+        if (Directory.Exists(root))
+            Directory.Delete(root, recursive: true);
+    }
+}
+
 static void PresetConfigurationRoundTrips()
 {
     string root = Path.Combine(Path.GetTempPath(), "BossArenaRandomizer.Tests", Guid.NewGuid().ToString("N"));
@@ -54,7 +164,9 @@ static void PresetConfigurationRoundTrips()
             RandoOptionsPreset = "DLC Options",
             ArenaPreset = "DLC Arenas.json",
             BossPreset = "DLC Bosses.json",
-            PairingPreset = "DLC Pairings.json"
+            PairingPreset = "DLC Pairings.json",
+            ClearArenasEnabled = true,
+            ClearArenaReplacementId = "9999999"
         });
 
         PresetConfiguration loaded = service.LoadConfiguration(fileName);
@@ -63,6 +175,20 @@ static void PresetConfigurationRoundTrips()
         Assert(loaded.ArenaPreset == "DLC Arenas.json", "Arena reference should round-trip.");
         Assert(loaded.BossPreset == "DLC Bosses.json", "Boss reference should round-trip.");
         Assert(loaded.PairingPreset == "DLC Pairings.json", "Pairing reference should round-trip.");
+        Assert(loaded.ClearArenasEnabled == true, "Clear Arenas should round-trip.");
+        Assert(loaded.ClearArenaReplacementId == "9999999", "Clear arena replacement ID should round-trip.");
+
+        service.SaveConfiguration("DLC Bananza", new PresetConfiguration
+        {
+            RandoOptionsPreset = loaded.RandoOptionsPreset,
+            ArenaPreset = loaded.ArenaPreset,
+            BossPreset = loaded.BossPreset,
+            PairingPreset = loaded.PairingPreset,
+            ClearArenasEnabled = false,
+            ClearArenaReplacementId = loaded.ClearArenaReplacementId
+        });
+        PresetConfiguration disabled = service.LoadConfiguration(fileName);
+        Assert(disabled.ClearArenasEnabled == false, "Clear Arenas disabled state should round-trip.");
 
         string duplicate = service.DuplicateConfiguration(fileName, "DLC Bananza Copy");
         Assert(service.ConfigurationExists(duplicate), "Duplicated configuration should exist.");
@@ -360,7 +486,8 @@ sealed class FailFirstAssignmentWriter : IAssignmentWriter
         string outputPath,
         string optionsFilePath,
         int seed,
-        bool includeClearArenas)
+        bool includeClearArenas,
+        string clearArenaReplacementId)
     {
         CallCount++;
         if (CallCount == 1)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BossArenaRandomizer.Core
 {
@@ -10,12 +6,6 @@ namespace BossArenaRandomizer.Core
     {
         public FilterArenas ArenaFilter { get; set; }
         public FilterBosses BossesFilter { get; set; }
-
-
-        /*Changed public Modules () {
-            ArenaFilter = new FilterArenas();
-            BossesFilter = new FilterBosses();
-        }*/
 
         public Modules(Dictionary<string, ArenaInfo> arenasJson, Dictionary<string, BossInfo> bossesJson)
         { 

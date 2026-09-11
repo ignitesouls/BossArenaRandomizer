@@ -32,6 +32,7 @@ namespace BossArenaRandomizer.Services
         public required string SelectedPairingPreset { get; init; }
 
         public bool ClearArenasEnabled { get; init; }
+        public string ClearArenaReplacementId { get; init; } = "2822374";
         public bool WriteOutputFiles { get; init; } = true;
 
         public int MaxAttempts { get; init; } = 1500;
@@ -47,8 +48,6 @@ namespace BossArenaRandomizer.Services
         public string ErrorMessage { get; set; } = string.Empty;
 
         public int LastSeed { get; set; }
-        public Dictionary<string, string> FinalAssignments { get; set; } = new();
-        public List<AssignmentPair> FinalAssignmentPairs { get; set; } = new();
         public List<GenerationDisplayGroup> DisplayGroups { get; set; } = new();
 
         public List<BatchSeedResult> BatchResults { get; set; } = new();

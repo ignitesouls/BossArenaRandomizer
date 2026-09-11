@@ -202,11 +202,11 @@ namespace BossArenaRandomizer.ViewModels
                 return;
             }
 
-            var loadedIds = _presetService.LoadArenaPresetIds(SelectedArenaPreset);
-            HCFilterIds.CustomArenas = new System.Collections.Generic.HashSet<string>(loadedIds);
+            var selectedIds = new System.Collections.Generic.HashSet<string>(
+                _presetService.LoadArenaPresetIds(SelectedArenaPreset));
 
             foreach (var arena in ArenaSelections)
-                arena.IsSelected = HCFilterIds.CustomArenas.Contains(arena.Id);
+                arena.IsSelected = selectedIds.Contains(arena.Id);
 
             _settingsService.SaveLastUsedArenaPreset(SelectedArenaPreset);
             RaiseSelectionChanged();

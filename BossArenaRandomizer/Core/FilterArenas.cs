@@ -11,7 +11,6 @@ namespace BossArenaRandomizer.Core
 
         public string Name { get; set; } = string.Empty;
         public string Id { get; set; } = string.Empty;
-        public int RegionId { get; set; }
         public string RegionName { get; set; } = string.Empty;
 
         public bool IsSelected
@@ -30,24 +29,12 @@ namespace BossArenaRandomizer.Core
         public event PropertyChangedEventHandler? PropertyChanged;
     }
 
-    public class RegionGroup
-    {
-        public string RegionName { get; }
-        public ObservableCollection<ArenaSelection> Arenas { get; } = new();
-
-        public RegionGroup(string name)
-        {
-            RegionName = name;
-        }
-    }
-
     public class FilterArenas : INotifyPropertyChanged
     {
         public ObservableCollection<ArenaSelection> ArenaSelections { get; } = new();
-        public ObservableCollection<RegionGroup> RegionGroups { get; } = new();
 
         public int SelectedCount =>
-            RegionGroups.Sum(r => r.Arenas.Count(a => a.IsSelected));
+            ArenaSelections.Count(arena => arena.IsSelected);
 
         public FilterArenas(Dictionary<string, ArenaInfo> arenasJson)
         {
@@ -58,7 +45,6 @@ namespace BossArenaRandomizer.Core
                 {
                     Name = arenaEntry.Key,
                     Id = arenaJson.id,
-                    RegionId = arenaJson.region,
                     RegionName = HCData.RegionNames.ContainsKey(arenaJson.region)
                         ? HCData.RegionNames[arenaJson.region]
                         : $"Region {arenaJson.region}",
@@ -75,15 +61,6 @@ namespace BossArenaRandomizer.Core
                 };
 
                 ArenaSelections.Add(arena);
-
-                var regionGroup = RegionGroups.FirstOrDefault(r => r.RegionName == arena.RegionName);
-                if (regionGroup == null)
-                {
-                    regionGroup = new RegionGroup(arena.RegionName);
-                    RegionGroups.Add(regionGroup);
-                }
-
-                regionGroup.Arenas.Add(arena);
             }
         }
 

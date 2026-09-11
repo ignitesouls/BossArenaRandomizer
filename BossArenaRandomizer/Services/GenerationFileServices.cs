@@ -24,7 +24,8 @@ namespace BossArenaRandomizer.Services
             string outputPath,
             string optionsFilePath,
             int seed,
-            bool includeClearArenas);
+            bool includeClearArenas,
+            string clearArenaReplacementId);
     }
 
     public sealed class RandomizeOptionsAssignmentWriter : IAssignmentWriter
@@ -34,7 +35,8 @@ namespace BossArenaRandomizer.Services
             string outputPath,
             string optionsFilePath,
             int seed,
-            bool includeClearArenas)
+            bool includeClearArenas,
+            string clearArenaReplacementId)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
             FinalizeTextFile.WriteFinalAssignments(
@@ -42,7 +44,8 @@ namespace BossArenaRandomizer.Services
                 outputPath,
                 optionsFilePath,
                 seed,
-                includeClearArenas);
+                includeClearArenas,
+                clearArenaReplacementId);
         }
     }
 }

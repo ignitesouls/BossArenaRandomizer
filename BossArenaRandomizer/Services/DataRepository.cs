@@ -21,6 +21,7 @@ namespace BossArenaRandomizer.Services
         }
 
         public string AllArenaBossesJsonPath => Path.Combine(_basePath, "Data", "AllArenaBossesDatabase.json");
+        public string ClearArenaIdsJsonPath => Path.Combine(_basePath, "Data", "ClearArenaIds.json");
         public string DataDirectory => Path.Combine(_basePath, "Data");
         public string PairingPresetDirectory => Path.Combine(DataDirectory, "Pairings");
 
@@ -108,6 +109,39 @@ namespace BossArenaRandomizer.Services
                 throw new FileNotFoundException("Main database backup not found.", backupPath);
 
             File.Copy(backupPath, AllArenaBossesJsonPath, overwrite: true);
+        }
+
+        public List<string> LoadClearArenaIds()
+        {
+            if (!File.Exists(ClearArenaIdsJsonPath))
+                return new List<string>();
+
+            string json = File.ReadAllText(ClearArenaIdsJsonPath);
+            return JsonSerializer.Deserialize<List<string>>(json)
+                ?? throw new InvalidDataException("ClearArenaIds.json must contain a JSON array of IDs.");
+        }
+
+        public void SaveClearArenaIds(IEnumerable<string> ids)
+        {
+            ArgumentNullException.ThrowIfNull(ids);
+            Directory.CreateDirectory(DataDirectory);
+
+            var cleanIds = ids
+                .Select(id => (id ?? string.Empty).Trim())
+                .Where(id => id.Length > 0)
+                .ToList();
+
+            if (cleanIds.Any(id => id.Any(ch => !char.IsDigit(ch))))
+                throw new InvalidDataException("Every clear arena ID must contain only numbers.");
+
+            var duplicate = cleanIds
+                .GroupBy(id => id, StringComparer.OrdinalIgnoreCase)
+                .FirstOrDefault(group => group.Count() > 1);
+            if (duplicate != null)
+                throw new InvalidDataException($"Duplicate clear arena ID found: {duplicate.Key}.");
+
+            BackupSingleFile(ClearArenaIdsJsonPath);
+            File.WriteAllText(ClearArenaIdsJsonPath, JsonSerializer.Serialize(cleanIds, _jsonOptions));
         }
 
         private static void BackupSingleFile(string path)

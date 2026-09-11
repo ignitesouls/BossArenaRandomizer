@@ -97,6 +97,17 @@ namespace BossArenaRandomizer.ViewModels
             : Region.ToString();
     }
 
+    public sealed class ClearArenaIdRow : ViewModelBase
+    {
+        private string _id = string.Empty;
+
+        public string Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value ?? string.Empty);
+        }
+    }
+
     public sealed class DatabaseEditorViewModel : ViewModelBase
     {
         private readonly DataRepository _dataRepository;
@@ -106,6 +117,7 @@ namespace BossArenaRandomizer.ViewModels
         public ObservableCollection<DatabaseOption> TypeOptions { get; } = new();
         public ObservableCollection<DatabaseOption> NightOptions { get; } = new();
         public ObservableCollection<DatabaseOption> RegionOptions { get; } = new();
+        public ObservableCollection<ClearArenaIdRow> ClearArenaIds { get; } = new();
         public ICollectionView EntriesView { get; }
 
         private DatabaseEntryRow? _selectedEntry;
@@ -135,6 +147,22 @@ namespace BossArenaRandomizer.ViewModels
 
         public int TotalCount => Entries.Count;
         public string DatabasePath => _dataRepository.AllArenaBossesJsonPath;
+        public string ClearArenaIdsPath => _dataRepository.ClearArenaIdsJsonPath;
+        public int ClearArenaIdCount => ClearArenaIds.Count;
+
+        private ClearArenaIdRow? _selectedClearArenaId;
+        public ClearArenaIdRow? SelectedClearArenaId
+        {
+            get => _selectedClearArenaId;
+            set => SetProperty(ref _selectedClearArenaId, value);
+        }
+
+        private string _clearArenaStatusText = "Ready";
+        public string ClearArenaStatusText
+        {
+            get => _clearArenaStatusText;
+            set => SetProperty(ref _clearArenaStatusText, value);
+        }
 
         public RelayCommand AddEntryCommand { get; }
         public RelayCommand DeleteEntryCommand { get; }
@@ -142,6 +170,10 @@ namespace BossArenaRandomizer.ViewModels
         public RelayCommand ReloadDatabaseCommand { get; }
         public RelayCommand ImportDatabaseCommand { get; }
         public RelayCommand RestoreDatabaseBackupCommand { get; }
+        public RelayCommand AddClearArenaIdCommand { get; }
+        public RelayCommand DeleteClearArenaIdCommand { get; }
+        public RelayCommand SaveClearArenaIdsCommand { get; }
+        public RelayCommand ReloadClearArenaIdsCommand { get; }
 
         public DatabaseEditorViewModel(
             DataRepository dataRepository,
@@ -161,8 +193,13 @@ namespace BossArenaRandomizer.ViewModels
             ReloadDatabaseCommand = new RelayCommand(_ => ReloadFromDisk());
             ImportDatabaseCommand = new RelayCommand(_ => ImportDatabase());
             RestoreDatabaseBackupCommand = new RelayCommand(_ => RestoreDatabaseBackup());
+            AddClearArenaIdCommand = new RelayCommand(_ => AddClearArenaId());
+            DeleteClearArenaIdCommand = new RelayCommand(_ => DeleteClearArenaId(), _ => SelectedClearArenaId != null);
+            SaveClearArenaIdsCommand = new RelayCommand(_ => SaveClearArenaIds());
+            ReloadClearArenaIdsCommand = new RelayCommand(_ => LoadClearArenaIds());
 
             LoadFromAppState();
+            LoadClearArenaIds();
         }
 
         private void LoadOptions()
@@ -299,6 +336,59 @@ namespace BossArenaRandomizer.ViewModels
         {
             _appStateService.ReloadAll();
             LoadFromAppState();
+        }
+
+        private void LoadClearArenaIds()
+        {
+            try
+            {
+                ClearArenaIds.Clear();
+                foreach (string id in _dataRepository.LoadClearArenaIds())
+                    ClearArenaIds.Add(new ClearArenaIdRow { Id = id });
+
+                SelectedClearArenaId = ClearArenaIds.FirstOrDefault();
+                OnPropertyChanged(nameof(ClearArenaIdCount));
+                ClearArenaStatusText = $"Loaded {ClearArenaIds.Count} clear arena IDs.";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Clear arena IDs could not be loaded: {ex.Message}", "Clear Arena IDs");
+                ClearArenaStatusText = "Load failed.";
+            }
+        }
+
+        private void AddClearArenaId()
+        {
+            var row = new ClearArenaIdRow();
+            ClearArenaIds.Add(row);
+            SelectedClearArenaId = row;
+            OnPropertyChanged(nameof(ClearArenaIdCount));
+            ClearArenaStatusText = "Added a new row. Enter its ID, then save.";
+        }
+
+        private void DeleteClearArenaId()
+        {
+            if (SelectedClearArenaId == null)
+                return;
+
+            ClearArenaIds.Remove(SelectedClearArenaId);
+            SelectedClearArenaId = ClearArenaIds.FirstOrDefault();
+            OnPropertyChanged(nameof(ClearArenaIdCount));
+            ClearArenaStatusText = "ID removed. Save to keep this change.";
+        }
+
+        private void SaveClearArenaIds()
+        {
+            try
+            {
+                _dataRepository.SaveClearArenaIds(ClearArenaIds.Select(row => row.Id));
+                LoadClearArenaIds();
+                ClearArenaStatusText = $"Saved {ClearArenaIds.Count} clear arena IDs.";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Clear arena IDs could not be saved: {ex.Message}", "Clear Arena IDs");
+            }
         }
 
         private void ImportDatabase()

@@ -39,7 +39,7 @@ namespace BossArenaRandomizer.ViewModels
             var settingsService = new SettingsService();
             var presetService = new PresetService(basePath);
             var seedGenerationService = new SeedGenerationService();
-            var seedAnalysisService = new SeedAnalysisService();
+            var seedAnalysisService = new SeedAnalysisService(basePath);
             var dataRepository = new DataRepository(basePath);
 
             GenerateViewModel? generateVm = null;
@@ -47,13 +47,6 @@ namespace BossArenaRandomizer.ViewModels
             ArenaViewModel? arenaVm = null;
             BossViewModel? bossVm = null;
             DatabaseEditorViewModel? databaseEditorVm = null;
-
-            void NavigateTo(string title)
-            {
-                var match = NavigationItems.FirstOrDefault(x => x.Title == title);
-                if (match != null)
-                    SelectedNavigationItem = match;
-            }
 
             generateVm = new GenerateViewModel(
                 basePath,
@@ -79,8 +72,7 @@ namespace BossArenaRandomizer.ViewModels
                 () => generateVm.DashboardLastStatusText,
                 () => generateVm.DashboardLastGeneratedOutputPath,
                 () => generateVm.QuickGenerateAsync(),
-                generateVm.OpenOutputFolder,
-                NavigateTo
+                generateVm.OpenOutputFolder
             );
 
             generateVm.PropertyChanged += (_, _) => dashboardVm.Refresh();
@@ -125,6 +117,7 @@ namespace BossArenaRandomizer.ViewModels
             NavigationItems.Add(new NavigationItem { Title = "Analyze", ViewModel = analyzeVm });
             NavigationItems.Add(new NavigationItem { Title = "Preset Pairings", ViewModel = arenaEditorVm });
             NavigationItems.Add(new NavigationItem { Title = "Main Database", ViewModel = databaseEditorVm });
+            NavigationItems.Add(new NavigationItem { Title = "About", ViewModel = new AboutViewModel() });
 
             _appStateService.StateReloaded += (_, _) =>
             {

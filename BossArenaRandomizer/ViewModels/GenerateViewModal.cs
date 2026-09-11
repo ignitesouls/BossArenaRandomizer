@@ -190,7 +190,25 @@ namespace BossArenaRandomizer.ViewModels
         public bool ClearArenasEnabled
         {
             get => _clearArenasEnabled;
-            set => SetProperty(ref _clearArenasEnabled, value);
+            set
+            {
+                if (SetProperty(ref _clearArenasEnabled, value))
+                {
+                    _settingsService.SaveUseClearArenas(value);
+                    InvalidateActiveConfiguration();
+                }
+            }
+        }
+
+        private string _clearArenaReplacementId = "2822374";
+        public string ClearArenaReplacementId
+        {
+            get => _clearArenaReplacementId;
+            set
+            {
+                if (SetProperty(ref _clearArenaReplacementId, value ?? string.Empty))
+                    InvalidateActiveConfiguration();
+            }
         }
 
         private string _lastGeneratedOutputPath = string.Empty;
@@ -346,7 +364,6 @@ namespace BossArenaRandomizer.ViewModels
             SeedCount = _settingsService.GetSeedCount();
             FileNamePattern = _settingsService.GetFileNamePattern();
             ClearArenasEnabled = _settingsService.GetUseClearArenas();
-
             var savedPreset = _settingsService.GetSelectedOptionsPreset();
             if (!string.IsNullOrWhiteSpace(savedPreset) && OptionsPresets.Contains(savedPreset))
                 SelectedOptionsPreset = savedPreset;
@@ -474,6 +491,13 @@ namespace BossArenaRandomizer.ViewModels
                 return;
             }
 
+            string clearArenaReplacementId = ClearArenaReplacementId.Trim();
+            if (ClearArenasEnabled && (clearArenaReplacementId.Length == 0 || clearArenaReplacementId.Any(ch => !char.IsDigit(ch))))
+            {
+                System.Windows.MessageBox.Show("Clear Boss ID must contain only numbers.");
+                return;
+            }
+
             try
             {
                 if (_presetService.ConfigurationExists(ConfigurationName))
@@ -493,7 +517,11 @@ namespace BossArenaRandomizer.ViewModels
                     RandoOptionsPreset = SelectedOptionsPreset,
                     ArenaPreset = SelectedArenaPreset,
                     BossPreset = SelectedBossPreset,
-                    PairingPreset = SelectedPairingPreset
+                    PairingPreset = SelectedPairingPreset,
+                    ClearArenasEnabled = ClearArenasEnabled,
+                    ClearArenaReplacementId = string.IsNullOrWhiteSpace(clearArenaReplacementId)
+                        ? "2822374"
+                        : clearArenaReplacementId
                 });
 
                 LoadConfigurations();
@@ -673,6 +701,11 @@ namespace BossArenaRandomizer.ViewModels
                     SelectedArenaPreset = configuration.ArenaPreset;
                     SelectedBossPreset = configuration.BossPreset;
                     SelectedPairingPreset = configuration.PairingPreset;
+                    if (configuration.ClearArenasEnabled.HasValue)
+                        ClearArenasEnabled = configuration.ClearArenasEnabled.Value;
+                    ClearArenaReplacementId = string.IsNullOrWhiteSpace(configuration.ClearArenaReplacementId)
+                        ? "2822374"
+                        : configuration.ClearArenaReplacementId.Trim();
 
                     ApplyArenaPresetSelection(SelectedArenaPreset);
                     ApplyBossPresetSelection(SelectedBossPreset);
@@ -725,7 +758,6 @@ namespace BossArenaRandomizer.ViewModels
         private void ApplyArenaPresetSelection(string presetName)
         {
             var selectedIds = _presetService.LoadArenaPresetIds(presetName).ToHashSet();
-            HCFilterIds.CustomArenas = selectedIds;
             foreach (var arena in _getArenaFilter().ArenaSelections)
                 arena.IsSelected = selectedIds.Contains(arena.Id);
 
@@ -736,7 +768,6 @@ namespace BossArenaRandomizer.ViewModels
         private void ApplyBossPresetSelection(string presetName)
         {
             var selectedIds = _presetService.LoadBossPresetIds(presetName).ToHashSet();
-            HCFilterIds.CustomBosses = selectedIds;
             foreach (var boss in _getBossFilter().BossSelections)
                 boss.IsSelected = selectedIds.Contains(boss.Id);
 
@@ -749,7 +780,7 @@ namespace BossArenaRandomizer.ViewModels
             if (IsLoading)
                 return;
 
-            var request = BuildGenerationRequest(writeOutputFiles: false);
+            var request = BuildGenerationRequest(writeOutputFiles: false, seedCountOverride: 1);
             if (request == null)
                 return;
 
@@ -834,11 +865,6 @@ namespace BossArenaRandomizer.ViewModels
                 {
                     _settingsService.SaveSelectedOptionsPreset(SelectedOptionsPreset);
                     _settingsService.SaveGenerateSettings(SeedCount, FileNamePattern);
-                    _settingsService.SaveGenerationFlags(
-                        ClearArenasEnabled,
-                        false,
-                        false
-                    );
                 }
 
                 RaiseDashboardProperties();
@@ -900,6 +926,13 @@ namespace BossArenaRandomizer.ViewModels
                 return null;
             }
 
+            string clearArenaReplacementId = ClearArenaReplacementId.Trim();
+            if (ClearArenasEnabled && (clearArenaReplacementId.Length == 0 || clearArenaReplacementId.Any(ch => !char.IsDigit(ch))))
+            {
+                System.Windows.MessageBox.Show("Clear Boss ID must contain only numbers.");
+                return null;
+            }
+
             int? replaySeed = null;
             if (!string.IsNullOrWhiteSpace(ReplaySeedText))
             {
@@ -923,6 +956,9 @@ namespace BossArenaRandomizer.ViewModels
                 SelectedOptionsPreset = SelectedOptionsPreset,
                 SelectedPairingPreset = SelectedPairingPreset,
                 ClearArenasEnabled = ClearArenasEnabled,
+                ClearArenaReplacementId = string.IsNullOrWhiteSpace(clearArenaReplacementId)
+                    ? "2822374"
+                    : clearArenaReplacementId,
                 SeedCount = seedCountOverride ?? SeedCount,
                 ReplaySeed = replaySeed,
                 FileNamePattern = FileNamePattern,

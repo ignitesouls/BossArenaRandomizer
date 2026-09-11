@@ -49,49 +49,9 @@
             <views:DatabaseEditorView />
         </DataTemplate>
 
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="#2A2A36"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="12,6"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="ButtonBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="4"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
-                                              RecognizesAccessKey="True"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#343445"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#252532"/>
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="ButtonBorder" Property="Opacity" Value="0.55"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#20202A"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#343445"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="9,6"/>
-            <Setter Property="CaretBrush" Value="White"/>
-        </Style>
+        <DataTemplate DataType="{x:Type viewModels:AboutViewModel}">
+            <views:AboutView />
+        </DataTemplate>
 
         <Style TargetType="ComboBox">
             <Setter Property="Background" Value="#20202A"/>
@@ -193,7 +153,7 @@
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="ItemBorder" Property="Background" Value="#7B42FF"/>
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#343445"/>
                                 <Setter Property="Foreground" Value="White"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
@@ -206,24 +166,34 @@
         </Style>
 
         <Style TargetType="ListBoxItem">
-            <Setter Property="Margin" Value="0,0,0,10"/>
-            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="MinHeight" Value="50"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Padding" Value="16,13"/>
             <Setter Property="Background" Value="#1C1C25"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="#30303D"/>
+            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="8">
-                            <ContentPresenter VerticalAlignment="Center"/>
+                        <Border x:Name="NavItemBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="0">
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Background" Value="#7B42FF"/>
+                                <Setter Property="BorderBrush" Value="#A98CFF"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#2A2A36"/>
+                                <Setter Property="BorderBrush" Value="#56566A"/>
                             </Trigger>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
@@ -231,6 +201,7 @@
                                     <Condition Property="IsMouseOver" Value="True"/>
                                 </MultiTrigger.Conditions>
                                 <Setter Property="Background" Value="#7B42FF"/>
+                                <Setter Property="BorderBrush" Value="#A98CFF"/>
                             </MultiTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -251,7 +222,7 @@
                 BorderThickness="0,0,1,0">
             <DockPanel Margin="16">
                 <StackPanel DockPanel.Dock="Top" Margin="0,0,0,20">
-                    <Image Source="/BossArenaRandomizer;component/Assets/Ignite Logo.png"
+                    <Image Source="/BossArenaRandomizer;component/Assets/Ignite Logo BAR Dark.png"
                            Width="92"
                            Height="92"
                            Stretch="Uniform"
@@ -279,8 +250,8 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Title}"
-                                       FontSize="15"
-                                       FontWeight="SemiBold"/>
+                                       FontSize="16"
+                                       FontWeight="Bold"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -291,5 +262,74 @@
             <ContentControl Content="{Binding CurrentPageViewModel}"
                             Margin="24"/>
         </Grid>
+
+        <Border Grid.ColumnSpan="2"
+                Background="#B3000000"
+                Panel.ZIndex="999">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentPageViewModel.IsLoading}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Border Width="340"
+                    Padding="24"
+                    CornerRadius="8"
+                    Background="#171720"
+                    BorderBrush="#343445"
+                    BorderThickness="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="Generating batch..."
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock Text="Please wait while the randomizer builds your output files."
+                               Margin="0,10,0,0"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Foreground="#A9A9B3"/>
+                    <Grid Width="292"
+                          Height="7"
+                          Margin="0,18,0,0"
+                          Background="#20202A"
+                          ClipToBounds="True">
+                        <Grid.Triggers>
+                            <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetName="LoadingBarTransform"
+                                                         Storyboard.TargetProperty="X"
+                                                         From="-92"
+                                                         To="292"
+                                                         Duration="0:0:1.15"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Grid.Triggers>
+                        <Border Width="92"
+                                Height="7"
+                                HorizontalAlignment="Left"
+                                Background="#8968D8">
+                            <Border.RenderTransform>
+                                <TranslateTransform x:Name="LoadingBarTransform" X="-92"/>
+                            </Border.RenderTransform>
+                        </Border>
+                    </Grid>
+                    <TextBlock Text="{Binding CurrentPageViewModel.StatusText}"
+                               Margin="0,14,0,0"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Foreground="#C9B4FF"
+                               FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+        </Border>
     </Grid>
 </Window>

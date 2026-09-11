@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 
 namespace BossArenaRandomizer.Core
@@ -48,12 +47,6 @@ namespace BossArenaRandomizer.Core
                 StringComparer.OrdinalIgnoreCase);
 
             return new PairingPresetValidator(allowed);
-        }
-
-        public bool ValidatePairing(string arenaId, string bossId)
-        {
-            return _allowedBossIdsByArenaId.TryGetValue(arenaId, out var allowedBossIds)
-                && allowedBossIds.Contains(bossId);
         }
 
         public PairingValidationResult ValidatePreset(
@@ -123,13 +116,5 @@ namespace BossArenaRandomizer.Core
             return result;
         }
 
-        public static string FormatValidationResult(PairingValidationResult validation)
-        {
-            var sb = new StringBuilder();
-            foreach (var issue in validation.Issues)
-                sb.AppendLine($"[{issue.Severity}] {issue.Message}");
-
-            return sb.ToString().TrimEnd();
-        }
     }
 }

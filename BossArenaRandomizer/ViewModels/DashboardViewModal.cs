@@ -18,10 +18,9 @@ namespace BossArenaRandomizer.ViewModels
         private readonly Func<string> _getLastGeneratedOutputPath;
         private readonly Func<Task> _quickGenerate;
         private readonly Action _openOutputFolder;
-        private readonly Action<string>? _navigate;
 
         public string Title => "Dashboard";
-        public string Subtitle => "Overview of your current setup, last generation run, and quick navigation.";
+        public string Subtitle => "Overview of your current setup and latest generation run.";
 
         public int SelectedArenaCount => _getSelectedArenaCount();
         public int SelectedBossCount => _getSelectedBossCount();
@@ -62,10 +61,6 @@ namespace BossArenaRandomizer.ViewModels
 
         public RelayCommand QuickGenerateCommand { get; }
         public RelayCommand OpenOutputFolderCommand { get; }
-        public RelayCommand GoToArenasCommand { get; }
-        public RelayCommand GoToBossesCommand { get; }
-        public RelayCommand GoToAnalyzeCommand { get; }
-        public RelayCommand GoToPresetPairingsCommand { get; }
 
         public DashboardViewModel(
             Func<int> getSelectedArenaCount,
@@ -80,8 +75,7 @@ namespace BossArenaRandomizer.ViewModels
             Func<string> getLastStatusText,
             Func<string> getLastGeneratedOutputPath,
             Func<Task> quickGenerate,
-            Action openOutputFolder,
-            Action<string>? navigate = null)
+            Action openOutputFolder)
         {
             _getSelectedArenaCount = getSelectedArenaCount ?? throw new ArgumentNullException(nameof(getSelectedArenaCount));
             _getSelectedBossCount = getSelectedBossCount ?? throw new ArgumentNullException(nameof(getSelectedBossCount));
@@ -96,14 +90,9 @@ namespace BossArenaRandomizer.ViewModels
             _getLastGeneratedOutputPath = getLastGeneratedOutputPath ?? throw new ArgumentNullException(nameof(getLastGeneratedOutputPath));
             _quickGenerate = quickGenerate ?? throw new ArgumentNullException(nameof(quickGenerate));
             _openOutputFolder = openOutputFolder ?? throw new ArgumentNullException(nameof(openOutputFolder));
-            _navigate = navigate;
 
             QuickGenerateCommand = new RelayCommand(async _ => await _quickGenerate());
             OpenOutputFolderCommand = new RelayCommand(_ => _openOutputFolder());
-            GoToArenasCommand = new RelayCommand(_ => _navigate?.Invoke("Arenas"));
-            GoToBossesCommand = new RelayCommand(_ => _navigate?.Invoke("Bosses"));
-            GoToAnalyzeCommand = new RelayCommand(_ => _navigate?.Invoke("Analyze"));
-            GoToPresetPairingsCommand = new RelayCommand(_ => _navigate?.Invoke("Preset Pairings"));
         }
 
         public void Refresh()

@@ -1,18 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BossArenaRandomizer.Core
 {
     public static class HCFilterIds
     {
-
-        public static HashSet<string> CustomBosses = new();
-        public static HashSet<string> CustomArenas = new();
-
 
         public static readonly HashSet<string> BaseGameArenaIds = new HashSet<string>
         {

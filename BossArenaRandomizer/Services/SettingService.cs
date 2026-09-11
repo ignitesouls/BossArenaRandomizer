@@ -100,25 +100,11 @@ namespace BossArenaRandomizer.Services
             return Properties.Settings.Default.UseClearArenas;
         }
 
-        public bool GetUseBossRushDifficultyCurve()
-        {
-            return Properties.Settings.Default.UseBossRushDifficultyCurve;
-        }
-
-        public bool GetUseLooseDifficulty()
-        {
-            return Properties.Settings.Default.UseLooseDifficulty;
-        }
-
-        public void SaveGenerationFlags(
-            bool useClearArenas,
-            bool useBossRushDifficultyCurve,
-            bool useLooseDifficulty)
+        public void SaveUseClearArenas(bool useClearArenas)
         {
             Properties.Settings.Default.UseClearArenas = useClearArenas;
-            Properties.Settings.Default.UseBossRushDifficultyCurve = useBossRushDifficultyCurve;
-            Properties.Settings.Default.UseLooseDifficulty = useLooseDifficulty;
             Properties.Settings.Default.Save();
         }
+
     }
 }
